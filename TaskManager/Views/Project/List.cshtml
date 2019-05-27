@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TaskManager.Models.Project>
+
+@{
+    ViewBag.Title = "Projects list";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Projects list</h3>
+
+<h2>
+    <a class="btn btn-primary" href="/Project/Edit/0">Create new project</a>
+</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Short Name</th>
+            <th>Description</th>
+            <th colspan="2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var project in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(_ => project.Name)</td>
+                <td>@Html.DisplayFor(_ => project.ShortName)</td>
+                <td>@Html.DisplayFor(_ => project.Description)</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit/" + project.Id, "Project", htmlAttributes: new { @class = "btn btn-primary"})
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete/" + project.Id, "Project", htmlAttributes: new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

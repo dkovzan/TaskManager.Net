@@ -1,0 +1,46 @@
+﻿@model IEnumerable<TaskManager.Models.Employee>
+
+@{
+    ViewBag.Title = "Employees list";
+}
+
+<h3>@ViewBag.Title</h3>
+
+<h2>
+    <a class="btn btn-primary" href="/Employee/Edit/0">Create new employee</a>
+</h2>
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Error
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Middle Name</th>
+            <th>Position</th>
+            <th colspan="2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(_ => employee.FirstName)</td>
+                <td>@Html.DisplayFor(_ => employee.LastName)</td>
+                <td>@Html.DisplayFor(_ => employee.MiddleName)</td>
+                <td>@Html.DisplayFor(_ => employee.Position)</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit/" + employee.Id, "Employee", htmlAttributes: new { @class = "btn btn-primary"})
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete/" + employee.Id, "Employee", htmlAttributes: new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
