@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using TaskManager.Validation;
+using TaskManager.Services;
 
 namespace TaskManager.Models
 {
-    public class Project
+    public class Project : Entity
     {
-        public int? Id { get; set; }
 
         [Required]
         [StringLength(255, ErrorMessage = "Name should contain maximum 255 characters.")]
@@ -21,6 +20,11 @@ namespace TaskManager.Models
         [StringLength(4000, ErrorMessage = "Description should contain maximum 4000 characters.")]
         public string Description { get; set; }
 
-        public virtual ICollection<Issue> Tasks { get; set; }
+        public ICollection<Issue> Issues { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id {Id}, Name {Name}, ShortName {ShortName}, Description {Description}";
+        }
     }
 }

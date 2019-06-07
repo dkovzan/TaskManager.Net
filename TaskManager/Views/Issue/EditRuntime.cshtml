@@ -2,47 +2,30 @@
 
 @{
     ViewBag.Title = "Edit issue";
-    Layout = "~/Views/Shared/_Layout.cshtml";
     var issue = Model;
     var employees = ViewBag.Employees;
-    var projects = ViewBag.Projects;
+    //var projects = ViewBag.Projects;
     var statuses = ViewBag.Statuses;
 }
 
-<h2>Edit task</h2>
+<h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm(actionName: "AddOrUpdate", controllerName: "Issue"))
-{ 
+
+@using (Html.BeginForm(actionName: "AddOrUpdateRuntime", controllerName: "Issue"))
+{
 <div class="form-horizontal">
-    
+
     @Html.AntiForgeryToken()
-
     <hr />
-
-    @Html.HiddenFor(_ => _.Id)
-    
+    <input type="hidden" name="Id" value="@issue.Id" />
     <div class="form-group">
         @Html.LabelFor(_ => _.ProjectId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <select class="form-control" name="ProjectId">
-                <option hidden selected disabled>Select project</option>
-                @foreach (var project in projects)
-                {
-                    if (project.Id == issue.ProjectId)
-                    {
-                        <option selected value="@issue.ProjectId">@project.ShortName</option>
-                    }
-                    else
-                    {
-                        <option value="@project.Id">@project.ShortName</option>
-                    }
-                }
-            </select>
-            @Html.ValidationMessageFor(_ => _.ProjectId, "", new { @class = "text-danger" })
+            @Html.EditorFor(_ => _.ProjectId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(_ => _.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(_ => _.Name, htmlAttributes: new { @class = "control-label col-md-2"})
         <div class="col-md-10">
             @Html.EditorFor(_ => _.Name, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(_ => _.Name, "", new { @class = "text-danger" })
@@ -111,7 +94,7 @@
     </div>
     <div class="form-group">
         <input class="btn btn-primary" type="submit" value="Save" />
-        @Html.ActionLink(linkText: "Cancel", actionName: "List", routeValues: null, controllerName: "Issue", htmlAttributes: new { @class = "btn" })
+        @Html.ActionLink(linkText: "Cancel", actionName: "Edit", routeValues: new { id = issue.ProjectId }, controllerName: "Project", htmlAttributes: new { @class = "btn"})
     </div>
 </div>
 

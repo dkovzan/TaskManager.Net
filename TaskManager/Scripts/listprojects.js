@@ -1,0 +1,3 @@
+﻿function clearTempProject() {
+    localStorage.clear();
+}

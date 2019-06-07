@@ -24,6 +24,13 @@ namespace TaskManager
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            //custom bundles
+            bundles.Add(new ScriptBundle("~/bundles/editproject").Include(
+                        "~/Scripts/editproject.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/listprojects").Include(
+                        "~/Scripts/listprojects.js"));
         }
     }
 }

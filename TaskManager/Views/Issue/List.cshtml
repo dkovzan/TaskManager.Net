@@ -1,42 +1,59 @@
 ﻿@model IEnumerable<TaskManager.Models.Issue>
-
 @{
     ViewBag.Title = "Issues list";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var error = ViewBag.Error;
 }
 
 <h3>@ViewBag.Title</h3>
 
 <h2>
-    <a class="btn btn-primary" href="/Issue/Edit/0">Create new task</a>
+    @Html.ActionLink(linkText: "Create new issue", actionName: "Edit", controllerName: "Issue", routeValues: new { id = 0 }, htmlAttributes: new { @class = "btn btn-primary" })
 </h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Project</th>
-            <th>Name</th>
-            <th>Begin Date</th>
-            <th>End Date</th>
-            <th>Assignee</th>
-            <th colspan="2"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var issue in Model)
-        {
-        <tr>
-            <td>@Html.DisplayFor(_ => issue.ProjectId)</td>
-            <td>@Html.DisplayFor(_ => issue.Name)</td>
-            <td>@Html.DisplayFor(_ => issue.BeginDate)</td>
-            <td>@Html.DisplayFor(_ => issue.EndDate)</td>
-            <td>@Html.DisplayFor(_ => issue.ProjectId)</td>
-            <td>
-                @Html.ActionLink("Edit", "Edit/" + issue.Id, "Issue", htmlAttributes: new { @class = "btn btn-primary" })
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Delete/" + issue.Id, "Issue", htmlAttributes: new { @class = "btn btn-primary" })
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+
+@if (error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Name</th>
+                <th>Begin Date</th>
+                <th>End Date</th>
+                <th>Assignee</th>
+                <th colspan="2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var issue in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(_ => issue.ProjectId)</td>
+                    <td>@Html.DisplayFor(_ => issue.Name)</td>
+                    <td>@Html.DisplayFor(_ => issue.BeginDate)</td>
+                    <td>@Html.DisplayFor(_ => issue.EndDate)</td>
+                    <td>@Html.DisplayFor(_ => issue.ProjectId)</td>
+                    <td>
+                        @Html.ActionLink(linkText: "Edit", actionName: "Edit", controllerName: "Issue", routeValues: new { id = issue.Id }, htmlAttributes: new { @class = "btn" })
+                    </td>
+                    <td>
+                        @Html.ActionLink(linkText: "Delete", actionName: "Delete", controllerName: "Issue", routeValues: new { id = issue.Id }, htmlAttributes: new { @class = "btn" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        There are no issues yet!
+    </div>
+}

@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using TaskManager.DAL;
 using TaskManager.Exceptions;
 using TaskManager.Models;
@@ -26,14 +27,34 @@ namespace TaskManager.Services
 
         public async Task<Project> FindProjectByIdAsync(int id)
         {
-            var project = new Project();
+            var project = new Project() { Id = id };
+
             if (id != 0)
             {
                 project = await _entitiesContext.Projects.FindAsync(id);
+
                 if (project == null)
                 {
                     throw new EntityNotFoundException("Entity not found by id " + id);
                 }
+
+                var runtimeIssues = (List<Issue>) HttpContext.Current.Session["runtimeIssues"];
+
+                if (runtimeIssues != null)
+                {
+                    project.Issues = runtimeIssues;
+                }
+                else
+                {
+                    project.Issues = await _entitiesContext.Issues.Where(_ => _.ProjectId == id).ToListAsync();
+
+                    HttpContext.Current.Session["runtimeIssues"] = project.Issues;
+                }
+
+            }
+            else
+            {
+                project.Issues = (List<Issue>)HttpContext.Current.Session["runtimeIssues"];
             }
             return project;
         }
@@ -51,11 +72,71 @@ namespace TaskManager.Services
 
         public void AddOrUpdateProject(Project project)
         {
+            if (project.Id == 0)
+            {
+                AddProjectWithIssues(project);
+            }
+            else
+            {
+                UpdateProjectWithIssues(project);
+            }
+            HttpContext.Current.Session.Clear();
+        }
+
+        private void AddProjectWithIssues(Project project)
+        {
+            var issues = (List<Issue>) HttpContext.Current.Session["runtimeIssues"];
+
+            foreach (var issue in issues)
+            {
+                issue.ProjectId = project.Id;
+                _entitiesContext.Issues.AddOrUpdate(issue);
+            }
+
             _entitiesContext.Projects.AddOrUpdate(project);
             _entitiesContext.SaveChanges();
         }
 
-        public bool isProjectShortNameUnique(int projectId, string shortName)
+        private void UpdateProjectWithIssues(Project project)
+        {
+            _entitiesContext.Projects.AddOrUpdate(project);
+
+            var issuesFromDb = _entitiesContext.Issues.Where(_ => _.ProjectId == project.Id).ToList();
+
+            var runtimeIssues = (List<Issue>) HttpContext.Current.Session["runtimeIssues"];
+
+            var issuesToDelete = new List<Issue>(issuesFromDb);
+
+            foreach (var runtimeIssue in runtimeIssues)
+            {
+                if (runtimeIssue.Id > 0)
+                {
+                    foreach (var issueFromDb in issuesFromDb)
+                    {
+                        if (issueFromDb.Id == runtimeIssue.Id)
+                        {
+                            runtimeIssue.ProjectId = project.Id;
+                            _entitiesContext.Issues.AddOrUpdate(runtimeIssue);
+                            issuesToDelete.Remove(issueFromDb);
+                        }
+                    }
+                }
+                else
+                {
+                    runtimeIssue.ProjectId = project.Id;
+                    _entitiesContext.Issues.AddOrUpdate(runtimeIssue);
+                }
+            }
+
+            foreach (var issueToDelete in issuesToDelete)
+            {
+                _entitiesContext.Issues.Attach(issueToDelete);
+                _entitiesContext.Entry(issueToDelete).State = EntityState.Deleted;
+            }
+            _entitiesContext.SaveChanges();
+        }
+
+        public bool IsProjectShortNameUnique(int projectId, string shortName)
         {
             return !_entitiesContext.Projects.Where(x => x.ShortName == shortName && x.Id != projectId).Any();
         }

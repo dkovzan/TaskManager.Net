@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Threading.Tasks;
+using System.Web;
 using TaskManager.DAL;
 using TaskManager.Exceptions;
 using TaskManager.Models;
@@ -26,9 +27,11 @@ namespace TaskManager.Services
         public async Task<Issue> FindIssueByIdAsync(int id)
         {
             var issue = new Issue();
+
             if (id != 0)
             {
                 issue = await _entitiesContext.Issues.FindAsync(id);
+
                 if (issue == null)
                 {
                     throw new EntityNotFoundException("Entity not found by id " + id);

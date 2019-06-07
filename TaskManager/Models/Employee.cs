@@ -2,9 +2,8 @@
 
 namespace TaskManager.Models
 {
-    public class Employee
+    public class Employee : Entity
     {
-        public int? Id { get; set; }
 
         [Required]
         [Display(Name = "First Name")]
@@ -27,5 +26,9 @@ namespace TaskManager.Models
         [StringLength(255, ErrorMessage = "Position should contain maximum 255 characters.")]
         public string Position { get; set; }
 
+        public override string ToString()
+        {
+            return $"Id {Id}, FirstName {FirstName}, LastName {LastName}, MiddleName {MiddleName}, Position {Position}";
+        }
     }
 }

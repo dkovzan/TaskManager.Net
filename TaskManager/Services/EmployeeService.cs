@@ -27,9 +27,11 @@ namespace TaskManager.Services
         public async Task<Employee> FindEmployeeByIdAsync(int id)
         {
             var employee = new Employee();
+
             if (id != 0)
             {
                 employee = await _entitiesContext.Employees.FindAsync(id);
+
                 if (employee == null)
                 {
                     throw new EntityNotFoundException("Entity not found by id " + id);
