@@ -14,10 +14,13 @@ namespace TaskManager.Controllers
         private readonly ILog _logger;
 
         private readonly ProjectService _projectService;
+
+        private readonly EmployeeService _employeeService;
         public ProjectController()
         {
             _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
             _projectService = new ProjectService();
+            _employeeService = new EmployeeService();
         }
 
         //async methods
@@ -54,6 +57,8 @@ namespace TaskManager.Controllers
 
                 var project = await _projectService.FindProjectByIdAsync((int) id);
 
+                ViewBag.Employees = await _employeeService.GetEmployeesAsync();
+
                 _logger.InfoFormat("Project sent into view: {0}", project.ToString());
 
                 Session["ProjectId"] = project.Id;
@@ -83,6 +88,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)] // disable request validation e.g. preventing script attacks >> dangerous values are encoded by Razor automatically
         [ValidateAntiForgeryToken]
         public ActionResult AddOrUpdate([Bind(Include = "Id, Name, ShortName, Description, Issues")]Project project)
         {

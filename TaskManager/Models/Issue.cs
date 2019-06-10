@@ -42,6 +42,10 @@ namespace TaskManager.Models
         [Display(Name = "Status")]
         public int? StatusId { get; set; }
 
+        public virtual Project Project { get; set; }
+
+        public virtual Employee Employee { get; set; }
+
         public override string ToString()
         {
             return $"Id {Id}, Name {Name}, Work {Work}, BeginDate {BeginDate}, EndDate {EndDate}, ProjectId {ProjectId}, EmployeeId {EmployeeId}, StatusId {StatusId}";

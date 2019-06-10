@@ -21,7 +21,8 @@ namespace TaskManager.Services
         // async methods
         public async Task<List<Issue>> GetIssuesAsync()
         {
-            return await _entitiesContext.Issues.ToListAsync();
+            var issues = await _entitiesContext.Issues.Include("Project").Include("Employee").ToListAsync();
+            return issues;
         }
 
         public async Task<Issue> FindIssueByIdAsync(int id)
@@ -55,6 +56,75 @@ namespace TaskManager.Services
         {
             _entitiesContext.Issues.AddOrUpdate(issue);
             _entitiesContext.SaveChanges();
+        }
+
+        private static int newRuntimeTaskId = -1;
+
+        public Issue EditRuntimeIssue(int id)
+        {
+            var projectId = (int)HttpContext.Current.Session["ProjectId"];
+
+            var issue = new Issue() { ProjectId = projectId };
+
+            if (id == 0)
+            {
+                issue.Id = newRuntimeTaskId;
+            }
+            else
+            {
+                var runtimeIssues = (List<Issue>)HttpContext.Current.Session["runtimeIssues"];
+
+                foreach (var runtimeIssue in runtimeIssues)
+                {
+                    if (runtimeIssue.Id == id)
+                    {
+                        issue = runtimeIssue;
+                    }
+                }
+            }
+
+            return issue;
+        }
+
+        public void AddOrUpdateRuntimeIssue(Issue issue)
+        {
+            issue.Employee = _entitiesContext.Employees.Find(issue.EmployeeId);
+
+            var runtimeIssues = (List<Issue>)HttpContext.Current.Session["runtimeIssues"] ?? new List<Issue>();
+
+            for (int i = 0; i < runtimeIssues.Count; i++)
+            {
+                if (runtimeIssues[i].Id == issue.Id)
+                {
+                    runtimeIssues.RemoveAt(i);
+                    runtimeIssues.Insert(i, issue);
+                    break;
+                }
+            }
+
+            if (issue.Id == newRuntimeTaskId)
+            {
+                runtimeIssues.Add(issue);
+                newRuntimeTaskId--;
+            }
+
+            HttpContext.Current.Session["runtimeIssues"] = runtimeIssues;
+        }
+
+        public void DeleteRuntimeIssueById(int id)
+        {
+            var runtimeIssues = (List<Issue>)HttpContext.Current.Session["runtimeIssues"];
+
+            for (int i = 0; i < runtimeIssues.Count; i++)
+            {
+                if (runtimeIssues[i].Id == id)
+                {
+                    runtimeIssues.RemoveAt(i);
+                    break;
+                }
+            }
+
+            HttpContext.Current.Session["runtimeIssues"] = runtimeIssues;
         }
 
         ~IssueService()

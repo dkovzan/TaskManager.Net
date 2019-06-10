@@ -35,16 +35,16 @@
             @foreach (var issue in Model)
             {
                 <tr>
-                    <td>@Html.DisplayFor(_ => issue.ProjectId)</td>
+                    <td>@Html.DisplayFor(_ => issue.Project.ShortName)</td>
                     <td>@Html.DisplayFor(_ => issue.Name)</td>
                     <td>@Html.DisplayFor(_ => issue.BeginDate)</td>
                     <td>@Html.DisplayFor(_ => issue.EndDate)</td>
-                    <td>@Html.DisplayFor(_ => issue.ProjectId)</td>
+                    <td>@Html.DisplayFor(_ => issue.Employee.FullName)</td>
                     <td>
-                        @Html.ActionLink(linkText: "Edit", actionName: "Edit", controllerName: "Issue", routeValues: new { id = issue.Id }, htmlAttributes: new { @class = "btn" })
+                        @Html.ActionLink(linkText: "Edit", actionName: "Edit", controllerName: "Issue", routeValues: new { id = issue.Id }, htmlAttributes: new { @class = "btn btn-primary" })
                     </td>
                     <td>
-                        @Html.ActionLink(linkText: "Delete", actionName: "Delete", controllerName: "Issue", routeValues: new { id = issue.Id }, htmlAttributes: new { @class = "btn" })
+                        @Html.ActionLink(linkText: "Delete", actionName: "Delete", controllerName: "Issue", routeValues: new { id = issue.Id }, htmlAttributes: new { @class = "btn btn-primary" })
                     </td>
                 </tr>
             }

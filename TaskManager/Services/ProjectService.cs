@@ -89,11 +89,12 @@ namespace TaskManager.Services
 
             foreach (var issue in issues)
             {
+                issue.Employee = null;
                 issue.ProjectId = project.Id;
-                _entitiesContext.Issues.AddOrUpdate(issue);
+                _entitiesContext.Issues.Add(issue);
             }
 
-            _entitiesContext.Projects.AddOrUpdate(project);
+            _entitiesContext.Projects.Add(project);
             _entitiesContext.SaveChanges();
         }
 
@@ -116,15 +117,18 @@ namespace TaskManager.Services
                         if (issueFromDb.Id == runtimeIssue.Id)
                         {
                             runtimeIssue.ProjectId = project.Id;
+
                             _entitiesContext.Issues.AddOrUpdate(runtimeIssue);
+
                             issuesToDelete.Remove(issueFromDb);
                         }
                     }
                 }
                 else
                 {
+                    runtimeIssue.Employee = null;
                     runtimeIssue.ProjectId = project.Id;
-                    _entitiesContext.Issues.AddOrUpdate(runtimeIssue);
+                    _entitiesContext.Issues.Add(runtimeIssue);
                 }
             }
 

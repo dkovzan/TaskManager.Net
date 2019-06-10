@@ -78,11 +78,11 @@
                 {
                     if (employee.Id == issue.EmployeeId)
                     {
-                        <option selected value="@issue.EmployeeId">@employee.FirstName  @employee.LastName</option>
+                        <option selected value="@issue.EmployeeId">@employee.FullName</option>
                     }
                     else
                     {
-                        <option value="@employee.Id">@employee.FirstName  @employee.LastName</option>
+                        <option value="@employee.Id">@employee.FullName</option>
                     }
                 }
             </select>

@@ -4,7 +4,6 @@
     ViewBag.Title = "Edit issue";
     var issue = Model;
     var employees = ViewBag.Employees;
-    //var projects = ViewBag.Projects;
     var statuses = ViewBag.Statuses;
 }
 
@@ -21,7 +20,8 @@
     <div class="form-group">
         @Html.LabelFor(_ => _.ProjectId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(_ => _.ProjectId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.HiddenFor(_ => _.ProjectId)
+            @Html.EditorFor(_ => _.ProjectId, new { htmlAttributes = new { @class="form-control", @type="text", @id="ProjectShortName", @readonly="readonly", @disabled="disabled"} })
         </div>
     </div>
     <div class="form-group">
@@ -57,15 +57,15 @@
         <div class="col-md-10">
             <select class="form-control" name="EmployeeId">
                 <option hidden selected disabled>Select assignee</option>
-                @foreach (var employee in employees)
+                @foreach (var employee  in employees)
                 {
                     if (employee.Id == issue.EmployeeId)
                     {
-                        <option selected value="@issue.EmployeeId">@employee.FirstName  @employee.LastName</option>
+                        <option selected value="@issue.EmployeeId">@employee.FullName</option>
                     }
                     else
                     {
-                        <option value="@employee.Id">@employee.FirstName  @employee.LastName</option>
+                        <option value="@employee.Id">@employee.FullName</option>
                     }
                 }
             </select>
@@ -102,4 +102,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/editruntimeissue")
 }

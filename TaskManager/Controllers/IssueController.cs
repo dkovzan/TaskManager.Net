@@ -84,6 +84,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)] // disable request validation e.g. preventing script attacks >> dangerous values are encoded by Razor automatically
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddOrUpdate([Bind(Include = "Id, Name, Work, BeginDate, EndDate, ProjectId, EmployeeId, StatusId")]Issue issue)
         {
@@ -105,35 +106,18 @@ namespace TaskManager.Controllers
             return RedirectToAction(actionName: "List");
         }
 
-        private static int newRuntimeTaskId = -1;
-
-        public async Task<ActionResult> EditRuntime(int id)
+        [Route("Issue/EditRuntime/{int?}")]
+        public async Task<ActionResult> EditRuntime(int? id)
         {
+            if (id == null)
+            {
+                return RedirectToAction(actionName: "List");
+            }
+
             _logger.InfoFormat("GET Issue/EditRuntime/{0}", id);
 
-            var projectId = (int) Session["ProjectId"];
+            var issue = _issueService.EditRuntimeIssue((int)id);
 
-            var issue = new Issue() { ProjectId = projectId };
-
-            if (id == 0)
-            {
-                issue.Id = newRuntimeTaskId;
-            }
-            else
-            {
-                var runtimeIssues = (List<Issue>) Session["runtimeIssues"];
-
-                foreach (var runtimeIssue in runtimeIssues)
-                {
-                    if (runtimeIssue.Id == id)
-                    {
-                        issue = runtimeIssue;
-                    }
-                }
-
-            }
-
-            //ViewBag.Projects = await _projectService.GetProjectsAsync();
             ViewBag.Employees = await _employeeService.GetEmployeesAsync();
             ViewBag.Statuses = StatusDict.GetStatusDict();
 
@@ -143,6 +127,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddOrUpdateRuntime([Bind(Include = "Id, Name, Work, BeginDate, EndDate, ProjectId, EmployeeId, StatusId")]Issue issue)
         {
@@ -156,31 +141,7 @@ namespace TaskManager.Controllers
                 return View("EditRuntime", issue);
             }
 
-            var runtimeIssues = (List<Issue>) Session["runtimeIssues"] ?? new List<Issue>();
-
-            for (int i = 0; i < runtimeIssues.Count; i++)
-            {
-                if (runtimeIssues[i].Id == issue.Id)
-                {
-                    runtimeIssues.RemoveAt(i);
-                    runtimeIssues.Insert(i, issue);
-
-                    _logger.InfoFormat("Runtime issue updated {0}", issue.ToString());
-
-                    break;
-                }
-            }
-
-            if (issue.Id == newRuntimeTaskId)
-            {
-                runtimeIssues.Add(issue);
-
-                _logger.InfoFormat("Runtime issue added {0}", issue.ToString());
-
-                newRuntimeTaskId--;
-            }
-
-            Session["runtimeIssues"] = runtimeIssues;
+            _issueService.AddOrUpdateRuntimeIssue(issue);
 
             return RedirectToAction(actionName: "Edit", routeValues: new { id = issue.ProjectId }, controllerName: "Project");
         }
@@ -189,21 +150,7 @@ namespace TaskManager.Controllers
         {
             _logger.InfoFormat("GET Issue/DeleteRuntime/{0}", id);
 
-            var runtimeIssues = (List<Issue>) Session["runtimeIssues"];
-
-            for (int i = 0; i < runtimeIssues.Count; i++)
-            {
-                if (runtimeIssues[i].Id == id)
-                {
-                    runtimeIssues.RemoveAt(i);
-
-                    _logger.InfoFormat("Runtime issue removed {0}", runtimeIssues[i].ToString());
-
-                    break;
-                }
-            }
-
-            Session["runtimeIssues"] = runtimeIssues;
+            _issueService.DeleteRuntimeIssueById(id);
 
             var projectId = (int) Session["ProjectId"];
 

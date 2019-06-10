@@ -31,6 +31,9 @@ namespace TaskManager
 
             bundles.Add(new ScriptBundle("~/bundles/listprojects").Include(
                         "~/Scripts/listprojects.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/editruntimeissue").Include(
+                        "~/Scripts/editruntimeissue.js"));
         }
     }
 }

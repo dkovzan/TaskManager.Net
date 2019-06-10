@@ -26,6 +26,8 @@ namespace TaskManager.Models
         [StringLength(255, ErrorMessage = "Position should contain maximum 255 characters.")]
         public string Position { get; set; }
 
+        public virtual string FullName { get => FirstName + ' ' + LastName; }
+
         public override string ToString()
         {
             return $"Id {Id}, FirstName {FirstName}, LastName {LastName}, MiddleName {MiddleName}, Position {Position}";

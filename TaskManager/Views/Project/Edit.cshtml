@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Edit Project";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var employees = ViewBag.Employees;
 }
 <h2>Edit project</h2>
 
@@ -16,7 +17,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } } )
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -55,7 +56,6 @@
                     <th>Begin Date</th>
                     <th>End Date</th>
                     <th>Assignee</th>
-                    <th>Status</th>
                     <th colspan="2"></th>
                 </tr>
 
@@ -65,8 +65,7 @@
                         <td>@Html.DisplayFor(_ => issue.Name)</td>
                         <td>@Html.DisplayFor(_ => issue.BeginDate)</td>
                         <td>@Html.DisplayFor(_ => issue.EndDate)</td>
-                        <td>@Html.DisplayFor(_ => issue.EmployeeId)</td>
-                        <td>@Html.DisplayFor(_ => issue.StatusId)</td>
+                        <td>@Html.DisplayFor(_ => issue.Employee.FullName)</td>
                         <td>@Html.ActionLink(linkText: "Edit", actionName: "EditRuntime", controllerName: "Issue", routeValues: new { id = issue.Id}, htmlAttributes: new { @class = "btn btn-primary", @onclick = "saveTempProject()" })</td>
                         <td>@Html.ActionLink(linkText: "Delete", actionName: "DeleteRuntime", controllerName: "Issue", routeValues: new { id = issue.Id }, htmlAttributes: new { @class = "btn btn-primary" })</td>
                     </tr>

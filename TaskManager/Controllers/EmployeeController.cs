@@ -83,7 +83,9 @@ namespace TaskManager.Controllers
             return RedirectToAction(actionName: "List");
         }
 
+        
         [HttpPost]
+        [ValidateInput(false)] // disable request validation e.g. preventing script attacks >> dangerous values are encoded by Razor automatically
         [ValidateAntiForgeryToken]
         public ActionResult AddOrUpdate([Bind(Include = "Id, FirstName, LastName, MiddleName, Position")]Employee employee)
         {

@@ -68,7 +68,6 @@ namespace TaskManager.Services
             return !_entitiesContext.Issues.Where(s => s.EmployeeId == id).Any();
         }
 
-        
 
         ~EmployeeService()
         {
