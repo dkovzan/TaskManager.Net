@@ -148,6 +148,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="DAL\EntitiesContext.cs" />
@@ -200,7 +201,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Error\ServerError.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Employee\List.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
@@ -209,6 +210,7 @@
     <Content Include="Views\Issue\List.cshtml" />
     <Content Include="Views\Issue\Edit.cshtml" />
     <Content Include="Views\Issue\EditRuntime.cshtml" />
+    <Content Include="Views\Error\ClientError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

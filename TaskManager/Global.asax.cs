@@ -18,5 +18,10 @@ namespace TaskManager
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
+        protected void Application_Error()
+        {
+            logger.Error(Server.GetLastError());
+        }
+
     }
 }
