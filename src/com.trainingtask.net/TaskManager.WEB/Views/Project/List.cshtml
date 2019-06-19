@@ -1,0 +1,68 @@
+﻿@model TaskManager.WEB.ViewModels.ProjectListView
+@using TaskManager.WEB.Helpers
+@{
+    ViewBag.Title = "Projects list";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var error = ViewBag.Error;
+}
+
+<h3>Projects list</h3>
+
+<h2>
+    @Html.ActionLink(linkText: "Create new project", actionName: "Edit", controllerName: "Project", routeValues: new { id = 0, isCleanSessionNeeded = true }, htmlAttributes: new { @class = "btn btn-primary", @onclick = "clearTempProject()" })
+</h2>
+
+@if (error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
+
+@if (Model.Projects != null && Model.Projects.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Short Name</th>
+                <th>Description</th>
+                <th colspan="2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var project in Model.Projects)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(_ => project.Name)</td>
+                    <td>@Html.DisplayFor(_ => project.ShortName)</td>
+                    <td>@Html.DisplayFor(_ => project.Description)</td>
+                    <td>
+                        @Html.ActionLink(linkText: "Edit", actionName: "Edit", controllerName: "Project", routeValues: new { id = (int) project.Id, isCleanSessionNeeded = true }, htmlAttributes: new { @class = "btn btn-primary", @onclick = "clearTempProject()" })
+                    </td>
+                    <td>
+                        @Html.ActionLink(linkText: "Delete", actionName: "Delete", controllerName: "Project", routeValues: new { id = (int) project.Id }, htmlAttributes: new { @class = "btn btn-primary" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    if (Model.PageInfo.TotalItems > Model.PageInfo.PageSize)
+    {
+    <br />
+    <div class="btn-group">
+        @Html.PageLinks(Model.PageInfo, x => Url.Action(actionName: "List", controllerName: "Project", routeValues: new { page = x }))
+    </div>
+    }
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        There are no projects yet!
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/listprojects")
+}
