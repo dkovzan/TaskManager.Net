@@ -5,7 +5,7 @@ The application is used for managing projects, tasks and employees.
 Technologies used:<br>
 .NET Framework, Entity Framework, Log4Net
 
-Database:<r>
+Database:<br>
 SQL Server
 
 Builder:<br>
