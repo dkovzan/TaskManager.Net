@@ -261,4 +261,4 @@ __pycache__/
 *.pyc
 
 # logs
-/TaskManager/App_Data/Logs
+./TaskManager.WEB/Static/Logs/
