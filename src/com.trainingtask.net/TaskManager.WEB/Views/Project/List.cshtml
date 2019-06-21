@@ -6,7 +6,7 @@
     var error = ViewBag.Error;
 }
 
-<h3>Projects list</h3>
+<h3>@ViewBag.Title</h3>
 
 <h2>
     @Html.ActionLink(linkText: "Create new project", actionName: "Edit", controllerName: "Project", routeValues: new { id = 0, isCleanSessionNeeded = true }, htmlAttributes: new { @class = "btn btn-primary", @onclick = "clearTempProject()" })

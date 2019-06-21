@@ -34,11 +34,11 @@ namespace TaskManager.WEB.Validation
 
     public class MaxDate : ValidationAttribute
     {
-        private readonly string maxDate;
+        private readonly DateTime maxDate;
 
-        public MaxDate(string _maxDate)
+        public MaxDate(int year, int month, int day)
         {
-            maxDate = _maxDate;
+            maxDate = new DateTime(year, month, day);
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -70,11 +70,11 @@ namespace TaskManager.WEB.Validation
 
     public class MinDate : ValidationAttribute
     {
-        private readonly string minDate;
+        private readonly DateTime minDate;
 
-        public MinDate(string _minDate)
+        public MinDate(int year, int month, int day)
         {
-            minDate = _minDate;
+            minDate = new DateTime(year, month, day);
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

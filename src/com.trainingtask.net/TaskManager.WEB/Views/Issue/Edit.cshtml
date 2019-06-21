@@ -9,7 +9,7 @@
     var statuses = ViewBag.Statuses;
 }
 
-<h2>Edit task</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm(actionName: "AddOrUpdate", controllerName: "Issue"))
 { 

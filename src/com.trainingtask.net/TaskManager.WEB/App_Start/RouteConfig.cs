@@ -9,12 +9,16 @@ namespace TaskManager.WEB
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.IgnoreRoute("log.txt");
+
+            routes.IgnoreRoute("version.txt");
+
             routes.MapMvcAttributeRoutes();
 
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Employee", action = "List", id = UrlParameter.Optional },
+                defaults: new { controller = "Project", action = "List", id = UrlParameter.Optional },
                 namespaces: new[] { "TaskManager.WEB.Controllers" }
             );
         }

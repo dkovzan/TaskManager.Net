@@ -7411,3 +7411,94 @@ The statement has been terminated.
 2019-06-19 11:41:06,736 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
 2019-06-19 11:41:10,207 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
 2019-06-19 11:41:11,303 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-19 13:17:10,155 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-19 13:17:11,479 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-19 13:17:14,637 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-19 13:17:15,521 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-19 13:17:16,412 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-19 15:54:41,646 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-19 15:54:43,297 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-19 15:54:46,791 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-19 15:54:48,458 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/Edit/0
+2019-06-19 15:54:57,160 INFO TaskManager.WEB.Controllers.IssueController - Issue sent into view: Id 0, Name , Work , BeginDate , EndDate , ProjectId , EmployeeId , StatusId 
+2019-06-19 15:55:02,683 INFO TaskManager.WEB.Controllers.IssueController - POST Issue/AddOrUpdate Id 0, Name , Work , BeginDate , EndDate , ProjectId , EmployeeId , StatusId 
+2019-06-19 15:55:14,129 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-19 15:55:15,137 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-19 15:55:15,782 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/Edit/0
+2019-06-19 15:55:15,803 INFO TaskManager.WEB.Controllers.EmployeeController - Employee sent into view: Id 0, FirstName , LastName , MiddleName , Position 
+2019-06-19 15:55:18,021 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-19 15:55:18,685 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-19 15:55:19,898 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/Edit/0?isCleanSessionNeeded=True
+2019-06-19 15:55:19,906 INFO TaskManager.WEB.Controllers.ProjectController - Project sent into view: Id 0, Name , ShortName , Description 
+2019-06-19 15:55:20,887 INFO TaskManager.WEB.Controllers.ProjectController - POST Project/AddOrUpdate Id 0, Name , ShortName , Description 
+2019-06-19 15:55:21,738 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-19 15:55:22,465 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-19 15:55:22,904 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-19 18:13:55,789 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-19 18:13:57,444 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-19 18:14:04,907 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-19 18:14:07,097 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-19 18:14:42,910 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-19 18:14:43,945 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-19 18:14:50,361 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-19 18:14:51,439 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-19 18:14:53,300 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 17:13:32,652 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-21 17:13:34,397 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 17:14:30,573 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-21 17:14:31,968 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 17:17:00,459 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-21 17:17:01,440 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 17:17:20,075 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 17:17:21,580 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-21 17:17:22,591 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 17:50:36,511 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-21 17:50:37,893 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 17:52:39,552 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-21 17:52:40,459 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 18:05:51,827 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-21 18:05:53,229 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 18:06:14,380 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 18:08:51,890 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-21 18:08:53,235 ERROR TaskManager.WEB.MvcApplication - System.Web.HttpException (0x80004005): The controller for path '/Shared/Error' was not found or does not implement IController.
+   at System.Web.Mvc.DefaultControllerFactory.GetControllerInstance(RequestContext requestContext, Type controllerType)
+   at System.Web.Mvc.DefaultControllerFactory.CreateController(RequestContext requestContext, String controllerName)
+   at System.Web.Mvc.MvcHandler.ProcessRequestInit(HttpContextBase httpContext, IController& controller, IControllerFactory& factory)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContext httpContext, AsyncCallback callback, Object state)
+   at System.Web.Mvc.MvcHandler.System.Web.IHttpAsyncHandler.BeginProcessRequest(HttpContext context, AsyncCallback cb, Object extraData)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.<>c__DisplayClass285_0.<ExecuteStepImpl>b__0()
+   at System.Web.HttpApplication.StepInvoker.Invoke(Action executionStep)
+   at System.Web.HttpApplication.StepInvoker.<>c__DisplayClass4_0.<Invoke>b__0()
+   at Microsoft.AspNet.TelemetryCorrelation.TelemetryCorrelationHttpModule.OnExecuteRequestStep(HttpContextBase context, Action step)
+   at System.Web.HttpApplication.<>c__DisplayClass284_0.<OnExecuteRequestStep>b__0(Action nextStepAction)
+   at System.Web.HttpApplication.StepInvoker.Invoke(Action executionStep)
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2019-06-21 18:08:56,781 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 18:09:06,791 ERROR TaskManager.WEB.MvcApplication - System.Web.HttpException (0x80004005): The controller for path '/Somestrangerequest' was not found or does not implement IController.
+   at System.Web.Mvc.DefaultControllerFactory.GetControllerInstance(RequestContext requestContext, Type controllerType)
+   at System.Web.Mvc.DefaultControllerFactory.CreateController(RequestContext requestContext, String controllerName)
+   at System.Web.Mvc.MvcHandler.ProcessRequestInit(HttpContextBase httpContext, IController& controller, IControllerFactory& factory)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContext httpContext, AsyncCallback callback, Object state)
+   at System.Web.Mvc.MvcHandler.System.Web.IHttpAsyncHandler.BeginProcessRequest(HttpContext context, AsyncCallback cb, Object extraData)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.<>c__DisplayClass285_0.<ExecuteStepImpl>b__0()
+   at System.Web.HttpApplication.StepInvoker.Invoke(Action executionStep)
+   at System.Web.HttpApplication.StepInvoker.<>c__DisplayClass4_0.<Invoke>b__0()
+   at Microsoft.AspNet.TelemetryCorrelation.TelemetryCorrelationHttpModule.OnExecuteRequestStep(HttpContextBase context, Action step)
+   at System.Web.HttpApplication.<>c__DisplayClass284_0.<OnExecuteRequestStep>b__0(Action nextStepAction)
+   at System.Web.HttpApplication.StepInvoker.Invoke(Action executionStep)
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2019-06-21 18:09:12,128 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 18:09:14,250 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 18:09:15,205 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-21 18:09:18,363 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 18:09:27,978 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-21 18:09:28,873 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 18:09:31,290 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 18:09:31,674 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-21 18:09:32,372 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5

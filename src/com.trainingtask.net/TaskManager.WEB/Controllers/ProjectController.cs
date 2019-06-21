@@ -26,6 +26,7 @@ namespace TaskManager.WEB.Controllers
 
         public override ActionResult List(int page = 1, int pageSize = 5)
         {
+
             _logger.InfoFormat("GET Project/List?page={0}&pageSize={1}", page, pageSize);
 
             var projectsFullList = _mapper.Map<List<ProjectDetailsView>>(_projectService.GetProjects());

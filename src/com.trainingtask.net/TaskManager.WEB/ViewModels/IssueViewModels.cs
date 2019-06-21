@@ -47,16 +47,16 @@ namespace TaskManager.WEB.ViewModels
 
         [Required]
         [Display(Name = "Begin Date")]
-        [MinDate("01-01-1900", ErrorMessage = "Date cannot be earlier then 01-01-1900")]
-        [MaxDate("31-12-9999", ErrorMessage = "Date cannot be later then 31-12-9999")]
+        [MinDate(1900, 1, 1, ErrorMessage = "Date cannot be earlier then 01-01-1900")]
+        [MaxDate(9999, 12, 12, ErrorMessage = "Date cannot be later then 31-12-9999")]
         [EarlierDate("EndDate", ErrorMessage = "Begin date cannot be earlier then end date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? BeginDate { get; set; }
 
         [Required]
         [Display(Name = "End Date")]
-        [MinDate("01-01-1900", ErrorMessage = "Date cannot be earlier then 01-01-1900")]
-        [MaxDate("31-12-9999", ErrorMessage = "Date cannot be later then 31-12-9999")]
+        [MinDate(1900, 1, 1, ErrorMessage = "Date cannot be earlier then 01-01-1900")]
+        [MaxDate(9999, 12, 12, ErrorMessage = "Date cannot be later then 31-12-9999")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? EndDate { get; set; }
 
