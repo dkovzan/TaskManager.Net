@@ -101,3 +101,47 @@
 2019-06-21 19:43:24,784 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
 2019-06-21 19:43:25,543 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
 2019-06-21 19:43:26,310 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 20:01:58,232 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-21 20:01:59,673 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 20:02:04,757 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 20:02:06,278 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/Edit/4
+2019-06-21 20:02:06,505 INFO TaskManager.WEB.Controllers.EmployeeController - Employee sent into view: Id 4, FirstName Денис, LastName Ковзан, MiddleName Святославович, Position Tester
+2019-06-21 20:02:09,062 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 20:02:11,428 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/Edit/4
+2019-06-21 20:02:11,689 INFO TaskManager.WEB.Controllers.EmployeeController - Employee sent into view: Id 4, FirstName Денис, LastName Ковзан, MiddleName Святославович, Position Tester
+2019-06-21 20:02:12,501 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 20:06:20,207 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-21 20:06:21,738 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:06:36,101 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/Edit/0?isCleanSessionNeeded=True
+2019-06-21 20:06:36,121 INFO TaskManager.WEB.Controllers.ProjectController - Project sent into view: Id 0, Name , ShortName , Description 
+2019-06-21 20:06:39,030 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:06:40,149 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:06:40,833 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-21 20:06:41,623 INFO TaskManager.WEB.Controllers.EmployeeController - GET Employee/List?page=1&pageSize=5
+2019-06-21 20:06:43,109 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:06:46,326 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/Edit/0?isCleanSessionNeeded=True
+2019-06-21 20:06:46,326 INFO TaskManager.WEB.Controllers.ProjectController - Project sent into view: Id 0, Name , ShortName , Description 
+2019-06-21 20:06:51,108 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:07:41,915 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-21 20:07:43,274 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:08:24,233 INFO TaskManager.WEB.MvcApplication - Starting application...
+2019-06-21 20:08:25,152 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:08:28,616 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:08:31,336 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:08:59,408 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:09:06,975 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:09:16,418 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/Edit/4?isCleanSessionNeeded=True
+2019-06-21 20:09:18,082 INFO TaskManager.WEB.Controllers.ProjectController - Project sent into view: Id 4, Name New teacher, ShortName ПР-1, Description qweqwe
+2019-06-21 20:09:28,728 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:09:55,817 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:10:19,556 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:10:23,502 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/Edit/4?isCleanSessionNeeded=True
+2019-06-21 20:10:24,053 INFO TaskManager.WEB.Controllers.ProjectController - Project sent into view: Id 4, Name New teacher, ShortName ПР-1, Description qweqwe
+2019-06-21 20:10:26,243 INFO TaskManager.WEB.Controllers.ProjectController - GET Project/List?page=1&pageSize=5
+2019-06-21 20:10:29,224 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-21 20:10:31,238 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/Edit/4
+2019-06-21 20:10:32,885 INFO TaskManager.WEB.Controllers.IssueController - Issue sent into view: Id 4, Name New teacher, Work 2, BeginDate 01-Jan-19 12:00:00 AM, EndDate 01-Jan-19 12:00:00 AM, ProjectId 4, EmployeeId 4, StatusId 0
+2019-06-21 20:10:42,356 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5
+2019-06-21 20:10:48,941 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/Edit/0
+2019-06-21 20:10:49,773 INFO TaskManager.WEB.Controllers.IssueController - Issue sent into view: Id 0, Name , Work , BeginDate , EndDate , ProjectId , EmployeeId , StatusId 
+2019-06-21 20:11:13,695 INFO TaskManager.WEB.Controllers.IssueController - GET Issue/List?page=1&pageSize=5

@@ -26,6 +26,7 @@ namespace TaskManager.WEB.ViewModels
 
         [Display(Name = "Description")]
         [StringLength(4000, ErrorMessage = "Description should contain maximum 4000 characters.")]
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         public ICollection<IssueInListView> IssuesOfProject { get; set; }
