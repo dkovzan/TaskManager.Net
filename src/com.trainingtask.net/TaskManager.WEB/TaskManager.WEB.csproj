@@ -227,6 +227,13 @@
     <Content Include="Views\Issue\Edit.cshtml" />
     <Content Include="Views\Issue\EditRuntime.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <None Include="Web.config.template" />
+    <None Include="Web.config.Debug.template">
+      <DependentUpon>Web.config.template</DependentUpon>
+    </None>
+    <None Include="Web.config.Release.template">
+      <DependentUpon>Web.config.template</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
