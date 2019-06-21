@@ -188,8 +188,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\error.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\editproject.js" />
     <Content Include="Scripts\editruntimeissue.js" />
@@ -204,6 +206,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\listprojects.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Static\version.txt" />
     <Content Include="TaskManager.sln" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -223,7 +226,7 @@
     <Content Include="Views\Issue\List.cshtml" />
     <Content Include="Views\Issue\Edit.cshtml" />
     <Content Include="Views\Issue\EditRuntime.cshtml" />
-    <Content Include="Views\Error\ClientError.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

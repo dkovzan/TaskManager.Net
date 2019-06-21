@@ -6,7 +6,7 @@ namespace TaskManager.WEB
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Remove(new HandleErrorAttribute());
         }
     }
 }
