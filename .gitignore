@@ -259,3 +259,9 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+#log file
+**/Logs
+
+#web.config
+src/com.trainingtask.net/TaskManager.WEB/Web.config
