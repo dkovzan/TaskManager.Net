@@ -33,7 +33,7 @@ namespace TaskManager.BLL.Models
 
     public static class StatusDict
     {
-        static readonly Dictionary<int, string> _dict = new Dictionary<int, string>
+        static readonly Dictionary<int, string> Dict = new Dictionary<int, string>
         {
             {0, "New"},
             {1, "In progress"},
@@ -44,7 +44,7 @@ namespace TaskManager.BLL.Models
 
         public static Dictionary<int, string> GetStatusDict()
         {
-            return _dict;
+            return Dict;
         }
 
     }

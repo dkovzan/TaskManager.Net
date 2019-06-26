@@ -17,11 +17,11 @@ namespace TaskManager.WEB.Mapping
                  new Mapper(mapperConfiguration, type => ctx.Kernel.Get(type)));
         }
 
-        private MapperConfiguration CreateConfiguration()
+        private static MapperConfiguration CreateConfiguration()
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new BLLMappingProfile());
+                cfg.AddProfile(new BllMappingProfile());
                 cfg.AddProfile(new WebMappingProfile());
             });
 

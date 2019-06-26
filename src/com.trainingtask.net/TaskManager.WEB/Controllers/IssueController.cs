@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using log4net;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using TaskManager.BLL.Exceptions;
@@ -33,7 +32,7 @@ namespace TaskManager.WEB.Controllers
 
             _logger.InfoFormat("GET Issue/List?page={0}&pageSize={1}", page, pageSize);
             
-            var issuesFullList = _mapper.Map<List<IssueInListView>> (_issueService.GetIssues());
+            var issuesFullList = Mapper.Map<List<IssueInListView>> (_issueService.GetIssues());
 
             var entitiesListViewPerPage = GetListViewPerPageWithPageInfo(issuesFullList, page, pageSize);
 
@@ -57,14 +56,13 @@ namespace TaskManager.WEB.Controllers
 
             try
             {
-                var issue = _mapper.Map<IssueEditView>(_issueService.FindIssueById((int)id)) ?? new IssueEditView { Id = id};
+                var issue = Mapper.Map<IssueEditView>(_issueService.FindIssueById((int)id)) ?? new IssueEditView { Id = id};
                 
-                ViewBag.Projects = _mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
-                ViewBag.Employees = _mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
+                ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
+                ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
                 ViewBag.Statuses = StatusDict.GetStatusDict();
 
-                if (issue != null)
-                    _logger.InfoFormat("Issue sent into view: {0}", issue.ToString());
+                _logger.InfoFormat("Issue sent into view: {0}", issue);
 
                 return View(issue);
             }
@@ -94,21 +92,20 @@ namespace TaskManager.WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddOrUpdate([Bind(Include = "Id, Name, Work, BeginDate, EndDate, ProjectId, EmployeeId, StatusId")]IssueEditView issue)
         {
-            if (issue != null)
-                _logger.InfoFormat("POST Issue/AddOrUpdate {0}", issue.ToString());
+            _logger.InfoFormat("POST Issue/AddOrUpdate {0}", issue);
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Projects = _mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
-                ViewBag.Employees = _mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
+                ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
+                ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
                 ViewBag.Statuses = StatusDict.GetStatusDict();
 
                 return View("Edit", issue);
             }
             
-            _issueService.AddOrUpdateIssue(_mapper.Map<IssueEditView, IssueDto>(issue));
+            _issueService.AddOrUpdateIssue(Mapper.Map<IssueEditView, IssueDto>(issue));
 
-            _logger.InfoFormat("Issue: {0} successfully added/updated", issue.ToString());
+            _logger.InfoFormat("Issue: {0} successfully added/updated", issue);
 
             return RedirectToAction(actionName: "List");
         }
@@ -123,13 +120,12 @@ namespace TaskManager.WEB.Controllers
 
             _logger.InfoFormat("GET Issue/EditRuntime/{0}", id);
 
-            var issue = _mapper.Map<IssueEditView>(_issueService.EditRuntimeIssue((int)id)) ?? new IssueEditView { Id = id };
+            var issue = Mapper.Map<IssueEditView>(_issueService.EditRuntimeIssue((int)id)) ?? new IssueEditView { Id = id };
 
-            ViewBag.Employees = _mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
+            ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
             ViewBag.Statuses = StatusDict.GetStatusDict();
 
-            if (issue != null)
-                _logger.InfoFormat("Issue sent into view: {0}", issue.ToString());
+            _logger.InfoFormat("Issue sent into view: {0}", issue);
 
             return View("EditRuntime", issue);
         }
@@ -139,18 +135,17 @@ namespace TaskManager.WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddOrUpdateRuntime([Bind(Include = "Id, Name, Work, BeginDate, EndDate, ProjectId, EmployeeId, StatusId")]IssueEditView issue)
         {
-            if (issue != null)
-                _logger.InfoFormat("POST Issue/AddOrUpdate {0}", issue.ToString());
+            _logger.InfoFormat("POST Issue/AddOrUpdate {0}", issue);
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Employees = _mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
+                ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
                 ViewBag.Statuses = StatusDict.GetStatusDict();
 
                 return View("EditRuntime", issue);
             }
 
-            _issueService.AddOrUpdateRuntimeIssue(_mapper.Map<IssueDto>(issue));
+            _issueService.AddOrUpdateRuntimeIssue(Mapper.Map<IssueDto>(issue));
 
             return RedirectToAction(actionName: "Edit", routeValues: new { id = issue.ProjectId }, controllerName: "Project");
         }

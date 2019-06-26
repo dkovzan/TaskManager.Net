@@ -8,20 +8,20 @@ namespace TaskManager.WEB.Controllers
 {
     public abstract class BaseController : Controller
     {
-        protected IMapper _mapper;
+        protected IMapper Mapper;
 
         protected BaseController(IMapper mapper)
         {
-            _mapper = mapper;
+            Mapper = mapper;
         }
 
         public abstract ActionResult List(int page, int pageSize);
 
         public abstract ActionResult Delete(int id);
 
-        protected ListView<T> GetListViewPerPageWithPageInfo<T>(IEnumerable<T> fullEntitiesList, int page, int pageSize) where T : class
+        protected ListView<T> GetListViewPerPageWithPageInfo<T>(List<T> fullEntitiesList, int page, int pageSize) where T : class
         {
-            var pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = fullEntitiesList.Count() };
+            var pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = fullEntitiesList.Count };
 
             if (page > pageInfo.TotalPages)
             {

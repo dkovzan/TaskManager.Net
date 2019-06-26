@@ -5,11 +5,11 @@ namespace TaskManager.BLL.Exceptions
 {
     public class ValidationException : Exception
     {
-        public Dictionary<string, string> _invalidFieldsWithMessages { get; set; }
+        public Dictionary<string, string> InvalidFieldsWithMessages { get; set; }
 
         public ValidationException(string message, Dictionary<string, string> invalidFieldsWithMessages) : base(message)
         {
-            _invalidFieldsWithMessages = invalidFieldsWithMessages;
+            InvalidFieldsWithMessages = invalidFieldsWithMessages;
         }
     }
 }

@@ -94,7 +94,7 @@
         <div class="col-md-10">
             <select class="form-control" name="StatusId">
                 <option hidden selected disabled>Select status</option>
-                @foreach (KeyValuePair<int, string> status in statuses)
+                @foreach (var status in statuses)
                 {
                     if (status.Key == issue.StatusId)
                     {

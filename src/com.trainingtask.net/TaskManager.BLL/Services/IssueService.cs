@@ -73,7 +73,7 @@ namespace TaskManager.BLL.Services
             }
         }
 
-        private static int newRuntimeTaskId = -1;
+        private static int _newRuntimeTaskId = -1;
 
 
         public IssueDto EditRuntimeIssue(int id)
@@ -85,7 +85,7 @@ namespace TaskManager.BLL.Services
 
             if (id == 0)
             {
-                issue.Id = newRuntimeTaskId;
+                issue.Id = _newRuntimeTaskId;
             }
             else
             {
@@ -106,9 +106,10 @@ namespace TaskManager.BLL.Services
         public void AddOrUpdateRuntimeIssue(IssueDto issue)
         {
             using (_unitOfWork)
-            { 
-                issue.EmployeeDto = _mapper.Map<EmployeeDto>(_unitOfWork.EmployeeRepository.GetById((int)issue.EmployeeId));
-
+            {
+                if (issue.EmployeeId != null)
+                    issue.EmployeeDto =
+                        _mapper.Map<EmployeeDto>(_unitOfWork.EmployeeRepository.GetById((int) issue.EmployeeId));
             }
             var runtimeIssues = (List<IssueDto>) HttpContext.Current.Session["runtimeIssues"] ?? new List<IssueDto>();
 
@@ -122,10 +123,10 @@ namespace TaskManager.BLL.Services
                 }
             }
 
-            if (issue.Id == newRuntimeTaskId)
+            if (issue.Id == _newRuntimeTaskId)
             {
                 runtimeIssues.Add(issue);
-                newRuntimeTaskId--;
+                _newRuntimeTaskId--;
             }
 
             HttpContext.Current.Session["runtimeIssues"] = runtimeIssues;

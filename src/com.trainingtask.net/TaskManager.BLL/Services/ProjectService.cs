@@ -77,9 +77,9 @@ namespace TaskManager.BLL.Services
 
         public void AddOrUpdateProject(ProjectDto project)
         {
-            Dictionary<string, string> invalidFieldsWithMessages = new Dictionary<string, string>();
+            var invalidFieldsWithMessages = new Dictionary<string, string>();
 
-            if (!IsProjectShortNameUnique((int) project.Id, project.ShortName))
+            if (project.Id != null && !IsProjectShortNameUnique((int) project.Id, project.ShortName))
             {
                 invalidFieldsWithMessages.Add("ShortName", "Short name should be unique.");
             }
@@ -154,7 +154,7 @@ namespace TaskManager.BLL.Services
                             {
                                 runtimeIssue.EmployeeDto = null;
                                 runtimeIssue.ProjectDto = null;
-                                runtimeIssue.ProjectId = (int)project.Id;
+                                if (project.Id != null) runtimeIssue.ProjectId = (int) project.Id;
 
                                 _unitOfWork.IssueRepository.Update(_mapper.Map<Issue>(runtimeIssue));
 
@@ -175,7 +175,7 @@ namespace TaskManager.BLL.Services
 
         private bool IsProjectShortNameUnique(int projectId, string shortName)
         {
-            return !(_unitOfWork.ProjectRepository.Get(_ => _.Id != projectId && _.ShortName == shortName).Count() > 0);
+            return !_unitOfWork.ProjectRepository.Get(_ => _.Id != projectId && _.ShortName == shortName).Any();
         }
 
     }

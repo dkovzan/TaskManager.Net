@@ -1,6 +1,6 @@
 ﻿using System;
 using TaskManager.DAL.Entities;
-using TaskManager.DAL.Repositories;
+using TaskManager.DAL.Repository;
 
 namespace TaskManager.DAL
 {
@@ -14,7 +14,7 @@ namespace TaskManager.DAL
 
     public class UnitOfWork : IUnitOfWork
     {
-        private EntitiesContext _entitiesContext;
+        private readonly EntitiesContext _entitiesContext;
 
         public UnitOfWork(string connectionString)
         {
@@ -23,42 +23,33 @@ namespace TaskManager.DAL
 
         private Repository<Employee> _employeeRepository;
 
-        public Repository<Employee> EmployeeRepository
-        {
-            get { return _employeeRepository ?? (_employeeRepository = new Repository<Employee>(_entitiesContext)); }
-        }
+        public Repository<Employee> EmployeeRepository => _employeeRepository ?? (_employeeRepository = new Repository<Employee>(_entitiesContext));
 
         private Repository<Issue> _issuesRepository;
 
-        public Repository<Issue> IssueRepository
-        {
-            get { return _issuesRepository ?? (_issuesRepository = new Repository<Issue>(_entitiesContext)); }
-        }
+        public Repository<Issue> IssueRepository => _issuesRepository ?? (_issuesRepository = new Repository<Issue>(_entitiesContext));
 
         private Repository<Project> _projectsRepository;
 
-        public Repository<Project> ProjectRepository
-        {
-            get { return _projectsRepository ?? (_projectsRepository = new Repository<Project>(_entitiesContext)); }
-        }
+        public Repository<Project> ProjectRepository => _projectsRepository ?? (_projectsRepository = new Repository<Project>(_entitiesContext));
 
         public void Save()
         {
             _entitiesContext.SaveChanges();
         }
 
-        private bool disposed = false;
+        private bool _disposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     _entitiesContext.Dispose();
                 }
             }
-            disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()

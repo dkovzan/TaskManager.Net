@@ -4,12 +4,12 @@ using TaskManager.DAL.Entities;
 
 namespace TaskManager.BLL.Mapping
 {
-    public class BLLMappingProfile : Profile
+    public class BllMappingProfile : Profile
     {
-        public BLLMappingProfile()
+        public BllMappingProfile()
         {
             CreateMap<Employee, EmployeeDto>()
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => string.Format("{0} {1}", src.FirstName, src.LastName)));
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"));
 
             CreateMap<EmployeeDto, Employee>()
                 .ForSourceMember(src => src.FullName, opt => opt.DoNotValidate());

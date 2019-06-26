@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using TaskManager.DAL.Entities;
 
-namespace TaskManager.DAL.Repositories
+namespace TaskManager.DAL.Repository
 {
     public interface IRepository<T>
     {
@@ -23,12 +23,12 @@ namespace TaskManager.DAL.Repositories
     public class Repository<T> : IRepository<T>
         where T : Entity
     {
-        protected readonly EntitiesContext _entitiesContext;
-        internal DbSet<T> _dbSet;
+        protected readonly EntitiesContext EntitiesContext;
+        internal DbSet<T> DbSet;
         public Repository(EntitiesContext entitiesContext)
         {
-            _entitiesContext = entitiesContext;
-            _dbSet = entitiesContext.Set<T>();
+            EntitiesContext = entitiesContext;
+            DbSet = entitiesContext.Set<T>();
         }
 
         public IEnumerable<T> Get(
@@ -36,7 +36,7 @@ namespace TaskManager.DAL.Repositories
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "")
         {
-            IQueryable<T> query = _dbSet.AsNoTracking();
+            IQueryable<T> query = DbSet.AsNoTracking();
 
             if (filter != null)
             {
@@ -61,12 +61,12 @@ namespace TaskManager.DAL.Repositories
         }
         public T GetById(int id)
         {
-            return _dbSet.Find(id);
+            return DbSet.Find(id);
         }
 
         public int Add(T entity)
         {
-            _dbSet.Add(entity);
+            DbSet.Add(entity);
             Save();
 
             int generatedId = entity.Id;
@@ -77,28 +77,28 @@ namespace TaskManager.DAL.Repositories
         public void Update(T entity)
         {
             
-            _dbSet.Attach(entity);
-            _entitiesContext.Entry(entity).State = EntityState.Modified;
+            DbSet.Attach(entity);
+            EntitiesContext.Entry(entity).State = EntityState.Modified;
         }
 
         public void Delete(int id)
         {
-            var entity = _dbSet.Find(id);
+            var entity = DbSet.Find(id);
             Delete(entity);
         }
 
         public void Delete(T entity)
         {
-            if (_entitiesContext.Entry(entity).State == EntityState.Detached)
+            if (EntitiesContext.Entry(entity).State == EntityState.Detached)
             {
-                _dbSet.Attach(entity);
+                DbSet.Attach(entity);
             }
-            _dbSet.Remove(entity);
+            DbSet.Remove(entity);
         }
 
         public void Save()
         {
-            _entitiesContext.SaveChanges();
+            EntitiesContext.SaveChanges();
         }
 
     }

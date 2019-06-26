@@ -79,7 +79,7 @@ namespace TaskManager.BLL.Services
 
         private bool CanEmployeeBeDeleted(int id)
         {
-            return !(_unitOfWork.IssueRepository.Get(_ => _.EmployeeId == id).Count() > 0);
+            return !_unitOfWork.IssueRepository.Get(_ => _.EmployeeId == id).Any();
         }
     }
 }

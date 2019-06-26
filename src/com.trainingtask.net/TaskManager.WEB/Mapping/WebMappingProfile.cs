@@ -13,7 +13,7 @@ namespace TaskManager.WEB.Mapping
                 .ForSourceMember(src => src.FullName, opt => opt.DoNotValidate());
 
             CreateMap<EmployeeDetailsView, EmployeeDto>()
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => string.Format("{0} {1}", src.FirstName, src.LastName)));
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"));
 
             CreateMap<EmployeeDto, EmployeeInDropdownView>()
                 .ForSourceMember(src => src.FirstName, opt => opt.DoNotValidate())
@@ -30,7 +30,8 @@ namespace TaskManager.WEB.Mapping
                 .ForMember(dest => dest.ProjectDto, opt => opt.MapFrom(src => src.ProjectId));
 
             CreateMap<IssueDto, IssueInListView>()
-                .ForMember(dest => dest.EmployeeFullName, opt => opt.MapFrom(src => string.Format("{0} {1}", src.EmployeeDto.FirstName, src.EmployeeDto.LastName)))
+                .ForMember(dest => dest.EmployeeFullName, opt => opt.MapFrom(src =>
+                    $"{src.EmployeeDto.FirstName} {src.EmployeeDto.LastName}"))
                 .ForMember(dest => dest.ProjectShortName, opt => opt.MapFrom(src => src.ProjectDto.ShortName))
                 .ForSourceMember(src => src.ProjectId, opt => opt.DoNotValidate())
                 .ForSourceMember(src => src.StatusId, opt => opt.DoNotValidate())

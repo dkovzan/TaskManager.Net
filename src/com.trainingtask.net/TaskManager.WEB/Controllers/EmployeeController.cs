@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using log4net;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using TaskManager.BLL.Exceptions;
@@ -28,7 +27,7 @@ namespace TaskManager.WEB.Controllers
 
             _logger.InfoFormat("GET Employee/List?page={0}&pageSize={1}", page, pageSize);
 
-            var employeesFullList = _mapper.Map<List<EmployeeDetailsView>>(_employeeService.GetEmployees());
+            var employeesFullList = Mapper.Map<List<EmployeeDetailsView>>(_employeeService.GetEmployees());
 
             var entitiesListViewPerPage = GetListViewPerPageWithPageInfo (employeesFullList, page, pageSize);
 
@@ -52,10 +51,9 @@ namespace TaskManager.WEB.Controllers
 
             try
             {
-                var employee = _mapper.Map<EmployeeDetailsView>(_employeeService.FindEmployeeById((int)id)) ?? new EmployeeDetailsView { Id = id };
+                var employee = Mapper.Map<EmployeeDetailsView>(_employeeService.FindEmployeeById((int)id)) ?? new EmployeeDetailsView { Id = id };
 
-                if (employee != null)
-                    _logger.InfoFormat("Employee sent into view: {0}", employee.ToString());
+                _logger.InfoFormat("Employee sent into view: {0}", employee);
 
                 return View(employee);
             }
@@ -100,10 +98,9 @@ namespace TaskManager.WEB.Controllers
                 return View("Edit", employee);
             }
 
-            if (employee != null)
-                _logger.InfoFormat("POST Employee/AddOrUpdate {0}", employee.ToString());
+            _logger.InfoFormat("POST Employee/AddOrUpdate {0}", employee);
 
-            _employeeService.AddOrUpdateEmployee(_mapper.Map<EmployeeDto>(employee));
+            _employeeService.AddOrUpdateEmployee(Mapper.Map<EmployeeDto>(employee));
 
             return RedirectToAction(actionName: "List");
         }

@@ -12,10 +12,10 @@ namespace TaskManager.WEB
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         protected void Application_Start()
         {
-            logger.Info("Starting application...");
+            _logger.Info("Starting application...");
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -29,7 +29,7 @@ namespace TaskManager.WEB
 
         protected void Application_Error()
         {
-            logger.Error(Server.GetLastError());
+            _logger.Error(Server.GetLastError());
         }
 
     }
