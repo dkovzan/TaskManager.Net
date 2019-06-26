@@ -105,11 +105,11 @@ namespace TaskManager.BLL.Services
 
         private void AddProjectWithIssues(ProjectDto project)
         {
+            var issues = (List<IssueDto>)HttpContext.Current.Session["runtimeIssues"] ?? new List<IssueDto>();
+
             using (_unitOfWork)
             { 
                 int generatedProjectId = _unitOfWork.ProjectRepository.Add(_mapper.Map<Project>(project));
-
-                var issues = (List<IssueDto>) HttpContext.Current.Session["runtimeIssues"] ?? new List<IssueDto>();
 
                 foreach (var issue in issues)
                 {
@@ -126,13 +126,13 @@ namespace TaskManager.BLL.Services
 
         private void UpdateProjectWithIssues(ProjectDto project)
         {
+            var runtimeIssues = (List<IssueDto>)HttpContext.Current.Session["runtimeIssues"];
+
             using (_unitOfWork)
             {
                 _unitOfWork.ProjectRepository.Update(_mapper.Map<Project>(project));
 
                 var issuesFromDb = _unitOfWork.IssueRepository.Get(_ => _.ProjectId == project.Id).ToList();
-
-                var runtimeIssues = (List<IssueDto>)HttpContext.Current.Session["runtimeIssues"];
 
                 var issuesToDelete = new List<Issue>(issuesFromDb);
 
