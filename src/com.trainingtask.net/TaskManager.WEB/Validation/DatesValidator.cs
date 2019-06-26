@@ -47,15 +47,6 @@ namespace TaskManager.WEB.Validation
 
             DateTime maxDateFromAnnotation = maxDate;
 
-            //try
-            //{
-            //    DateTime.TryParse(value, out maxDateFromAnnotation);
-            //}
-            //catch (FormatException)
-            //{
-            //    return new ValidationResult(ErrorMessage);
-            //}
-
             if (maxDateValue > maxDateFromAnnotation)
             {
                 return new ValidationResult(ErrorMessage);
@@ -70,29 +61,13 @@ namespace TaskManager.WEB.Validation
 
     public class MinDate : ValidationAttribute
     {
-        private readonly DateTime minDate;
-
-        public MinDate(int year, int month, int day)
-        {
-            minDate = new DateTime(year, month, day);
-        }
-
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             DateTime minDateValue = Convert.ToDateTime(value);
 
-            DateTime minDateFromAnnotation = minDate;
+            DateTime currentDate = DateTime.Now;
 
-            //try
-            //{
-            //    DateTime.TryParse(minDate, out minDateFromAnnotation);
-            //}
-            //catch (FormatException)
-            //{
-            //    return new ValidationResult(ErrorMessage);
-            //}
-
-            if (minDateValue < minDateFromAnnotation)
+            if (minDateValue <= currentDate)
             {
                 return new ValidationResult(ErrorMessage);
             }
