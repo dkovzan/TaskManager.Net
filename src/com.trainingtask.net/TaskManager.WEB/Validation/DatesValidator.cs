@@ -1,60 +1,49 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 
 namespace TaskManager.WEB.Validation
 {
     public class EarlierDate : ValidationAttribute
     {
-        private readonly string laterDatePropName;
-        public EarlierDate(string _laterDate)
+        private readonly string _laterDatePropName;
+        public EarlierDate(string laterDate)
         {
-            laterDatePropName = _laterDate;
+            _laterDatePropName = laterDate;
         }
         protected override ValidationResult IsValid(object earlierDateValue, ValidationContext validationContext)
         {
-            object instance = validationContext.ObjectInstance;
+            var instance = validationContext.ObjectInstance;
 
-            PropertyInfo laterDatePropInfo = instance.GetType().GetProperty(laterDatePropName);
+            var laterDatePropInfo = instance.GetType().GetProperty(_laterDatePropName);
 
-            DateTime earlierDate = Convert.ToDateTime(earlierDateValue);
+            var earlierDate = Convert.ToDateTime(earlierDateValue);
 
-            DateTime laterDate = Convert.ToDateTime(laterDatePropInfo.GetValue(instance));
+            if (laterDatePropInfo == null)
+                throw new ArgumentException("Provided field does not exist in view model.");
 
-            if (earlierDate.Date <= laterDate.Date)
-            {
-                return ValidationResult.Success;
-            }
-            else
-            {
-                return new ValidationResult(ErrorMessage);
-            }
+            var laterDate = Convert.ToDateTime(laterDatePropInfo.GetValue(instance));
+
+            return earlierDate.Date <= laterDate.Date ? ValidationResult.Success : new ValidationResult(ErrorMessage);
+
         }
     }
 
     public class MaxDate : ValidationAttribute
     {
-        private readonly DateTime maxDate;
+        private readonly DateTime _maxDate;
 
         public MaxDate(int year, int month, int day)
         {
-            maxDate = new DateTime (year, month, day);
+            _maxDate = new DateTime (year, month, day);
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            DateTime maxDateValue = Convert.ToDateTime(value);
+            var maxDateValue = Convert.ToDateTime(value);
 
-            DateTime maxDateFromAnnotation = maxDate;
+            var maxDateFromAnnotation = _maxDate;
 
-            if (maxDateValue > maxDateFromAnnotation)
-            {
-                return new ValidationResult(ErrorMessage);
-            }
-            else
-            {
-                return ValidationResult.Success;
-            }
+            return maxDateValue.Date > maxDateFromAnnotation.Date ? new ValidationResult(ErrorMessage) : ValidationResult.Success;
 
         }
     }
@@ -63,18 +52,11 @@ namespace TaskManager.WEB.Validation
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            DateTime minDateValue = Convert.ToDateTime(value);
+            var minDateValue = Convert.ToDateTime(value);
 
-            DateTime currentDate = DateTime.Now;
+            var currentDate = DateTime.Now;
 
-            if (minDateValue <= currentDate)
-            {
-                return new ValidationResult(ErrorMessage);
-            }
-            else
-            {
-                return ValidationResult.Success;
-            }
+            return minDateValue.Date < currentDate.Date ? new ValidationResult(ErrorMessage) : ValidationResult.Success;
 
         }
     }
