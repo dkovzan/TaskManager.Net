@@ -62,7 +62,6 @@
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\IssueService.cs" />
     <Compile Include="Services\ProjectService.cs" />
-    <Compile Include="Validation\EmployeeValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.DAL\TaskManager.DAL.csproj">
