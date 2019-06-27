@@ -12,6 +12,8 @@ namespace TaskManager.BLL.Models
 
         public string Description { get; set; }
 
+        public int IsDeleted { get; set; }
+
         public ICollection<IssueDto> IssuesDto { get; set; }
 
         public override string ToString()
