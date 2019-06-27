@@ -20,11 +20,6 @@ namespace TaskManager.WEB
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            var kernel = new StandardKernel(
-                new ServiceModule("EntitiesContext"),
-                new AutoMapperModule());
-            DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }
 
         protected void Application_Error()

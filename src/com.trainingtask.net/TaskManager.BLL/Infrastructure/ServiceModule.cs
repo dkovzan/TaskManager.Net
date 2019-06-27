@@ -1,4 +1,5 @@
 ﻿using Ninject.Modules;
+using Ninject.Web.Common;
 using TaskManager.DAL;
 
 namespace TaskManager.BLL.Infrastructure
@@ -12,7 +13,7 @@ namespace TaskManager.BLL.Infrastructure
         }
         public override void Load()
         {
-            Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument(_connectionString);
+            Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope().WithConstructorArgument(_connectionString);
         }
     }
 }
