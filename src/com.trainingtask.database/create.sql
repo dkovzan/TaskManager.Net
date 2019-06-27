@@ -6,51 +6,62 @@ USE TrainingTask;
 
 CREATE USER testUser FOR LOGIN test;
 
--- Table: employee
+-- Table: Employee
 
-CREATE TABLE Employee
-(
-    id INTEGER IDENTITY NOT NULL PRIMARY KEY,
-    lastname NVARCHAR(255) NOT NULL,
-    firstname NVARCHAR(255) NOT NULL,
-    middlename NVARCHAR(255),
-    position NVARCHAR(255) NOT NULL
-);
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Employee') 
+BEGIN 
+	CREATE TABLE Employee
+	(
+    Id INTEGER IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    LastName NVARCHAR(255) NOT NULL,
+    FirstName NVARCHAR(255) NOT NULL,
+    MiddleName NVARCHAR(255),
+    Position NVARCHAR(255) NOT NULL
+	);
+END
 
--- Table: project
+-- Table: Project
 
-CREATE TABLE Project
-(
-    id INTEGER IDENTITY NOT NULL PRIMARY KEY,
-    name NVARCHAR(255) NOT NULL,
-    shortname NVARCHAR(255) UNIQUE,
-    description NVARCHAR(4000)
-);
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Project') 
+BEGIN 
+	CREATE TABLE Project
+	(
+		Id INTEGER IDENTITY(1,1) NOT NULL PRIMARY KEY,
+		Name NVARCHAR(255) NOT NULL,
+		ShortName NVARCHAR(255) UNIQUE,
+		Description NVARCHAR(4000)
+	);
+END
 
--- Table: task
+-- Table: Task
 
-CREATE TABLE Issue
-(
-    id INTEGER IDENTITY NOT NULL PRIMARY KEY,
-    name NVARCHAR(255) NOT NULL,
-    begindate DATE NOT NULL,
-    enddate DATE NOT NULL,
-    work INTEGER NOT NULL,
-    projectid INTEGER NOT NULL,
-    statusid INTEGER NOT NULL,
-    employeeid INTEGER NOT NULL,
-    CONSTRAINT fk_projectid FOREIGN KEY (projectid)
-        REFERENCES project (id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT fk_employeeid FOREIGN KEY (employeeid)
-        REFERENCES employee (id)
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-);
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Issue') 
+BEGIN 
+	CREATE TABLE Issue
+	(
+		Id INTEGER IDENTITY(1,1) NOT NULL PRIMARY KEY,
+		Name NVARCHAR(255) NOT NULL,
+		BeginDate DATE NOT NULL,
+		EndDate DATE NOT NULL,
+		Work INTEGER NOT NULL,
+		ProjectId INTEGER NOT NULL,
+		StatusId INTEGER NOT NULL,
+		EmployeeId INTEGER NOT NULL,
+		CONSTRAINT fk_ProjectId FOREIGN KEY (ProjectId)
+			REFERENCES Project (Id)
+			ON UPDATE CASCADE
+			ON DELETE CASCADE,
+		CONSTRAINT fk_EmployeeId FOREIGN KEY (EmployeeId)
+			REFERENCES Employee (Id)
+			ON UPDATE NO ACTION
+			ON DELETE NO ACTION
+	);
+END
 
-grant select, update, insert, delete on Employee to testUser;
+-- user permissions
 
-grant select, update, insert, delete on Project to testUser;
+GRANT SELECT, UPDATE, INSERT, DELETE on Employee to testUser;
 
-grant select, update, insert, delete on Issue to testUser;
+GRANT SELECT, UPDATE, INSERT, DELETE on Project to testUser;
+
+GRANT SELECT, UPDATE, INSERT, DELETE on Issue to testUser;

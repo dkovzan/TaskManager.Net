@@ -1,5 +1,5 @@
-drop table if exists issue;
+DROP TABLE IF EXISTS Issue;
 
-drop table if exists project;
+DROP TABLE IF EXISTS Project;
 
-drop table if exists employee;
+DROP TABLE IF EXISTS Employee;
