@@ -38,7 +38,7 @@ namespace TaskManager.BLL.Services
         {
             var issue = _mapper.Map<IssueDto>(_unitOfWork.IssueRepository.GetById(id));
 
-            if (issue != null && (issue == null && issue.IsDeleted == 1))
+            if (issue == null || issue.IsDeleted == 1)
             {
                 throw new EntityNotFoundException("Issue not found by id " + id);
             }

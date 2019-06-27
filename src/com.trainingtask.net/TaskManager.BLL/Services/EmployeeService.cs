@@ -37,7 +37,7 @@ namespace TaskManager.BLL.Services
         {
             var employee = _mapper.Map<EmployeeDto>(_unitOfWork.EmployeeRepository.GetById(id));
 
-            if (employee != null && (employee == null && employee.IsDeleted == 1))
+            if (employee == null || employee.IsDeleted == 1)
             {
                 throw new EntityNotFoundException("Employee not found by id " + id);
             }
