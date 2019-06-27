@@ -10,24 +10,29 @@ namespace TaskManager.WEB.Mapping
         {
 
             CreateMap<EmployeeDto, EmployeeDetailsView>()
-                .ForSourceMember(src => src.FullName, opt => opt.DoNotValidate());
+                .ForSourceMember(src => src.FullName, opt => opt.DoNotValidate())
+                .ForSourceMember(src => src.IsDeleted, opt => opt.DoNotValidate());
 
             CreateMap<EmployeeDetailsView, EmployeeDto>()
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"));
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
 
             CreateMap<EmployeeDto, EmployeeInDropdownView>()
                 .ForSourceMember(src => src.FirstName, opt => opt.DoNotValidate())
                 .ForSourceMember(src => src.LastName, opt => opt.DoNotValidate())
                 .ForSourceMember(src => src.MiddleName, opt => opt.DoNotValidate())
-                .ForSourceMember(src => src.Position, opt => opt.DoNotValidate());
+                .ForSourceMember(src => src.Position, opt => opt.DoNotValidate())
+                .ForSourceMember(src => src.IsDeleted, opt => opt.DoNotValidate());
 
             CreateMap<IssueDto, IssueEditView>()
                 .ForSourceMember(src => src.ProjectDto, opt => opt.DoNotValidate())
-                .ForSourceMember(src => src.EmployeeDto, opt => opt.DoNotValidate());
+                .ForSourceMember(src => src.EmployeeDto, opt => opt.DoNotValidate())
+                .ForSourceMember(src => src.IsDeleted, opt => opt.DoNotValidate());
 
             CreateMap<IssueEditView, IssueDto>()
                 .ForMember(dest => dest.EmployeeDto, opt => opt.MapFrom(src => src.EmployeeId))
-                .ForMember(dest => dest.ProjectDto, opt => opt.MapFrom(src => src.ProjectId));
+                .ForMember(dest => dest.ProjectDto, opt => opt.MapFrom(src => src.ProjectId))
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
 
             CreateMap<IssueDto, IssueInListView>()
                 .ForMember(dest => dest.EmployeeFullName, opt => opt.MapFrom(src =>
@@ -38,23 +43,28 @@ namespace TaskManager.WEB.Mapping
                 .ForSourceMember(src => src.Work, opt => opt.DoNotValidate())
                 .ForSourceMember(src => src.EmployeeId, opt => opt.DoNotValidate())
                 .ForSourceMember(src => src.EmployeeDto, opt => opt.DoNotValidate())
-                .ForSourceMember(src => src.ProjectDto, opt => opt.DoNotValidate());
+                .ForSourceMember(src => src.ProjectDto, opt => opt.DoNotValidate())
+                .ForSourceMember(src => src.IsDeleted, opt => opt.DoNotValidate());
 
             CreateMap<IssueInListView, IssueDto>()
                 .ForMember(dest => dest.EmployeeDto, opt => opt.MapFrom(src => src.EmployeeId))
                 .ForMember(dest => dest.ProjectDto, opt => opt.MapFrom(src => src.ProjectId))
                 .ForSourceMember(src => src.ProjectShortName, opt => opt.DoNotValidate())
-                .ForSourceMember(src => src.EmployeeFullName, opt => opt.DoNotValidate());
+                .ForSourceMember(src => src.EmployeeFullName, opt => opt.DoNotValidate())
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
 
             CreateMap<ProjectDto, ProjectDetailsView>()
-                .ForMember(dest => dest.IssuesOfProject, opt => opt.MapFrom(src => src.IssuesDto));
+                .ForMember(dest => dest.IssuesOfProject, opt => opt.MapFrom(src => src.IssuesDto))
+                .ForSourceMember(src => src.IsDeleted, opt => opt.DoNotValidate());
 
             CreateMap<ProjectDetailsView, ProjectDto>()
-                .ForMember(dest => dest.IssuesDto, opt => opt.MapFrom(src => src.IssuesOfProject));
+                .ForMember(dest => dest.IssuesDto, opt => opt.MapFrom(src => src.IssuesOfProject))
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
 
             CreateMap<ProjectDto, ProjectInDropdownView>()
                 .ForSourceMember(src => src.Name, opt => opt.DoNotValidate())
-                .ForSourceMember(src => src.Description, opt => opt.DoNotValidate());
+                .ForSourceMember(src => src.Description, opt => opt.DoNotValidate())
+                .ForSourceMember(src => src.IsDeleted, opt => opt.DoNotValidate());
 
         }
     }

@@ -21,6 +21,8 @@ namespace TaskManager.BLL.Models
 
         public int? StatusId { get; set; }
 
+        public int IsDeleted { get; set; }
+
         public ProjectDto ProjectDto { get; set; }
 
         public EmployeeDto EmployeeDto { get; set; }

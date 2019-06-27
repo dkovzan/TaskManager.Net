@@ -14,6 +14,8 @@
 
         public string FullName { get; set; }
 
+        public int IsDeleted { get; set; }
+
         public override string ToString()
         {
             return $"Id {Id}, FirstName {FirstName}, LastName {LastName}, MiddleName {MiddleName}, Position {Position}";

@@ -43,21 +43,14 @@ namespace TaskManager.DAL.Repository
                 query = query.Where(filter);
             }
 
-            var properties = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var properties = includeProperties.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var includeProperty in properties)
             {
                 query = query.Include(includeProperty);
             }
 
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
-            else
-            {
-                return query.ToList();
-            }
+            return orderBy != null ? orderBy(query).ToList() : query.ToList();
         }
         public T GetById(int id)
         {

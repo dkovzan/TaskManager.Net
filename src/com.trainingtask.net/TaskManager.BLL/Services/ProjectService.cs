@@ -31,14 +31,14 @@ namespace TaskManager.BLL.Services
 
         public List<ProjectDto> GetProjects()
         {
-            return _mapper.Map<List<ProjectDto>>(_unitOfWork.ProjectRepository.Get());
+            return _mapper.Map<List<ProjectDto>>(_unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0));
         }
 
         public ProjectDto FindProjectById(int id)
         {
             var project = _mapper.Map<ProjectDto>(_unitOfWork.ProjectRepository.GetById(id));
 
-            if (project == null)
+            if (project == null || project.IsDeleted == 1)
             {
                 throw new EntityNotFoundException("Project not found by id " + id);
             }
@@ -55,7 +55,20 @@ namespace TaskManager.BLL.Services
 
         public void DeleteProjectById(int id)
         {
-            _unitOfWork.ProjectRepository.Delete(id);
+            var project = _unitOfWork.ProjectRepository.GetById(id);
+
+            project.IsDeleted = 1;
+
+            _unitOfWork.ProjectRepository.Update(project);
+
+            var issues = _unitOfWork.IssueRepository.Get(_ => _.ProjectId == id);
+
+            foreach (var issue in issues)
+            {
+                issue.IsDeleted = 1;
+                _unitOfWork.IssueRepository.Update(issue);
+            }
+
             _unitOfWork.Save();
         }
 
@@ -151,7 +164,7 @@ namespace TaskManager.BLL.Services
 
         private bool IsProjectShortNameUnique(int projectId, string shortName)
         {
-            return !_unitOfWork.ProjectRepository.Get(_ => _.Id != projectId && _.ShortName == shortName).Any();
+            return !_unitOfWork.ProjectRepository.Get(_ => _.Id != projectId && _.ShortName == shortName && _.IsDeleted == 0).Any();
         }
 
     }

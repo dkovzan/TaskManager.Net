@@ -31,14 +31,14 @@ namespace TaskManager.BLL.Services
 
         public List<IssueDto> GetIssues()
         {
-            return _mapper.Map<List<IssueDto>>(_unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee"));
+            return _mapper.Map<List<IssueDto>>(_unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0));
         }
 
         public IssueDto FindIssueById(int id)
         {
             var issue = _mapper.Map<IssueDto>(_unitOfWork.IssueRepository.GetById(id));
 
-            if (issue == null)
+            if (issue != null && (issue == null && issue.IsDeleted == 1))
             {
                 throw new EntityNotFoundException("Issue not found by id " + id);
             }
@@ -48,7 +48,12 @@ namespace TaskManager.BLL.Services
 
         public void DeleteIssueById(int id)
         {
-            _unitOfWork.IssueRepository.Delete(id);
+            var issue = _unitOfWork.IssueRepository.GetById(id);
+
+            issue.IsDeleted = 1;
+
+            _unitOfWork.IssueRepository.Update(issue);
+
             _unitOfWork.Save();
         }
 

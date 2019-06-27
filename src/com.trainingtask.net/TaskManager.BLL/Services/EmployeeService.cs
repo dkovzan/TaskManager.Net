@@ -30,14 +30,14 @@ namespace TaskManager.BLL.Services
 
         public List<EmployeeDto> GetEmployees()
         {
-            return _mapper.Map<List<EmployeeDto>>(_unitOfWork.EmployeeRepository.Get());
+            return _mapper.Map<List<EmployeeDto>>(_unitOfWork.EmployeeRepository.Get(x => x.IsDeleted == 0));
         }
 
         public EmployeeDto FindEmployeeById(int id)
         {
             var employee = _mapper.Map<EmployeeDto>(_unitOfWork.EmployeeRepository.GetById(id));
 
-            if (employee == null)
+            if (employee != null && (employee == null && employee.IsDeleted == 1))
             {
                 throw new EntityNotFoundException("Employee not found by id " + id);
             }
@@ -49,7 +49,12 @@ namespace TaskManager.BLL.Services
         {
             if (CanEmployeeBeDeleted(id))
             {
-                _unitOfWork.EmployeeRepository.Delete(id);
+                var employee = _unitOfWork.EmployeeRepository.GetById(id);
+
+                employee.IsDeleted = 1;
+
+                _unitOfWork.EmployeeRepository.Update(employee);
+
                 _unitOfWork.Save();
             }
             else
@@ -74,7 +79,7 @@ namespace TaskManager.BLL.Services
 
         private bool CanEmployeeBeDeleted(int id)
         {
-            return !_unitOfWork.IssueRepository.Get(_ => _.EmployeeId == id).Any();
+            return !_unitOfWork.IssueRepository.Get(_ => _.EmployeeId == id && _.IsDeleted == 0).Any();
         }
     }
 }
