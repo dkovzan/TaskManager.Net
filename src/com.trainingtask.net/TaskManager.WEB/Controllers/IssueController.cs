@@ -20,7 +20,7 @@ namespace TaskManager.WEB.Controllers
 
         private readonly EmployeeService _employeeService;
 
-        public IssueController(IssueService issueService, ProjectService projectService, EmployeeService employeeService, IMapper mapper): base(mapper)
+        public IssueController(IssueService issueService, ProjectService projectService, EmployeeService employeeService, IMapper mapper) : base(mapper)
         {
             _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
             _issueService = issueService;
@@ -29,10 +29,9 @@ namespace TaskManager.WEB.Controllers
         }
         public override ActionResult List(int page = 1, int pageSize = 5)
         {
+            _logger.InfoFormat($"GET Issue/List?page={page}&pageSize={pageSize}");
 
-            _logger.InfoFormat("GET Issue/List?page={0}&pageSize={1}", page, pageSize);
-            
-            var issuesFullList = Mapper.Map<List<IssueInListView>> (_issueService.GetIssues());
+            var issuesFullList = Mapper.Map<List<IssueInListView>>(_issueService.GetIssues());
 
             var entitiesListViewPerPage = GetListViewPerPageWithPageInfo(issuesFullList, page, pageSize);
 
@@ -52,37 +51,39 @@ namespace TaskManager.WEB.Controllers
                 return RedirectToAction(actionName: "List");
             }
 
-            _logger.InfoFormat("GET Issue/Edit/{0}", id);
+            _logger.InfoFormat($"GET Issue/Edit/{id}");
+
+            IssueEditView issue;
 
             try
             {
-                var issue = Mapper.Map<IssueEditView>(_issueService.FindIssueById((int)id)) ?? new IssueEditView { Id = id};
-                
-                ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
-                ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
-                ViewBag.Statuses = StatusDict.GetStatusDict();
-
-                _logger.InfoFormat("Issue sent into view: {0}", issue);
-
-                return View(issue);
+                issue = id == 0 ? new IssueEditView { Id = id } : Mapper.Map<IssueEditView>(_issueService.FindIssueById((int)id));
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.WarnFormat("Issue is not found by id {0}", id);
+                _logger.WarnFormat(ex.Message);
 
                 TempData["Error"] = ex.Message;
 
                 return RedirectToAction(actionName: "List");
             }
+
+            ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
+            ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
+            ViewBag.Statuses = StatusDict.GetStatusDict();
+
+            _logger.InfoFormat($"Issue sent into view: {issue}");
+
+            return View(issue);
         }
 
         public override ActionResult Delete(int id)
         {
-            _logger.InfoFormat("GET Issue/Delete/{0}", id);
+            _logger.InfoFormat($"GET Issue/Delete/{id}");
 
             _issueService.DeleteIssueById(id);
 
-            _logger.InfoFormat("Issue with id {0} successfully deleted", id);
+            _logger.InfoFormat($"Issue with id {id} successfully deleted");
 
             return RedirectToAction(actionName: "List");
         }
@@ -92,7 +93,7 @@ namespace TaskManager.WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddOrUpdate([Bind(Include = "Id, Name, Work, BeginDate, EndDate, ProjectId, EmployeeId, StatusId")]IssueEditView issue)
         {
-            _logger.InfoFormat("POST Issue/AddOrUpdate {0}", issue);
+            _logger.InfoFormat($"POST Issue/AddOrUpdate {issue}");
 
             if (!ModelState.IsValid)
             {
@@ -102,10 +103,10 @@ namespace TaskManager.WEB.Controllers
 
                 return View("Edit", issue);
             }
-            
+
             _issueService.AddOrUpdateIssue(Mapper.Map<IssueEditView, IssueDto>(issue));
 
-            _logger.InfoFormat("Issue: {0} successfully added/updated", issue);
+            _logger.InfoFormat($"Issue: {issue} successfully added/updated");
 
             return RedirectToAction(actionName: "List");
         }
@@ -118,14 +119,31 @@ namespace TaskManager.WEB.Controllers
                 return RedirectToAction(actionName: "List");
             }
 
-            _logger.InfoFormat("GET Issue/EditRuntime/{0}", id);
+            _logger.InfoFormat($"GET Issue/EditRuntime/{id}");
 
-            var issue = Mapper.Map<IssueEditView>(_issueService.EditRuntimeIssue((int)id)) ?? new IssueEditView { Id = id };
+            IssueEditView issue;
+
+            try
+            {
+                issue = Mapper.Map<IssueEditView>(_issueService.EditRuntimeIssue((int) id));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.WarnFormat(ex.Message);
+
+                TempData["Error"] = ex.Message;
+
+                return RedirectToAction("List");
+            }
+
+            var projectId = (int) Session["ProjectId"];
+
+            issue.ProjectId = projectId;
 
             ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
             ViewBag.Statuses = StatusDict.GetStatusDict();
 
-            _logger.InfoFormat("Issue sent into view: {0}", issue);
+            _logger.InfoFormat($"Issue sent into view: {issue}");
 
             return View("EditRuntime", issue);
         }
@@ -135,7 +153,7 @@ namespace TaskManager.WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddOrUpdateRuntime([Bind(Include = "Id, Name, Work, BeginDate, EndDate, ProjectId, EmployeeId, StatusId")]IssueEditView issue)
         {
-            _logger.InfoFormat("POST Issue/AddOrUpdate {0}", issue);
+            _logger.InfoFormat($"POST Issue/AddOrUpdate {issue}");
 
             if (!ModelState.IsValid)
             {
@@ -152,11 +170,11 @@ namespace TaskManager.WEB.Controllers
 
         public ActionResult DeleteRuntime(int id)
         {
-            _logger.InfoFormat("GET Issue/DeleteRuntime/{0}", id);
+            _logger.InfoFormat($"GET Issue/DeleteRuntime/{id}");
 
             _issueService.DeleteRuntimeIssueById(id);
 
-            var projectId = (int) Session["ProjectId"];
+            var projectId = (int)Session["ProjectId"];
 
             return RedirectToAction(actionName: "Edit", routeValues: new { id = projectId }, controllerName: "Project");
         }

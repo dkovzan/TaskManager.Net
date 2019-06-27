@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
 using System.Web;
+using TaskManager.BLL.Exceptions;
 using TaskManager.BLL.Models;
 using TaskManager.DAL;
 using TaskManager.DAL.Entities;
@@ -30,62 +31,54 @@ namespace TaskManager.BLL.Services
 
         public List<IssueDto> GetIssues()
         {
-            using (_unitOfWork)
-            {
-                return _mapper.Map<List<IssueDto>>(_unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee"));
-            } 
+            return _mapper.Map<List<IssueDto>>(_unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee"));
         }
 
         public IssueDto FindIssueById(int id)
         {
-            using (_unitOfWork)
-                return _mapper.Map<IssueDto>(_unitOfWork.IssueRepository.GetById(id));
+            var issue = _mapper.Map<IssueDto>(_unitOfWork.IssueRepository.GetById(id));
+
+            if (issue == null)
+            {
+                throw new EntityNotFoundException("Issue not found by id " + id);
+            }
+
+            return issue;
         }
 
         public void DeleteIssueById(int id)
         {
-            using (_unitOfWork)
-            {
-                _unitOfWork.IssueRepository.Delete(id);
-                _unitOfWork.Save();
-            }
-                
+            _unitOfWork.IssueRepository.Delete(id);
+            _unitOfWork.Save();
         }
 
         public void AddOrUpdateIssue(IssueDto issue)
         {
-            using (_unitOfWork)
+            if (issue.Id == 0)
             {
-                if (issue.Id == 0)
-                {
-                    issue.ProjectDto = null;
-                    issue.EmployeeDto = null;
-                    _unitOfWork.IssueRepository.Add(_mapper.Map<Issue>(issue));
-                    _unitOfWork.Save();
-                }
-                else
-                {
-                    issue.ProjectDto = null;
-                    issue.EmployeeDto = null;
-                    _unitOfWork.IssueRepository.Update(_mapper.Map<Issue>(issue));
-                    _unitOfWork.Save();
-                }
+                issue.ProjectDto = null;
+                issue.EmployeeDto = null;
+                _unitOfWork.IssueRepository.Add(_mapper.Map<Issue>(issue));
+                _unitOfWork.Save();
+            }
+            else
+            {
+                issue.ProjectDto = null;
+                issue.EmployeeDto = null;
+                _unitOfWork.IssueRepository.Update(_mapper.Map<Issue>(issue));
+                _unitOfWork.Save();
             }
         }
 
         private static int _newRuntimeTaskId = -1;
 
-
         public IssueDto EditRuntimeIssue(int id)
         {
-
-            var projectId = (int)HttpContext.Current.Session["ProjectId"];
-
-            var issue = new IssueDto() { ProjectId = projectId };
+            IssueDto issue = null;
 
             if (id == 0)
             {
-                issue.Id = _newRuntimeTaskId;
+                issue = new IssueDto {Id = _newRuntimeTaskId};
             }
             else
             {
@@ -93,11 +86,15 @@ namespace TaskManager.BLL.Services
 
                 foreach (var runtimeIssue in runtimeIssues)
                 {
-                    if (runtimeIssue.Id == id)
-                    {
-                        issue = runtimeIssue;
-                    }
+                    if (runtimeIssue.Id != id) continue;
+                    issue = runtimeIssue;
+                    break;
                 }
+            }
+
+            if (issue == null)
+            {
+                throw new EntityNotFoundException($"Runtime issue is not found by id: {id}");
             }
 
             return issue;
@@ -105,22 +102,20 @@ namespace TaskManager.BLL.Services
 
         public void AddOrUpdateRuntimeIssue(IssueDto issue)
         {
-            using (_unitOfWork)
+            if (issue.EmployeeId != null)
             {
-                if (issue.EmployeeId != null)
-                    issue.EmployeeDto =
-                        _mapper.Map<EmployeeDto>(_unitOfWork.EmployeeRepository.GetById((int) issue.EmployeeId));
+                issue.EmployeeDto =
+                    _mapper.Map<EmployeeDto>(_unitOfWork.EmployeeRepository.GetById((int)issue.EmployeeId));
             }
-            var runtimeIssues = (List<IssueDto>) HttpContext.Current.Session["runtimeIssues"] ?? new List<IssueDto>();
 
-            for (int i = 0; i < runtimeIssues.Count; i++)
+            var runtimeIssues = (List<IssueDto>)HttpContext.Current.Session["runtimeIssues"] ?? new List<IssueDto>();
+
+            for (var i = 0; i < runtimeIssues.Count; i++)
             {
-                if (runtimeIssues[i].Id == issue.Id)
-                {
-                    runtimeIssues.RemoveAt(i);
-                    runtimeIssues.Insert(i, issue);
-                    break;
-                }
+                if (runtimeIssues[i].Id != issue.Id) continue;
+                runtimeIssues.RemoveAt(i);
+                runtimeIssues.Insert(i, issue);
+                break;
             }
 
             if (issue.Id == _newRuntimeTaskId)
@@ -134,15 +129,13 @@ namespace TaskManager.BLL.Services
 
         public void DeleteRuntimeIssueById(int id)
         {
-            var runtimeIssues = (List<IssueDto>) HttpContext.Current.Session["runtimeIssues"];
+            var runtimeIssues = (List<IssueDto>)HttpContext.Current.Session["runtimeIssues"];
 
-            for (int i = 0; i < runtimeIssues.Count; i++)
+            for (var i = 0; i < runtimeIssues.Count; i++)
             {
-                if (runtimeIssues[i].Id == id)
-                {
-                    runtimeIssues.RemoveAt(i);
-                    break;
-                }
+                if (runtimeIssues[i].Id != id) continue;
+                runtimeIssues.RemoveAt(i);
+                break;
             }
 
             HttpContext.Current.Session["runtimeIssues"] = runtimeIssues;

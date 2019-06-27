@@ -1,3 +1,5 @@
+using TaskManager.BLL.Infrastructure;
+
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(TaskManager.WEB.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethod(typeof(TaskManager.WEB.App_Start.NinjectWebCommon), "Stop")]
 
@@ -10,6 +12,7 @@ namespace TaskManager.WEB.App_Start
     using System;
     using System.Web;
     using TaskManager.BLL.Services;
+    using TaskManager.WEB.Mapping;
 
     public static class NinjectWebCommon 
     {
@@ -45,6 +48,8 @@ namespace TaskManager.WEB.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
+                kernel.Load(new ServiceModule("EntitiesContext"), new AutoMapperModule());
+
                 RegisterServices(kernel);
 
                 return kernel;
@@ -62,8 +67,6 @@ namespace TaskManager.WEB.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-
-
             kernel.Bind<IEmployeeService>().To<EmployeeService>();
             kernel.Bind<IIssueService>().To<IssueService>();
             kernel.Bind<IProjectService>().To<ProjectService>();

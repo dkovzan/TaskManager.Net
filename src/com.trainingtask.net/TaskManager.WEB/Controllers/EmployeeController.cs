@@ -25,11 +25,11 @@ namespace TaskManager.WEB.Controllers
         public override ActionResult List(int page = 1, int pageSize = 5)
         {
 
-            _logger.InfoFormat("GET Employee/List?page={0}&pageSize={1}", page, pageSize);
+            _logger.InfoFormat($"GET Employee/List?page={page}&pageSize={pageSize}");
 
             var employeesFullList = Mapper.Map<List<EmployeeDetailsView>>(_employeeService.GetEmployees());
 
-            var entitiesListViewPerPage = GetListViewPerPageWithPageInfo (employeesFullList, page, pageSize);
+            var entitiesListViewPerPage = GetListViewPerPageWithPageInfo(employeesFullList, page, pageSize);
 
             if (TempData["Error"] != null)
             {
@@ -45,48 +45,53 @@ namespace TaskManager.WEB.Controllers
             if (id == null)
             {
                 return RedirectToAction(actionName: "List");
-            } 
+            }
 
-            _logger.InfoFormat("GET Employee/Edit/{0}", id);
+            _logger.InfoFormat($"GET Employee/Edit/{id}");
+
+            EmployeeDetailsView employee;
 
             try
             {
-                var employee = Mapper.Map<EmployeeDetailsView>(_employeeService.FindEmployeeById((int)id)) ?? new EmployeeDetailsView { Id = id };
-
-                _logger.InfoFormat("Employee sent into view: {0}", employee);
-
-                return View(employee);
+                employee = id == 0
+                    ? new EmployeeDetailsView { Id = id }
+                    : Mapper.Map<EmployeeDetailsView>(_employeeService.FindEmployeeById((int)id));
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.WarnFormat("Employee is not found by id {0}", id);
+                _logger.WarnFormat($"Employee is not found by id {id}");
 
                 TempData["Error"] = ex.Message;
 
                 return RedirectToAction(actionName: "List");
             }
+
+            _logger.InfoFormat($"Employee sent into view: {employee}");
+
+            return View(employee);
         }
 
         public override ActionResult Delete(int id)
         {
-            _logger.InfoFormat("GET Employee/Delete/{0}", id);
+            _logger.InfoFormat($"GET Employee/Delete/{id}");
 
             try
             {
                 _employeeService.DeleteEmployeeById(id);
-
-                _logger.InfoFormat("Employee with id {0} successfully deleted", id);
             }
             catch (DaoException ex)
             {
-                _logger.WarnFormat("Logical error while deleting employee: {0}", ex.Message);
+                _logger.WarnFormat($"Logical error while deleting employee: {ex.Message}");
 
                 TempData["Error"] = ex.Message;
             }
+
+            _logger.InfoFormat($"Employee with id {id} successfully deleted");
+
             return RedirectToAction(actionName: "List");
         }
 
-        
+
         [HttpPost]
         [ValidateInput(false)] // disable request validation e.g. preventing script attacks >> dangerous values are encoded by Razor automatically
         [ValidateAntiForgeryToken]
@@ -98,7 +103,7 @@ namespace TaskManager.WEB.Controllers
                 return View("Edit", employee);
             }
 
-            _logger.InfoFormat("POST Employee/AddOrUpdate {0}", employee);
+            _logger.InfoFormat($"POST Employee/AddOrUpdate {employee}");
 
             _employeeService.AddOrUpdateEmployee(Mapper.Map<EmployeeDto>(employee));
 

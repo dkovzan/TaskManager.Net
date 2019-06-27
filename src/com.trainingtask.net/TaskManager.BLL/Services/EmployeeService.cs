@@ -30,50 +30,45 @@ namespace TaskManager.BLL.Services
 
         public List<EmployeeDto> GetEmployees()
         {
-            using (_unitOfWork)
-            {
-                return _mapper.Map<List<EmployeeDto>>(_unitOfWork.EmployeeRepository.Get());
-            }
+            return _mapper.Map<List<EmployeeDto>>(_unitOfWork.EmployeeRepository.Get());
         }
 
         public EmployeeDto FindEmployeeById(int id)
         {
-            using (_unitOfWork)
+            var employee = _mapper.Map<EmployeeDto>(_unitOfWork.EmployeeRepository.GetById(id));
+
+            if (employee == null)
             {
-                return _mapper.Map<EmployeeDto>(_unitOfWork.EmployeeRepository.GetById(id));
+                throw new EntityNotFoundException("Employee not found by id " + id);
             }
+
+            return employee;
         }
 
         public void DeleteEmployeeById(int id)
         {
-            using (_unitOfWork)
+            if (CanEmployeeBeDeleted(id))
             {
-                if (CanEmployeeBeDeleted(id))
-                {
-                    _unitOfWork.EmployeeRepository.Delete(id);
-                    _unitOfWork.Save();
-                }
-                else
-                {
-                    throw new DaoException("Employee cannot be deleted while is being assigned to task");
-                }
+                _unitOfWork.EmployeeRepository.Delete(id);
+                _unitOfWork.Save();
+            }
+            else
+            {
+                throw new DaoException("Employee cannot be deleted while is being assigned to task");
             }
         }
 
         public void AddOrUpdateEmployee(EmployeeDto employee)
         {
-            using (_unitOfWork)
+            if (employee.Id == 0)
             {
-                if (employee.Id == 0)
-                {
-                    _unitOfWork.EmployeeRepository.Add(_mapper.Map<Employee>(employee));
-                    _unitOfWork.Save();
-                }
-                else
-                {
-                    _unitOfWork.EmployeeRepository.Update(_mapper.Map<Employee>(employee));
-                    _unitOfWork.Save();
-                }
+                _unitOfWork.EmployeeRepository.Add(_mapper.Map<Employee>(employee));
+                _unitOfWork.Save();
+            }
+            else
+            {
+                _unitOfWork.EmployeeRepository.Update(_mapper.Map<Employee>(employee));
+                _unitOfWork.Save();
             }
         }
 

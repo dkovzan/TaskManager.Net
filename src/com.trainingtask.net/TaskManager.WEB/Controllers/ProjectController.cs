@@ -24,7 +24,7 @@ namespace TaskManager.WEB.Controllers
 
         public override ActionResult List(int page = 1, int pageSize = 5)
         {
-            _logger.InfoFormat("GET Project/List?page={0}&pageSize={1}", page, pageSize);
+            _logger.InfoFormat($"GET Project/List?page={page}&pageSize={pageSize}");
 
             var projectsFullList = Mapper.Map<List<ProjectDetailsView>>(_projectService.GetProjects());
 
@@ -46,42 +46,44 @@ namespace TaskManager.WEB.Controllers
                 return RedirectToAction(actionName: "List");
             }
 
-            _logger.InfoFormat("GET Project/Edit/{0}?isCleanSessionNeeded={1}", id, isCleanSessionNeeded);
+            _logger.InfoFormat($"GET Project/Edit/{id}?isCleanSessionNeeded={isCleanSessionNeeded}");
+
+            if (isCleanSessionNeeded)
+            {
+                Session.Clear();
+            }
+
+            ProjectDetailsView project;
 
             try
             {
-                if (isCleanSessionNeeded)
-                {
-                    Session.Clear();
-                }
-                
-                var project = Mapper.Map<ProjectDetailsView>(_projectService.FindProjectById((int)id)) ?? new ProjectDetailsView { Id = id };
-
-                project.IssuesOfProject = Mapper.Map<List<IssueInListView>>(Session["runtimeIssues"]);
-
-                _logger.InfoFormat("Project sent into view: {0}", project);
-
-                Session["ProjectId"] = project.Id;
-
-                return View(project);
+                project = id == 0 ? new ProjectDetailsView { Id = id } : Mapper.Map<ProjectDetailsView>(_projectService.FindProjectById((int)id));
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.InfoFormat("Project is not found by id {0}", id);
+                _logger.InfoFormat(ex.Message);
 
                 TempData["Error"] = ex.Message;
 
                 return RedirectToAction(actionName: "List");
             }
+
+            project.IssuesOfProject = Mapper.Map<List<IssueInListView>>(Session["runtimeIssues"]);
+
+            _logger.InfoFormat($"Project sent into view: {project}");
+
+            Session["ProjectId"] = project.Id;
+
+            return View(project);
         }
 
         public override ActionResult Delete(int id)
         {
-            _logger.InfoFormat("GET Project/Delete/{0}", id);
+            _logger.InfoFormat($"GET Project/Delete/{id}");
 
             _projectService.DeleteProjectById(id);
 
-            _logger.InfoFormat("Project with id {0} successfully deleted", id);
+            _logger.InfoFormat($"Project with id {id} successfully deleted");
 
             return RedirectToAction(actionName: "List");
         }
@@ -91,8 +93,7 @@ namespace TaskManager.WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddOrUpdate([Bind(Include = "Id, Name, ShortName, Description, IssuesOfProject")]ProjectDetailsView project)
         {
-            if (project != null)
-                _logger.InfoFormat("POST Project/AddOrUpdate {0}", project);
+            _logger.InfoFormat($"POST Project/AddOrUpdate {project}");
 
             if (!ModelState.IsValid)
             {
@@ -100,26 +101,24 @@ namespace TaskManager.WEB.Controllers
 
                 return View("Edit", project);
             }
-            else
+
+            try
             {
-                try
+                _projectService.AddOrUpdateProject(Mapper.Map<ProjectDto>(project));
+            }
+            catch (ValidationException ex)
+            {
+                foreach (var invalidField in ex.InvalidFieldsWithMessages)
                 {
-                    _projectService.AddOrUpdateProject(Mapper.Map<ProjectDto>(project));
+                    ModelState.AddModelError(invalidField.Key, invalidField.Value);
                 }
-                catch (ValidationException ex)
-                {
-                    foreach (var invalidField in ex.InvalidFieldsWithMessages)
-                    {
-                        ModelState.AddModelError(invalidField.Key, invalidField.Value);
-                    }
 
-                    project.IssuesOfProject = Mapper.Map<List<IssueInListView>>(Session["runtimeIssues"]);
+                project.IssuesOfProject = Mapper.Map<List<IssueInListView>>(Session["runtimeIssues"]);
 
-                    return View("Edit", project);
-                }
+                return View("Edit", project);
             }
 
-            _logger.InfoFormat("Project {0} successfully added/updated", project);
+            _logger.InfoFormat($"Project {project} successfully added/updated");
 
             return RedirectToAction(actionName: "List");
         }

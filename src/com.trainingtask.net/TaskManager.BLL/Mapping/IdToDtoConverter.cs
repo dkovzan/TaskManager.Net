@@ -14,7 +14,9 @@ namespace TaskManager.BLL.Mapping
         }
         public ProjectDto Convert(int srcId, ProjectDto dest, ResolutionContext context)
         {
-            return _projectService.FindProjectById(System.Convert.ToInt32(srcId));
+            var  project = srcId != 0 ? _projectService.FindProjectById(System.Convert.ToInt32(srcId)) : new ProjectDto {Id = srcId};
+
+            return project;
         }
     }
 
@@ -28,7 +30,11 @@ namespace TaskManager.BLL.Mapping
         }
         public EmployeeDto Convert(int srcId, EmployeeDto dest, ResolutionContext context)
         {
-            return _employeeService.FindEmployeeById(System.Convert.ToInt32(srcId));
+            var employee = srcId != 0
+                ? _employeeService.FindEmployeeById(System.Convert.ToInt32(srcId))
+                : new EmployeeDto {Id = srcId};
+
+            return employee;
         }
     }
 }
