@@ -1,7 +1,10 @@
-﻿using log4net;
+﻿using System;
+using System.Globalization;
+using log4net;
 using Ninject;
 using Ninject.Web.Mvc;
 using System.Reflection;
+using System.Threading;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -25,6 +28,14 @@ namespace TaskManager.WEB
         protected void Application_Error()
         {
             _logger.Error(Server.GetLastError());
+        }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            var newCulture = (CultureInfo) Thread.CurrentThread.CurrentCulture.Clone();
+            newCulture.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+            newCulture.DateTimeFormat.DateSeparator = "-";
+            Thread.CurrentThread.CurrentCulture = newCulture;
         }
 
     }
