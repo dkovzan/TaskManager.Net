@@ -41,22 +41,24 @@ namespace TaskManager.WEB.Validation
         {
             var maxDateValue = Convert.ToDateTime(value);
 
-            var maxDateFromAnnotation = _maxDate;
-
-            return maxDateValue.Date > maxDateFromAnnotation.Date ? new ValidationResult(ErrorMessage) : ValidationResult.Success;
+            return maxDateValue.Date > _maxDate.Date ? new ValidationResult(ErrorMessage) : ValidationResult.Success;
 
         }
     }
 
     public class MinDate : ValidationAttribute
     {
+        private readonly DateTime _minDate;
+
+        public MinDate(int year, int month, int day)
+        {
+            _minDate = new DateTime(year, month, day);
+        }
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var minDateValue = Convert.ToDateTime(value);
 
-            var currentDate = DateTime.Now;
-
-            return minDateValue.Date < currentDate.Date ? new ValidationResult(ErrorMessage) : ValidationResult.Success;
+            return minDateValue.Date < _minDate.Date ? new ValidationResult(ErrorMessage) : ValidationResult.Success;
 
         }
     }
