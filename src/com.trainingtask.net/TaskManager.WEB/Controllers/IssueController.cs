@@ -29,7 +29,7 @@ namespace TaskManager.WEB.Controllers
         }
         public override ActionResult List(int page = 1, int pageSize = 5)
         {
-            _logger.InfoFormat($"GET Issue/List?page={page}&pageSize={pageSize}");
+            _logger.Info($"GET Issue/List?page={page}&pageSize={pageSize}");
 
             var issuesFullList = Mapper.Map<List<IssueInListView>>(_issueService.GetIssues());
 
@@ -51,7 +51,7 @@ namespace TaskManager.WEB.Controllers
                 return RedirectToAction(actionName: "List");
             }
 
-            _logger.InfoFormat($"GET Issue/Edit/{id}");
+            _logger.Info($"GET Issue/Edit/{id}");
 
             IssueEditView issue;
 
@@ -61,7 +61,7 @@ namespace TaskManager.WEB.Controllers
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.WarnFormat(ex.Message);
+                _logger.Warn(ex.Message);
 
                 TempData["Error"] = ex.Message;
 
@@ -79,11 +79,11 @@ namespace TaskManager.WEB.Controllers
 
         public override ActionResult Delete(int id)
         {
-            _logger.InfoFormat($"GET Issue/Delete/{id}");
+            _logger.Info($"GET Issue/Delete/{id}");
 
             _issueService.DeleteIssueById(id);
 
-            _logger.InfoFormat($"Issue with id {id} successfully deleted");
+            _logger.Info($"Issue with id {id} successfully deleted");
 
             return RedirectToAction(actionName: "List");
         }
@@ -93,7 +93,7 @@ namespace TaskManager.WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddOrUpdate([Bind(Include = "Id, Name, Work, BeginDate, EndDate, ProjectId, EmployeeId, StatusId")]IssueEditView issue)
         {
-            _logger.InfoFormat($"POST Issue/AddOrUpdate {issue}");
+            _logger.Info($"POST Issue/AddOrUpdate {issue}");
 
             if (!ModelState.IsValid)
             {
@@ -122,7 +122,7 @@ namespace TaskManager.WEB.Controllers
             }
             
 
-            _logger.InfoFormat($"Issue: {issue} successfully added/updated");
+            _logger.Info($"Issue: {issue} successfully added/updated");
 
             return RedirectToAction(actionName: "List");
         }
@@ -135,7 +135,7 @@ namespace TaskManager.WEB.Controllers
                 return RedirectToAction(actionName: "List");
             }
 
-            _logger.InfoFormat($"GET Issue/EditRuntime/{id}");
+            _logger.Info($"GET Issue/EditRuntime/{id}");
 
             IssueEditView issue;
 
@@ -145,7 +145,7 @@ namespace TaskManager.WEB.Controllers
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.WarnFormat(ex.Message);
+                _logger.Warn(ex.Message);
 
                 TempData["Error"] = ex.Message;
 
@@ -159,7 +159,7 @@ namespace TaskManager.WEB.Controllers
             ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
             ViewBag.Statuses = StatusDict.GetStatusDict();
 
-            _logger.InfoFormat($"Issue sent into view: {issue}");
+            _logger.Info($"Issue sent into view: {issue}");
 
             return View("EditRuntime", issue);
         }
@@ -169,7 +169,7 @@ namespace TaskManager.WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddOrUpdateRuntime([Bind(Include = "Id, Name, Work, BeginDate, EndDate, ProjectId, EmployeeId, StatusId")]IssueEditView issue)
         {
-            _logger.InfoFormat($"POST Issue/AddOrUpdate {issue}");
+            _logger.Info($"POST Issue/AddOrUpdate {issue}");
 
             if (!ModelState.IsValid)
             {
@@ -186,7 +186,7 @@ namespace TaskManager.WEB.Controllers
 
         public ActionResult DeleteRuntime(int id)
         {
-            _logger.InfoFormat($"GET Issue/DeleteRuntime/{id}");
+            _logger.Info($"GET Issue/DeleteRuntime/{id}");
 
             _issueService.DeleteRuntimeIssueById(id);
 

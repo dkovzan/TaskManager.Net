@@ -24,7 +24,7 @@ namespace TaskManager.WEB.Controllers
 
         public override ActionResult List(int page = 1, int pageSize = 5)
         {
-            _logger.InfoFormat($"GET Project/List?page={page}&pageSize={pageSize}");
+            _logger.Info($"GET Project/List?page={page}&pageSize={pageSize}");
 
             var projectsFullList = Mapper.Map<List<ProjectDetailsView>>(_projectService.GetProjects());
 
@@ -46,7 +46,7 @@ namespace TaskManager.WEB.Controllers
                 return RedirectToAction(actionName: "List");
             }
 
-            _logger.InfoFormat($"GET Project/Edit/{id}?isCleanSessionNeeded={isCleanSessionNeeded}");
+            _logger.Info($"GET Project/Edit/{id}?isCleanSessionNeeded={isCleanSessionNeeded}");
 
             if (isCleanSessionNeeded)
             {
@@ -61,7 +61,7 @@ namespace TaskManager.WEB.Controllers
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.InfoFormat(ex.Message);
+                _logger.Info(ex.Message);
 
                 TempData["Error"] = ex.Message;
 
@@ -70,7 +70,7 @@ namespace TaskManager.WEB.Controllers
 
             project.IssuesOfProject = Mapper.Map<List<IssueInListView>>(Session["runtimeIssues"]);
 
-            _logger.InfoFormat($"Project sent into view: {project}");
+            _logger.Info($"Project sent into view: {project}");
 
             Session["ProjectId"] = project.Id;
 
@@ -79,11 +79,11 @@ namespace TaskManager.WEB.Controllers
 
         public override ActionResult Delete(int id)
         {
-            _logger.InfoFormat($"GET Project/Delete/{id}");
+            _logger.Info($"GET Project/Delete/{id}");
 
             _projectService.DeleteProjectById(id);
 
-            _logger.InfoFormat($"Project with id {id} successfully deleted");
+            _logger.Info($"Project with id {id} successfully deleted");
 
             return RedirectToAction(actionName: "List");
         }
@@ -93,7 +93,7 @@ namespace TaskManager.WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddOrUpdate([Bind(Include = "Id, Name, ShortName, Description, IssuesOfProject")]ProjectDetailsView project)
         {
-            _logger.InfoFormat($"POST Project/AddOrUpdate {project}");
+            _logger.Info($"POST Project/AddOrUpdate {project}");
 
             project.IssuesOfProject = Mapper.Map<List<IssueInListView>>(Session["runtimeIssues"]);
 
@@ -124,7 +124,7 @@ namespace TaskManager.WEB.Controllers
                 return View("Edit", project);
             }
 
-            _logger.InfoFormat($"Project {project} successfully added/updated");
+            _logger.Info($"Project {project} successfully added/updated");
 
             return RedirectToAction(actionName: "List");
         }

@@ -25,7 +25,7 @@ namespace TaskManager.WEB.Controllers
         public override ActionResult List(int page = 1, int pageSize = 5)
         {
 
-            _logger.InfoFormat($"GET Employee/List?page={page}&pageSize={pageSize}");
+            _logger.Info($"GET Employee/List?page={page}&pageSize={pageSize}");
 
             var employeesFullList = Mapper.Map<List<EmployeeDetailsView>>(_employeeService.GetEmployees());
 
@@ -47,7 +47,7 @@ namespace TaskManager.WEB.Controllers
                 return RedirectToAction(actionName: "List");
             }
 
-            _logger.InfoFormat($"GET Employee/Edit/{id}");
+            _logger.Info($"GET Employee/Edit/{id}");
 
             EmployeeDetailsView employee;
 
@@ -59,14 +59,14 @@ namespace TaskManager.WEB.Controllers
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.WarnFormat($"Employee is not found by id {id}");
+                _logger.Warn($"Employee is not found by id {id}");
 
                 TempData["Error"] = ex.Message;
 
                 return RedirectToAction(actionName: "List");
             }
 
-            _logger.InfoFormat($"Employee sent into view: {employee}");
+            _logger.Info($"Employee sent into view: {employee}");
 
             return View(employee);
         }
@@ -81,7 +81,7 @@ namespace TaskManager.WEB.Controllers
             }
             catch (DaoException ex)
             {
-                _logger.WarnFormat($"Logical error while deleting employee: {ex.Message}");
+                _logger.Warn($"Logical error while deleting employee: {ex.Message}");
 
                 TempData["Error"] = ex.Message;
             }
@@ -103,7 +103,7 @@ namespace TaskManager.WEB.Controllers
                 return View("Edit", employee);
             }
 
-            _logger.InfoFormat($"POST Employee/AddOrUpdate {employee}");
+            _logger.Info($"POST Employee/AddOrUpdate {employee}");
 
             try
             {
