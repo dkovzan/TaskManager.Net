@@ -120,6 +120,16 @@ namespace TaskManager.BLL.Services
         {
             var runtimeIssues = (List<IssueDto>)HttpContext.Current.Session["runtimeIssues"];
 
+            if (project.Id != null)
+            {
+                var projectFromDb = _unitOfWork.ProjectRepository.GetById((int)project.Id);
+
+                if (projectFromDb == null || projectFromDb.IsDeleted == 1)
+                {
+                    throw new EntityNotFoundException("Project not found by id " + project.Id);
+                }
+            }
+
             _unitOfWork.ProjectRepository.Update(_mapper.Map<Project>(project));
 
             var issuesFromDb = _unitOfWork.IssueRepository.Get(_ => _.ProjectId == project.Id).ToList();

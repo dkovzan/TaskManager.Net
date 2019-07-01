@@ -104,7 +104,23 @@ namespace TaskManager.WEB.Controllers
                 return View("Edit", issue);
             }
 
-            _issueService.AddOrUpdateIssue(Mapper.Map<IssueEditView, IssueDto>(issue));
+            try
+            {
+                _issueService.AddOrUpdateIssue(Mapper.Map<IssueEditView, IssueDto>(issue));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.Warn(ex.Message);
+
+                ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
+                ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
+                ViewBag.Statuses = StatusDict.GetStatusDict();
+
+                ViewBag.Error = ex.Message;
+
+                return View("Edit", issue);
+            }
+            
 
             _logger.InfoFormat($"Issue: {issue} successfully added/updated");
 

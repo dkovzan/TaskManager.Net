@@ -95,7 +95,7 @@ namespace TaskManager.WEB.Controllers
         [HttpPost]
         [ValidateInput(false)] // disable request validation e.g. preventing script attacks >> dangerous values are encoded by Razor automatically
         [ValidateAntiForgeryToken]
-        public ActionResult AddOrUpdate([Bind(Include = "Id, FirstName, LastName, MiddleName, Position")]EmployeeDetailsView employee)
+        public ActionResult AddOrUpdate([Bind(Include = "Id, FirstName, LastName, MiddleName, Position")] EmployeeDetailsView employee)
         {
 
             if (!ModelState.IsValid)
@@ -105,7 +105,19 @@ namespace TaskManager.WEB.Controllers
 
             _logger.InfoFormat($"POST Employee/AddOrUpdate {employee}");
 
-            _employeeService.AddOrUpdateEmployee(Mapper.Map<EmployeeDto>(employee));
+            try
+            {
+                _employeeService.AddOrUpdateEmployee(Mapper.Map<EmployeeDto>(employee));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.Warn(ex.Message);
+
+                ViewBag.Error = ex.Message;
+
+                return View("Edit", employee);
+            }
+            
 
             return RedirectToAction(actionName: "List");
         }

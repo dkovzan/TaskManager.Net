@@ -4,8 +4,17 @@
     ViewBag.Title = "Edit project";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var employees = ViewBag.Employees;
+    var error = ViewBag.Error;
 }
+
 <h2>@ViewBag.Title</h2>
+
+@if (error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
 
 @using (Html.BeginForm(actionName: "AddOrUpdate", controllerName: "Project"))
 {

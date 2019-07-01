@@ -64,12 +64,22 @@ namespace TaskManager.BLL.Services
                 issue.ProjectDto = null;
                 issue.EmployeeDto = null;
                 _unitOfWork.IssueRepository.Add(_mapper.Map<Issue>(issue));
-                _unitOfWork.Save();
             }
             else
             {
                 issue.ProjectDto = null;
                 issue.EmployeeDto = null;
+
+                if (issue.Id != null)
+                {
+                    var issueFromDb = _unitOfWork.IssueRepository.GetById((int)issue.Id);
+
+                    if (issueFromDb == null || issueFromDb.IsDeleted == 1)
+                    {
+                        throw new EntityNotFoundException("Issue not found by id " + issue.Id);
+                    }
+                }
+
                 _unitOfWork.IssueRepository.Update(_mapper.Map<Issue>(issue));
                 _unitOfWork.Save();
             }

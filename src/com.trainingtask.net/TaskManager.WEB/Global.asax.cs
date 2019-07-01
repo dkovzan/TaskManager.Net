@@ -1,15 +1,11 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Globalization;
-using log4net;
-using Ninject;
-using Ninject.Web.Mvc;
 using System.Reflection;
 using System.Threading;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using TaskManager.BLL.Infrastructure;
-using TaskManager.WEB.Mapping;
 
 namespace TaskManager.WEB
 {

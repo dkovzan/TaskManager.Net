@@ -68,10 +68,19 @@ namespace TaskManager.BLL.Services
             if (employee.Id == 0)
             {
                 _unitOfWork.EmployeeRepository.Add(_mapper.Map<Employee>(employee));
-                _unitOfWork.Save();
             }
             else
             {
+                if (employee.Id != null)
+                {
+                    var employeeFromDb = _unitOfWork.EmployeeRepository.GetById((int)employee.Id);
+
+                    if (employeeFromDb == null || employeeFromDb.IsDeleted == 1)
+                    {
+                        throw new EntityNotFoundException("Employee not found by id " + employee.Id);
+                    }
+                }
+
                 _unitOfWork.EmployeeRepository.Update(_mapper.Map<Employee>(employee));
                 _unitOfWork.Save();
             }

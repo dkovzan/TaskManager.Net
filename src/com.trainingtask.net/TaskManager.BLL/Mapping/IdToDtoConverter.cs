@@ -1,20 +1,25 @@
 ﻿using AutoMapper;
 using TaskManager.BLL.Models;
-using TaskManager.BLL.Services;
+using TaskManager.DAL;
 
 namespace TaskManager.BLL.Mapping
 {
     public class ProjectIdToProjectDtoConverter : ITypeConverter<int, ProjectDto>
     {
-        private readonly ProjectService _projectService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProjectIdToProjectDtoConverter (ProjectService projectService)
+        private readonly IMapper _mapper;
+
+        public ProjectIdToProjectDtoConverter (IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _projectService = projectService;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         public ProjectDto Convert(int srcId, ProjectDto dest, ResolutionContext context)
         {
-            var  project = srcId != 0 ? _projectService.FindProjectById(System.Convert.ToInt32(srcId)) : new ProjectDto {Id = srcId};
+            var  project = srcId != 0 
+                ? _mapper.Map<ProjectDto> (_unitOfWork.ProjectRepository.GetById(srcId)) 
+                : new ProjectDto {Id = srcId};
 
             return project;
         }
@@ -22,16 +27,20 @@ namespace TaskManager.BLL.Mapping
 
     public class EmployeeIdToEmployeeDtoConverter : ITypeConverter<int, EmployeeDto>
     {
-        private readonly EmployeeService _employeeService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public EmployeeIdToEmployeeDtoConverter(EmployeeService employeeService)
+        private readonly IMapper _mapper;
+
+
+        public EmployeeIdToEmployeeDtoConverter(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _employeeService = employeeService;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         public EmployeeDto Convert(int srcId, EmployeeDto dest, ResolutionContext context)
         {
             var employee = srcId != 0
-                ? _employeeService.FindEmployeeById(System.Convert.ToInt32(srcId))
+                ? _mapper.Map<EmployeeDto> (_unitOfWork.EmployeeRepository.GetById(srcId))
                 : new EmployeeDto {Id = srcId};
 
             return employee;

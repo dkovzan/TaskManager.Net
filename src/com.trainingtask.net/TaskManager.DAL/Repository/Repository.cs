@@ -17,7 +17,6 @@ namespace TaskManager.DAL.Repository
         int Add(T entity);
         void Update(T entity);
         void Delete(int id);
-        void Save();
     }
 
     public class Repository<T> : IRepository<T>
@@ -45,10 +44,7 @@ namespace TaskManager.DAL.Repository
 
             var properties = includeProperties.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var includeProperty in properties)
-            {
-                query = query.Include(includeProperty);
-            }
+            query = properties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
 
             return orderBy != null ? orderBy(query).ToList() : query.ToList();
         }
@@ -60,17 +56,24 @@ namespace TaskManager.DAL.Repository
         public int Add(T entity)
         {
             DbSet.Add(entity);
-            Save();
+            EntitiesContext.SaveChanges();
 
-            int generatedId = entity.Id;
+            var generatedId = entity.Id;
 
             return generatedId;
         }
 
         public void Update(T entity)
         {
-            
-            DbSet.Attach(entity);
+            var localEntity = DbSet
+                .Local
+                .FirstOrDefault(f => f.Id == entity.Id);
+
+            if (localEntity != null)
+            {
+                EntitiesContext.Entry(localEntity).State = EntityState.Detached;
+            }
+
             EntitiesContext.Entry(entity).State = EntityState.Modified;
         }
 
@@ -87,11 +90,6 @@ namespace TaskManager.DAL.Repository
                 DbSet.Attach(entity);
             }
             DbSet.Remove(entity);
-        }
-
-        public void Save()
-        {
-            EntitiesContext.SaveChanges();
         }
 
     }

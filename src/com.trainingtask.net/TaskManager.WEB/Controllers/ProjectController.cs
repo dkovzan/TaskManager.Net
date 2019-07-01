@@ -95,10 +95,10 @@ namespace TaskManager.WEB.Controllers
         {
             _logger.InfoFormat($"POST Project/AddOrUpdate {project}");
 
+            project.IssuesOfProject = Mapper.Map<List<IssueInListView>>(Session["runtimeIssues"]);
+
             if (!ModelState.IsValid)
             {
-                project.IssuesOfProject = Mapper.Map<List<IssueInListView>>(Session["runtimeIssues"]);
-
                 return View("Edit", project);
             }
 
@@ -113,7 +113,13 @@ namespace TaskManager.WEB.Controllers
                     ModelState.AddModelError(invalidField.Key, invalidField.Value);
                 }
 
-                project.IssuesOfProject = Mapper.Map<List<IssueInListView>>(Session["runtimeIssues"]);
+                return View("Edit", project);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.Warn(ex.Message);
+
+                ViewBag.Error = ex.Message;
 
                 return View("Edit", project);
             }

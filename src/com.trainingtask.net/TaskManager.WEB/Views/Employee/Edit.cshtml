@@ -3,9 +3,17 @@
 @{
     ViewBag.Title = "Edit employee";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var error = ViewBag.Error;
 }
 
 <h2>@ViewBag.Title</h2>
+
+@if (error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
 
 @using (Html.BeginForm(actionName: "AddOrUpdate", controllerName: "Employee"))
 {
@@ -14,7 +22,7 @@
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        
+
         @Html.HiddenFor(_ => _.Id)
         <div class="form-group required">
             @Html.LabelFor(_ => _.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
