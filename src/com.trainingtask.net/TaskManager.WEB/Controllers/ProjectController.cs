@@ -22,11 +22,11 @@ namespace TaskManager.WEB.Controllers
             _projectService = projectService;
         }
 
-        public override ActionResult List(int page = 1, int pageSize = 5)
+        public override ActionResult List(string sortColumn, bool? isAscending, int? page, int? pageSize)
         {
             _logger.Info($"GET Project/List?page={page}&pageSize={pageSize}");
 
-            var projectsFullList = Mapper.Map<List<ProjectDetailsView>>(_projectService.GetProjects());
+            var projectsFullList = Mapper.Map<List<ProjectDetailsView>>(_projectService.GetProjects(sortColumn, isAscending ?? true));
 
             var entitiesListViewPerPage = GetListViewPerPageWithPageInfo(projectsFullList, page, pageSize);
             
@@ -34,6 +34,9 @@ namespace TaskManager.WEB.Controllers
             {
                 ViewBag.Error = TempData["Error"];
             }
+
+            ViewBag.SortColumn = sortColumn;
+            ViewBag.IsAscending = isAscending ?? true;
 
             return View(new ProjectListView { Projects = entitiesListViewPerPage.EntitiesPerPageList, PageInfo = entitiesListViewPerPage.PageInfo });
         }
@@ -58,6 +61,8 @@ namespace TaskManager.WEB.Controllers
             try
             {
                 project = id == 0 ? new ProjectDetailsView { Id = id } : Mapper.Map<ProjectDetailsView>(_projectService.FindProjectById((int)id));
+
+                project.IssuesOfProject = Mapper.Map<List<IssueInListView>> (Session["runtimeIssues"]);
             }
             catch (EntityNotFoundException ex)
             {
@@ -67,8 +72,6 @@ namespace TaskManager.WEB.Controllers
 
                 return RedirectToAction(actionName: "List");
             }
-
-            project.IssuesOfProject = Mapper.Map<List<IssueInListView>>(Session["runtimeIssues"]);
 
             _logger.Info($"Project sent into view: {project}");
 

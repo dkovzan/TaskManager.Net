@@ -2,7 +2,9 @@
 @using TaskManager.WEB.Helpers
 @{
     ViewBag.Title = "Issues list";
+
     Layout = "~/Views/Shared/_Layout.cshtml";
+
     var error = ViewBag.Error;
 }
 
@@ -24,11 +26,51 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Project</th>
-                <th>Name</th>
-                <th>Begin Date</th>
-                <th>End Date</th>
-                <th>Assignee</th>
+                <th>
+                    Project
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "ProjectShortName", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "ProjectShortName", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
+                <th>
+                    Name
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "Name", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "Name", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
+                <th>
+                    Begin Date
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "BeginDate", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "BeginDate", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
+                <th>
+                    End Date
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EndDate", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EndDate", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
+                <th>
+                    Assignee
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EmployeeFullName", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EmployeeFullName", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
                 <th colspan="2"></th>
             </tr>
         </thead>
@@ -42,11 +84,14 @@
                     <td>@Html.DisplayFor(_ => issue.EndDate)</td>
                     <td>@Html.DisplayFor(_ => issue.EmployeeFullName)</td>
                     <td>
-                        @Html.ActionLink(linkText: "Edit", actionName: "Edit", controllerName: "Issue", routeValues: new { id = issue.Id }, htmlAttributes: new { @class = "btn btn-primary" })
+                        <a href="@Url.Action(actionName: "Edit", controllerName: "Issue", routeValues: new { id = (int) issue.Id })">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
                     </td>
                     <td>
-                        @Html.ActionLink(linkText: "Delete", actionName: "Delete", controllerName: "Issue", routeValues: new { id = issue.Id }, htmlAttributes: new { @class = "btn btn-primary" })
-                    </td>
+                        <a href="@Url.Action(actionName: "Delete", controllerName: "Issue", routeValues: new { id = (int) issue.Id })">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
                 </tr>
             }
         </tbody>
@@ -55,7 +100,7 @@
     {
     <br />
     <div class="btn-group">
-        @Html.PageLinks(Model.PageInfo, x => Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { page = x }))
+        @Html.PageLinks(Model.PageInfo, x => Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { page = x, sortColumn = ViewBag.SortColumn, isAscending = ViewBag.IsAscending }))
     </div>
     }
 }

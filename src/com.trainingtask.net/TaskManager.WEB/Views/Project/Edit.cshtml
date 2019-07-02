@@ -1,9 +1,12 @@
 ﻿@model TaskManager.WEB.ViewModels.ProjectDetailsView
 
 @{
-    ViewBag.Title = "Edit project";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Title = "Edit project";
+
     var employees = ViewBag.Employees;
+
     var error = ViewBag.Error;
 }
 
@@ -76,8 +79,16 @@
                         <td>@Html.DisplayFor(_ => issue.BeginDate)</td>
                         <td>@Html.DisplayFor(_ => issue.EndDate)</td>
                         <td>@Html.DisplayFor(_ => issue.EmployeeFullName)</td>
-                        <td>@Html.ActionLink(linkText: "Edit", actionName: "EditRuntime", controllerName: "Issue", routeValues: new { id = (int)issue.Id }, htmlAttributes: new { @class = "btn btn-primary", @onclick = "saveTempProject()" })</td>
-                        <td>@Html.ActionLink(linkText: "Delete", actionName: "DeleteRuntime", controllerName: "Issue", routeValues: new { id = (int)issue.Id }, htmlAttributes: new { @class = "btn btn-primary" })</td>
+                        <td>
+                            <a href="@Url.Action(actionName: "EditRuntime", controllerName: "Issue", routeValues: new { id = (int) issue.Id })" onclick = "saveTempProject()">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action(actionName: "DeleteRuntime", controllerName: "Issue", routeValues: new { id = (int) issue.Id })">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        </td>
                     </tr>
                 }
 

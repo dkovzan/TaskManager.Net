@@ -22,12 +22,11 @@ namespace TaskManager.WEB.Controllers
             _employeeService = employeeService;
         }
 
-        public override ActionResult List(int page = 1, int pageSize = 5)
+        public override ActionResult List(string sortColumn, bool? isAscending, int? page, int? pageSize)
         {
-
             _logger.Info($"GET Employee/List?page={page}&pageSize={pageSize}");
 
-            var employeesFullList = Mapper.Map<List<EmployeeDetailsView>>(_employeeService.GetEmployees());
+            var employeesFullList = Mapper.Map<List<EmployeeDetailsView>>(_employeeService.GetEmployees( sortColumn, isAscending ?? true));
 
             var entitiesListViewPerPage = GetListViewPerPageWithPageInfo(employeesFullList, page, pageSize);
 
@@ -35,6 +34,9 @@ namespace TaskManager.WEB.Controllers
             {
                 ViewBag.Error = TempData["Error"];
             }
+
+            ViewBag.SortColumn = sortColumn;
+            ViewBag.IsAscending = isAscending ?? true;
 
             return View(new EmployeesListView { Employees = entitiesListViewPerPage.EntitiesPerPageList, PageInfo = entitiesListViewPerPage.PageInfo });
         }

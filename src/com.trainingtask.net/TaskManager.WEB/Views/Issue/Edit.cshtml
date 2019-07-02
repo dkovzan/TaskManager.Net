@@ -1,12 +1,18 @@
 ﻿@model TaskManager.WEB.ViewModels.IssueEditView
 
 @{
-    ViewBag.Title = "Edit issue";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Title = "Edit issue";
+
     var issue = Model;
+
     var employees = ViewBag.Employees;
+
     var projects = ViewBag.Projects;
+
     var statuses = ViewBag.Statuses;
+
     var error = ViewBag.Error;
 }
 

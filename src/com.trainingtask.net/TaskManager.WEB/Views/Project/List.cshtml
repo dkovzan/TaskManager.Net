@@ -4,7 +4,9 @@
 
 @{
     ViewBag.Title = "Projects list";
+
     Layout = "~/Views/Shared/_Layout.cshtml";
+
     var error = ViewBag.Error;
 }
 
@@ -26,9 +28,33 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Short Name</th>
-                <th>Description</th>
+                <th>
+                    Name
+                    <a href="@Url.Action(actionName: "List", controllerName: "Project", routeValues: new { sortColumn = "Name", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Project", routeValues: new { sortColumn = "Name", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
+                <th>
+                    Short Name
+                    <a href="@Url.Action(actionName: "List", controllerName: "Project", routeValues: new { sortColumn = "ShortName", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Project", routeValues: new { sortColumn = "ShortName", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
+                <th>
+                    Description
+                    <a href="@Url.Action(actionName: "List", controllerName: "Project", routeValues: new { sortColumn = "Description", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Project", routeValues: new { sortColumn = "Description", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
                 <th colspan="2"></th>
             </tr>
         </thead>
@@ -40,10 +66,14 @@
                     <td>@Html.DisplayFor(_ => project.ShortName)</td>
                     <td>@Html.DisplayFor(_ => project.Description)</td>
                     <td>
-                        @Html.ActionLink(linkText: "Edit", actionName: "Edit", controllerName: "Project", routeValues: new { id = (int) project.Id, isCleanSessionNeeded = true }, htmlAttributes: new { @class = "btn btn-primary", @onclick = "clearTempProject()" })
+                        <a href="@Url.Action(actionName: "Edit", controllerName: "Project", routeValues: new { id = (int) project.Id, isCleanSessionNeeded = true })" onclick="clearTempProject()">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
                     </td>
                     <td>
-                        @Html.ActionLink(linkText: "Delete", actionName: "Delete", controllerName: "Project", routeValues: new { id = (int) project.Id }, htmlAttributes: new { @class = "btn btn-primary" })
+                        <a href="@Url.Action(actionName: "Delete", controllerName: "Project", routeValues: new { id = (int) project.Id })">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
                     </td>
                 </tr>
             }
@@ -53,7 +83,7 @@
     {
     <br />
     <div class="btn-group">
-        @Html.PageLinks(Model.PageInfo, x => Url.Action(actionName: "List", controllerName: "Project", routeValues: new { page = x }))
+        @Html.PageLinks(Model.PageInfo, x => Url.Action(actionName: "List", controllerName: "Project", routeValues: new { page = x, sortColumn = ViewBag.SortColumn, isAscending = ViewBag.IsAscending }))
     </div>
     }
 }

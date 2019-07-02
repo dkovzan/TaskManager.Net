@@ -11,7 +11,7 @@ namespace TaskManager.BLL.Services
 {
     public interface IProjectService
     {
-        List<ProjectDto> GetProjects();
+        List<ProjectDto> GetProjects(string sortColumn, bool isAscending);
         ProjectDto FindProjectById(int id);
         void DeleteProjectById(int id);
         void AddOrUpdateProject(ProjectDto project);
@@ -29,9 +29,41 @@ namespace TaskManager.BLL.Services
             _mapper = mapper;
         }
 
-        public List<ProjectDto> GetProjects()
+        public List<ProjectDto> GetProjects(string sortColumn, bool isAscending)
         {
-            return _mapper.Map<List<ProjectDto>>(_unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0));
+            IEnumerable<Project> projects;
+
+            switch (sortColumn)
+            {
+                case "Name" when isAscending:
+                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Name));
+                    break;
+
+                case "Name" when !isAscending:
+                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.Name));
+                    break;
+
+                case "ShortName" when isAscending:
+                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.ShortName));
+                    break;
+
+                case "ShortName" when !isAscending:
+                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.ShortName));
+                    break;
+
+                case "Description" when isAscending:
+                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Description));
+                    break;
+
+                case "Description" when !isAscending:
+                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.Description));
+                    break;
+
+                default:
+                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Id));
+                    break;
+            }
+            return _mapper.Map<List<ProjectDto>>(projects);
         }
 
         public ProjectDto FindProjectById(int id)
@@ -47,7 +79,7 @@ namespace TaskManager.BLL.Services
 
             if (runtimeIssues == null)
             {
-                HttpContext.Current.Session["runtimeIssues"] = _mapper.Map<List<IssueDto>>(_unitOfWork.IssueRepository.Get(x => x.ProjectId == id, includeProperties: "Employee"));
+                HttpContext.Current.Session["runtimeIssues"] = _mapper.Map<List<IssueDto>>(_unitOfWork.IssueRepository.Get(x => x.ProjectId == id && x.IsDeleted == 0, includeProperties: "Employee"));
             }
 
             return project;
@@ -102,6 +134,8 @@ namespace TaskManager.BLL.Services
         {
             var issues = (List<IssueDto>)HttpContext.Current.Session["runtimeIssues"] ?? new List<IssueDto>();
 
+            project.IssuesDto = null;
+
             var generatedProjectId = _unitOfWork.ProjectRepository.Add(_mapper.Map<Project>(project));
 
             foreach (var issue in issues)
@@ -130,9 +164,11 @@ namespace TaskManager.BLL.Services
                 }
             }
 
+            project.IssuesDto = null;
+
             _unitOfWork.ProjectRepository.Update(_mapper.Map<Project>(project));
 
-            var issuesFromDb = _unitOfWork.IssueRepository.Get(_ => _.ProjectId == project.Id).ToList();
+            var issuesFromDb = _unitOfWork.IssueRepository.Get(_ => _.ProjectId == project.Id && _.IsDeleted == 0).ToList();
 
             var issuesToDelete = new List<Issue>(issuesFromDb);
 

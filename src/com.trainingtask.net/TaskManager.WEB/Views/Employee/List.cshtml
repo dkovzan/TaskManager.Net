@@ -27,10 +27,42 @@
     <table class="table">
         <thead>
             <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Middle Name</th>
-                <th>Position</th>
+                <th>
+                    First Name
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "FirstName", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "FirstName", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
+                <th>
+                    Last Name
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "LastName", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "LastName", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
+                <th>
+                    Middle Name
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "MiddleName", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "MiddleName", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
+                <th>
+                    Position
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "Position", isAscending = true })">
+                        <i class="glyphicon glyphicon-triangle-top"></i>
+                    </a>
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "Position", isAscending = false })">
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                </th>
                 <th colspan="2"></th>
             </tr>
         </thead>
@@ -43,10 +75,14 @@
                     <td>@Html.DisplayFor(_ => employee.MiddleName)</td>
                     <td>@Html.DisplayFor(_ => employee.Position)</td>
                     <td>
-                        @Html.ActionLink(linkText: "Edit", actionName: "Edit", routeValues: new { id = (int) employee.Id }, controllerName: "Employee", htmlAttributes: new { @class = "btn btn-primary" })
+                        <a href="@Url.Action(actionName: "Edit", controllerName: "Employee", routeValues: new { id = (int) employee.Id })">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
                     </td>
                     <td>
-                        @Html.ActionLink(linkText: "Delete", actionName: "Delete", routeValues: new { id = (int) employee.Id }, controllerName: "Employee", htmlAttributes: new { @class = "btn btn-primary" })
+                        <a href="@Url.Action(actionName: "Delete", controllerName: "Employee", routeValues: new { id = (int) employee.Id })">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
                     </td>
                 </tr>
             }
@@ -56,7 +92,7 @@
     { 
     <br />
     <div class="btn-group">
-        @Html.PageLinks(Model.PageInfo, x => Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { page = x }))
+        @Html.PageLinks(Model.PageInfo, x => Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { page = x, sortColumn = ViewBag.SortColumn, isAscending = ViewBag.IsAscending }))
     </div>
     }
 }
