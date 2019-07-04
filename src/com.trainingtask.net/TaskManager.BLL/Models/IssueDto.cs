@@ -35,7 +35,7 @@ namespace TaskManager.BLL.Models
 
     public static class StatusDict
     {
-        static readonly Dictionary<int, string> Dict = new Dictionary<int, string>
+        private static readonly Dictionary<int, string> Dict = new Dictionary<int, string>
         {
             {0, "New"},
             {1, "In progress"},

@@ -27,11 +27,22 @@ namespace TaskManager.WEB.Controllers
             _projectService = projectService;
             _employeeService = employeeService;
         }
-        public override ActionResult List(string sortColumn, bool? isAscending, int? page, int? pageSize)
+        public override ActionResult List(string searchTerm, string currentFilter, string sortColumn, bool? isAscending, int? page, int? pageSize)
         {
             _logger.Info($"GET Issue/List?page={page}&pageSize={pageSize}");
 
-            var issuesFullList = Mapper.Map<List<IssueInListView>>(_issueService.GetIssues(sortColumn, isAscending ?? true));
+            if (searchTerm != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchTerm = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchTerm;
+
+            var issuesFullList = Mapper.Map<List<IssueInListView>>(_issueService.GetIssues(searchTerm, sortColumn, isAscending ?? true));
 
             var entitiesListViewPerPage = GetListViewPerPageWithPageInfo(issuesFullList, page, pageSize);
 
@@ -71,8 +82,8 @@ namespace TaskManager.WEB.Controllers
                 return RedirectToAction(actionName: "List");
             }
 
-            ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects(null, true));
-            ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees(null, true));
+            ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
+            ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
             ViewBag.Statuses = StatusDict.GetStatusDict();
 
             _logger.InfoFormat($"Issue sent into view: {issue}");
@@ -100,8 +111,8 @@ namespace TaskManager.WEB.Controllers
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects(null, true));
-                ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees(null, true));
+                ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
+                ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
                 ViewBag.Statuses = StatusDict.GetStatusDict();
 
                 return View("Edit", issue);
@@ -115,8 +126,8 @@ namespace TaskManager.WEB.Controllers
             {
                 _logger.Warn(ex.Message);
 
-                ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects(null, true));
-                ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees(null, true));
+                ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
+                ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
                 ViewBag.Statuses = StatusDict.GetStatusDict();
 
                 ViewBag.Error = ex.Message;
@@ -159,7 +170,7 @@ namespace TaskManager.WEB.Controllers
 
             issue.ProjectId = projectId;
 
-            ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees(null, true));
+            ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
             ViewBag.Statuses = StatusDict.GetStatusDict();
 
             _logger.Info($"Issue sent into view: {issue}");
@@ -176,7 +187,7 @@ namespace TaskManager.WEB.Controllers
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees(null, true));
+                ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
                 ViewBag.Statuses = StatusDict.GetStatusDict();
 
                 return View("EditRuntime", issue);

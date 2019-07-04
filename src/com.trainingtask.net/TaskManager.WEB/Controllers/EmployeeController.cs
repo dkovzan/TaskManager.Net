@@ -2,6 +2,7 @@
 using log4net;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Web.Caching;
 using System.Web.Mvc;
 using TaskManager.BLL.Exceptions;
 using TaskManager.BLL.Models;
@@ -22,11 +23,22 @@ namespace TaskManager.WEB.Controllers
             _employeeService = employeeService;
         }
 
-        public override ActionResult List(string sortColumn, bool? isAscending, int? page, int? pageSize)
+        public override ActionResult List(string searchTerm, string currentFilter, string sortColumn, bool? isAscending, int? page, int? pageSize)
         {
             _logger.Info($"GET Employee/List?page={page}&pageSize={pageSize}");
 
-            var employeesFullList = Mapper.Map<List<EmployeeDetailsView>>(_employeeService.GetEmployees( sortColumn, isAscending ?? true));
+            if (searchTerm != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchTerm = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchTerm;
+
+            var employeesFullList = Mapper.Map<List<EmployeeDetailsView>>(_employeeService.GetEmployees(searchTerm, sortColumn, isAscending ?? true));
 
             var entitiesListViewPerPage = GetListViewPerPageWithPageInfo(employeesFullList, page, pageSize);
 

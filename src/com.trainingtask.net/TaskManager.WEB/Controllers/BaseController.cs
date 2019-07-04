@@ -15,7 +15,7 @@ namespace TaskManager.WEB.Controllers
             Mapper = mapper;
         }
 
-        public abstract ActionResult List(string sortColumn, bool? isAscending, int? page, int? pageSize);
+        public abstract ActionResult List(string searchTerm, string currentFilter, string sortColumn, bool? isAscending, int? page, int? pageSize);
 
         public abstract ActionResult Delete(int id);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using TaskManager.BLL.Exceptions;
+using TaskManager.BLL.Infrastructure;
 using TaskManager.BLL.Models;
 using TaskManager.DAL;
 using TaskManager.DAL.Entities;
@@ -11,7 +12,8 @@ namespace TaskManager.BLL.Services
 {
     public interface IIssueService
     {
-        List<IssueDto> GetIssues(string sortColumn, bool isAscending);
+        List<IssueDto> GetIssues(string searchTerm, string sortColumn, bool isAscending);
+        List<IssueDto> GetIssues();
         IssueDto FindIssueById(int id);
         void DeleteIssueById(int id);
         void AddOrUpdateIssue(IssueDto issue);
@@ -30,58 +32,83 @@ namespace TaskManager.BLL.Services
             _mapper = mapper;
         }
 
-        public List<IssueDto> GetIssues(string sortColumn, bool isAscending)
+        public List<IssueDto> GetIssues(string searchTerm, string sortColumn, bool isAscending)
         {
             IEnumerable<Issue> issues;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var searchTerms = searchTerm.ToTermsArray();
+
+                issues = _unitOfWork.IssueRepository.Get(
+                    includeProperties: "Project,Employee", 
+                    filter: _ => _.IsDeleted == 0).Where(_ => searchTerms.All(x => _.BeginDate.ToString("dd-MM-yyyy").Contains(x) || 
+                                                                                   _.EndDate.ToString("dd-MM-yyyy").Contains(x) || 
+                                                                                   _.Work.ToString().Contains(x) || 
+                                                                                   _.Employee.FirstName.ToLower().Contains(x.ToLower()) || 
+                                                                                   _.Employee.LastName.ToLower().Contains(x.ToLower()) || 
+                                                                                   _.Project.ShortName.ToLower().Contains(x.ToLower()) || 
+                                                                                   _.Name.ToLower().Contains(x.ToLower())));
+            }
+            else
+            {
+                issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0);
+            }
 
             switch (sortColumn)
             {
                 case "ProjectShortName" when isAscending:
-                    issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Project.ShortName));
+                    issues = issues.OrderBy(_ => _.Project.ShortName);
                     break;
 
                 case "ProjectShortName" when !isAscending:
-                    issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.Project.ShortName));
+                    issues = issues.OrderByDescending(_ => _.Project.ShortName);
                     break;
 
                 case "Name" when isAscending:
-                    issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Name));
+                    issues = issues.OrderBy(_ => _.Name);
                     break;
 
                 case "Name" when !isAscending:
-                    issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.Name));
+                    issues = issues.OrderByDescending(_ => _.Name);
                     break;
 
                 case "BeginDate" when isAscending:
-                    issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.BeginDate));
+                    issues = issues.OrderBy(_ => _.BeginDate);
                     break;
 
                 case "BeginDate" when !isAscending:
-                    issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.BeginDate));
+                    issues = issues.OrderByDescending(_ => _.BeginDate);
                     break;
 
                 case "EndDate" when isAscending:
-                    issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.EndDate));
+                    issues = issues.OrderBy(_ => _.EndDate);
                     break;
 
                 case "EndDate" when !isAscending:
-                    issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.EndDate));
+                    issues = issues.OrderByDescending(_ => _.EndDate);
                     break;
 
                 case "EmployeeFullName" when isAscending:
-                    issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Employee.FirstName).ThenBy(x => x.Employee.LastName));
+                    issues = issues.OrderBy(_ => _.Employee.FirstName).ThenBy(_ => _.Employee.LastName);
                     break;
 
                 case "EmployeeFullName" when !isAscending:
-                    issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.Employee.FirstName).ThenByDescending(x => x.Employee.LastName));
+                    issues = issues.OrderByDescending(_ => _.Employee.FirstName).ThenByDescending(_ => _.Employee.LastName);
                     break;
 
                 default:
-                    issues = _unitOfWork.IssueRepository.Get(includeProperties: "Project,Employee", filter: _ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Id));
+                    issues = issues.OrderBy(_ => _.Id);
                     break;
             }
 
             return _mapper.Map<List<IssueDto>>(issues);
+        }
+
+        public List<IssueDto> GetIssues()
+        {
+            return _mapper.Map<List<IssueDto>>(_unitOfWork.IssueRepository.Get(_ => _.IsDeleted == 0,
+                includeProperties: "Employee,Project"));
         }
 
         public IssueDto FindIssueById(int id)

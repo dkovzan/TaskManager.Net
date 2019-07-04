@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using TaskManager.BLL.Exceptions;
+using TaskManager.BLL.Infrastructure;
 using TaskManager.BLL.Models;
 using TaskManager.DAL;
 using TaskManager.DAL.Entities;
@@ -11,7 +12,8 @@ namespace TaskManager.BLL.Services
 {
     public interface IProjectService
     {
-        List<ProjectDto> GetProjects(string sortColumn, bool isAscending);
+        List<ProjectDto> GetProjects(string searchTerm, string sortColumn, bool isAscending);
+        List<ProjectDto> GetProjects();
         ProjectDto FindProjectById(int id);
         void DeleteProjectById(int id);
         void AddOrUpdateProject(ProjectDto project);
@@ -29,41 +31,59 @@ namespace TaskManager.BLL.Services
             _mapper = mapper;
         }
 
-        public List<ProjectDto> GetProjects(string sortColumn, bool isAscending)
+        public List<ProjectDto> GetProjects(string searchTerm, string sortColumn, bool isAscending)
         {
             IEnumerable<Project> projects;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var searchTerms = searchTerm.ToTermsArray();
+
+                projects = _unitOfWork.ProjectRepository.Get(
+                    _ => searchTerms.All(x => _.Name.Contains(x) || _.ShortName.Contains(x) || _.Description.Contains(x))
+                                              && _.IsDeleted == 0);
+            }
+            else
+            {
+                projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0);
+            }
 
             switch (sortColumn)
             {
                 case "Name" when isAscending:
-                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Name));
+                    projects = projects.OrderBy(_ => _.Name);
                     break;
 
                 case "Name" when !isAscending:
-                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.Name));
+                    projects = projects.OrderByDescending(_ => _.Name);
                     break;
 
                 case "ShortName" when isAscending:
-                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.ShortName));
+                    projects = projects.OrderBy(_ => _.ShortName);
                     break;
 
                 case "ShortName" when !isAscending:
-                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.ShortName));
+                    projects = projects.OrderByDescending(_ => _.ShortName);
                     break;
 
                 case "Description" when isAscending:
-                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Description));
+                    projects = projects.OrderBy(_ => _.Description);
                     break;
 
                 case "Description" when !isAscending:
-                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.Description));
+                    projects = projects.OrderBy(_ => _.Description);
                     break;
 
                 default:
-                    projects = _unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Id));
+                    projects = projects.OrderBy(_ => _.Id);
                     break;
             }
             return _mapper.Map<List<ProjectDto>>(projects);
+        }
+
+        public List<ProjectDto> GetProjects()
+        {
+            return _mapper.Map<List<ProjectDto>>(_unitOfWork.ProjectRepository.Get(_ => _.IsDeleted == 0));
         }
 
         public ProjectDto FindProjectById(int id)

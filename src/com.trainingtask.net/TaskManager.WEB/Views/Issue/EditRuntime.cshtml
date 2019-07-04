@@ -30,28 +30,28 @@
     <div class="form-group required">
         @Html.LabelFor(_ => _.Name, htmlAttributes: new { @class = "control-label col-md-2"})
         <div class="col-md-10">
-            @Html.EditorFor(_ => _.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(_ => _.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Write name" } })
             @Html.ValidationMessageFor(_ => _.Name, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group required">
         @Html.LabelFor(_ => _.Work, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(_ => _.Work, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(_ => _.Work, new { htmlAttributes = new { @class = "form-control", @placeholder = "Write work (natural number)" } })
             @Html.ValidationMessageFor(_ => _.Work, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group required">
         @Html.LabelFor(_ => _.BeginDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(_ => _.BeginDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(_ => _.BeginDate, new { htmlAttributes = new { @class = "form-control" }, @placeholder = "Write begin date" })
             @Html.ValidationMessageFor(_ => _.BeginDate, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group required">
         @Html.LabelFor(_ => _.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(_ => _.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(_ => _.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Write end date" } })
             @Html.ValidationMessageFor(_ => _.EndDate, "", new { @class = "text-danger" })
         </div>
     </div>

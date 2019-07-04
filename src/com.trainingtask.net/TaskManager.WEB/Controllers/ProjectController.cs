@@ -22,11 +22,22 @@ namespace TaskManager.WEB.Controllers
             _projectService = projectService;
         }
 
-        public override ActionResult List(string sortColumn, bool? isAscending, int? page, int? pageSize)
+        public override ActionResult List(string searchTerm, string currentFilter, string sortColumn, bool? isAscending, int? page, int? pageSize)
         {
             _logger.Info($"GET Project/List?page={page}&pageSize={pageSize}");
 
-            var projectsFullList = Mapper.Map<List<ProjectDetailsView>>(_projectService.GetProjects(sortColumn, isAscending ?? true));
+            if (searchTerm != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchTerm = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchTerm;
+
+            var projectsFullList = Mapper.Map<List<ProjectDetailsView>>(_projectService.GetProjects(searchTerm, sortColumn, isAscending ?? true));
 
             var entitiesListViewPerPage = GetListViewPerPageWithPageInfo(projectsFullList, page, pageSize);
             

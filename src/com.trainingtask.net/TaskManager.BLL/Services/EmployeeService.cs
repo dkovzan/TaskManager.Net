@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TaskManager.BLL.Exceptions;
+using TaskManager.BLL.Infrastructure;
 using TaskManager.BLL.Models;
 using TaskManager.DAL;
 using TaskManager.DAL.Entities;
@@ -10,7 +11,8 @@ namespace TaskManager.BLL.Services
 {
     public interface IEmployeeService
     {
-        List<EmployeeDto> GetEmployees(string sortColumn, bool isAscending);
+        List<EmployeeDto> GetEmployees(string searchTerm, string sortColumn, bool isAscending);
+        List<EmployeeDto> GetEmployees();
         EmployeeDto FindEmployeeById(int id);
         void DeleteEmployeeById(int id);
         void AddOrUpdateEmployee(EmployeeDto employee);
@@ -28,49 +30,67 @@ namespace TaskManager.BLL.Services
             _mapper = mapper;
         }
 
-        public List<EmployeeDto> GetEmployees(string sortColumn, bool isAscending)
+        public List<EmployeeDto> GetEmployees(string searchTerm, string sortColumn, bool isAscending)
         {
             IEnumerable<Employee> employees;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var searchTerms = searchTerm.ToTermsArray();
+
+                employees = _unitOfWork.EmployeeRepository.Get(
+                    _ => searchTerms.All(x => _.FirstName.Contains(x) || _.LastName.Contains(x) || _.MiddleName.Contains(x) || _.Position.Contains(x)) 
+                         && _.IsDeleted == 0);
+            }
+            else
+            {
+                employees = _unitOfWork.EmployeeRepository.Get(_ => _.IsDeleted == 0);
+            }
 
             switch (sortColumn)
             {
                 case "FirstName" when isAscending:
-                    employees = _unitOfWork.EmployeeRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.FirstName));
+                    employees = employees.OrderBy(_ => _.FirstName);
                     break;
 
                 case "FirstName" when !isAscending:
-                    employees = _unitOfWork.EmployeeRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.FirstName));
+                    employees = employees.OrderByDescending(_ => _.FirstName);
                     break;
 
                 case "LastName" when isAscending:
-                    employees = _unitOfWork.EmployeeRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.LastName));
+                    employees = employees.OrderBy(_ => _.LastName);
                     break;
 
                 case "LastName" when !isAscending:
-                    employees = _unitOfWork.EmployeeRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.LastName));
+                    employees = employees.OrderByDescending(_ => _.LastName);
                     break;
 
                 case "MiddleName" when isAscending:
-                    employees = _unitOfWork.EmployeeRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.MiddleName));
+                    employees = employees.OrderBy(_ => _.MiddleName);
                     break;
 
                 case "MiddleName" when !isAscending:
-                    employees = _unitOfWork.EmployeeRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.MiddleName));
+                    employees = employees.OrderByDescending(_ => _.MiddleName);
                     break;
 
                 case "Position" when isAscending:
-                    employees = _unitOfWork.EmployeeRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Position));
+                    employees = employees.OrderBy(_ => _.Position);
                     break;
 
                 case "Position" when !isAscending:
-                    employees = _unitOfWork.EmployeeRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderByDescending(x => x.Position));
+                    employees = employees.OrderByDescending(_ => _.Position);
                     break;
 
                 default:
-                    employees = _unitOfWork.EmployeeRepository.Get(_ => _.IsDeleted == 0, orderBy: _ => _.OrderBy(x => x.Id));
+                    employees = employees.OrderBy(_ => _.Id);
                     break;
             }
             return _mapper.Map<List<EmployeeDto>>(employees);
+        }
+
+        public List<EmployeeDto> GetEmployees()
+        {
+            return _mapper.Map<List<EmployeeDto>>(_unitOfWork.EmployeeRepository.Get(_ => _.IsDeleted == 0));
         }
 
         public EmployeeDto FindEmployeeById(int id)

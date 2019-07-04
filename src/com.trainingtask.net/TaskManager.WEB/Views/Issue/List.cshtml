@@ -21,6 +21,16 @@
     </div>
 }
 
+@using (Html.BeginForm())
+{
+    <p>
+        @Html.TextBox("SearchTerm", ViewBag.CurrentFilter as string, htmlAttributes: new { @placeholder = "Search", @maxlength = 200 })
+        <button type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+        </button>
+    </p>
+}
+
 @if (Model.Issues != null && Model.Issues.Any())
 {
     <table class="table">
@@ -28,46 +38,46 @@
             <tr>
                 <th>
                     Project
-                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "ProjectShortName", isAscending = true })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "ProjectShortName", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
-                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "ProjectShortName", isAscending = false })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "ProjectShortName", isAscending = false, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </a>
                 </th>
                 <th>
                     Name
-                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "Name", isAscending = true })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "Name", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
-                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "Name", isAscending = false })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "Name", isAscending = false, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </a>
                 </th>
                 <th>
                     Begin Date
-                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "BeginDate", isAscending = true })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "BeginDate", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
-                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "BeginDate", isAscending = false })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "BeginDate", isAscending = false, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </a>
                 </th>
                 <th>
                     End Date
-                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EndDate", isAscending = true })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EndDate", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
-                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EndDate", isAscending = false })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EndDate", isAscending = false, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </a>
                 </th>
                 <th>
                     Assignee
-                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EmployeeFullName", isAscending = true })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EmployeeFullName", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
-                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EmployeeFullName", isAscending = false })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EmployeeFullName", isAscending = false, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </a>
                 </th>
@@ -98,15 +108,15 @@
     </table>
     if (Model.PageInfo.TotalItems > Model.PageInfo.PageSize)
     {
-    <br />
-    <div class="btn-group">
-        @Html.PageLinks(Model.PageInfo, x => Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { page = x, sortColumn = ViewBag.SortColumn, isAscending = ViewBag.IsAscending }))
-    </div>
+        <br />
+        <div class="btn-group">
+            @Html.PageLinks(Model.PageInfo, x => Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { page = x, sortColumn = ViewBag.SortColumn, isAscending = ViewBag.IsAscending, currentFilter = ViewBag.CurrentFilter }))
+        </div>
     }
 }
 else
 {
     <div class="alert alert-warning" role="alert">
-        There are no issues yet!
+        Issues are not found!
     </div>
 }

@@ -12,7 +12,6 @@
 
 <h2>
     @Html.ActionLink(linkText: "Create new employee", actionName: "Edit", routeValues: new { id = 0 }, controllerName: "Employee", htmlAttributes: new { @class = "btn btn-primary" })
-
 </h2>
 
 @if (error != null)
@@ -22,6 +21,16 @@
     </div>
 }
 
+@using (Html.BeginForm())
+{
+    <p>
+        @Html.TextBox("SearchTerm", ViewBag.CurrentFilter as string, htmlAttributes: new { @placeholder = "Search", @maxlength = 200})
+        <button type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+        </button>
+    </p>
+}
+
 @if (Model.Employees != null && Model.Employees.Any())
 {
     <table class="table">
@@ -29,37 +38,37 @@
             <tr>
                 <th>
                     First Name
-                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "FirstName", isAscending = true })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "FirstName", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
-                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "FirstName", isAscending = false })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "FirstName", isAscending = false, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </a>
                 </th>
                 <th>
                     Last Name
-                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "LastName", isAscending = true })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "LastName", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
-                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "LastName", isAscending = false })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "LastName", isAscending = false, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </a>
                 </th>
                 <th>
                     Middle Name
-                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "MiddleName", isAscending = true })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "MiddleName", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
-                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "MiddleName", isAscending = false })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "MiddleName", isAscending = false, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </a>
                 </th>
                 <th>
                     Position
-                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "Position", isAscending = true })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "Position", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
-                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "Position", isAscending = false })">
+                    <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "Position", isAscending = false, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </a>
                 </th>
@@ -89,16 +98,16 @@
         </tbody>
     </table>
     if (Model.PageInfo.TotalItems > Model.PageInfo.PageSize)
-    { 
-    <br />
-    <div class="btn-group">
-        @Html.PageLinks(Model.PageInfo, x => Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { page = x, sortColumn = ViewBag.SortColumn, isAscending = ViewBag.IsAscending }))
-    </div>
+    {
+        <br />
+        <div class="btn-group">
+            @Html.PageLinks(Model.PageInfo, x => Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { page = x, sortColumn = ViewBag.SortColumn, isAscending = ViewBag.IsAscending, currentFilter = ViewBag.CurrentFilter }))
+        </div>
     }
 }
 else
 {
     <div class="alert alert-warning" role="alert">
-        There are no employees yet!
+        Employees are not found!
     </div>
 }
