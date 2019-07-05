@@ -1,7 +1,7 @@
 ﻿@model TaskManager.WEB.ViewModels.IssuesListView
 @using TaskManager.WEB.Helpers
 @{
-    ViewBag.Title = "Issues list";
+    ViewBag.Title = IssueResource.IssuesList;
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 
@@ -11,7 +11,7 @@
 <h3>@ViewBag.Title</h3>
 
 <h2>
-    @Html.ActionLink(linkText: "Create new issue", actionName: "Edit", controllerName: "Issue", routeValues: new { id = 0 }, htmlAttributes: new { @class = "btn btn-primary" })
+    @Html.ActionLink(linkText: IssueResource.CreateIssue, actionName: "Edit", controllerName: "Issue", routeValues: new { id = 0 }, htmlAttributes: new { @class = "btn btn-primary" })
 </h2>
 
 @if (error != null)
@@ -24,7 +24,7 @@
 @using (Html.BeginForm())
 {
     <p>
-        @Html.TextBox("SearchTerm", ViewBag.CurrentFilter as string, htmlAttributes: new { @placeholder = "Search", @maxlength = 200 })
+        @Html.TextBox("SearchTerm", ViewBag.CurrentFilter as string, htmlAttributes: new { @placeholder = CommonResource.Search, @maxlength = 200 })
         <button type="submit">
             <i class="glyphicon glyphicon-search"></i>
         </button>
@@ -37,7 +37,7 @@
         <thead>
             <tr>
                 <th>
-                    Project
+                    @IssueResource.IssueProject
                     <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "ProjectShortName", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
@@ -46,7 +46,7 @@
                     </a>
                 </th>
                 <th>
-                    Name
+                    @IssueResource.Name
                     <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "Name", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
@@ -55,7 +55,7 @@
                     </a>
                 </th>
                 <th>
-                    Begin Date
+                    @IssueResource.BeginDate
                     <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "BeginDate", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
@@ -64,7 +64,7 @@
                     </a>
                 </th>
                 <th>
-                    End Date
+                    @IssueResource.EndDate
                     <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EndDate", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
@@ -73,7 +73,7 @@
                     </a>
                 </th>
                 <th>
-                    Assignee
+                    @IssueResource.IssueEmployee
                     <a href="@Url.Action(actionName: "List", controllerName: "Issue", routeValues: new { sortColumn = "EmployeeFullName", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
@@ -117,6 +117,6 @@
 else
 {
     <div class="alert alert-warning" role="alert">
-        Issues are not found!
+        @IssueResource.IssuesNotFound
     </div>
 }

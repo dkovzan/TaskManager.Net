@@ -7,6 +7,7 @@ using TaskManager.BLL.Infrastructure;
 using TaskManager.BLL.Models;
 using TaskManager.DAL;
 using TaskManager.DAL.Entities;
+using TaskManager.Resources;
 
 namespace TaskManager.BLL.Services
 {
@@ -92,7 +93,7 @@ namespace TaskManager.BLL.Services
 
             if (project == null || project.IsDeleted == 1)
             {
-                throw new EntityNotFoundException("Project not found by id " + id);
+                throw new EntityNotFoundException(ProjectResource.ProjectNotFoundById + id);
             }
 
             var runtimeIssues = (List<IssueDto>)HttpContext.Current.Session["runtimeIssues"];
@@ -130,7 +131,7 @@ namespace TaskManager.BLL.Services
 
             if (project.Id != null && !IsProjectShortNameUnique((int)project.Id, project.ShortName))
             {
-                invalidFieldsWithMessages.Add("ShortName", "Short name should be unique.");
+                invalidFieldsWithMessages.Add("ShortName", ProjectResource.ShortNameNotUnique);
             }
 
             if (invalidFieldsWithMessages.Any())
@@ -180,7 +181,7 @@ namespace TaskManager.BLL.Services
 
                 if (projectFromDb == null || projectFromDb.IsDeleted == 1)
                 {
-                    throw new EntityNotFoundException("Project not found by id " + project.Id);
+                    throw new EntityNotFoundException(ProjectResource.ProjectNotFoundById + project.Id);
                 }
             }
 

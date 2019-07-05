@@ -1,8 +1,5 @@
 ﻿using log4net;
-using System;
-using System.Globalization;
 using System.Reflection;
-using System.Threading;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -26,13 +23,13 @@ namespace TaskManager.WEB
             _logger.Error(Server.GetLastError());
         }
 
-        protected void Application_BeginRequest(object sender, EventArgs e)
-        {
-            var newCulture = (CultureInfo) Thread.CurrentThread.CurrentCulture.Clone();
-            newCulture.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
-            newCulture.DateTimeFormat.DateSeparator = "-";
-            Thread.CurrentThread.CurrentCulture = newCulture;
-        }
+        //protected void Application_BeginRequest(object sender, EventArgs e)
+        //{
+        //    var newCulture = (CultureInfo) Thread.CurrentThread.CurrentCulture.Clone();
+        //    newCulture.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+        //    newCulture.DateTimeFormat.DateSeparator = "-";
+        //    Thread.CurrentThread.CurrentCulture = newCulture;
+        //}
 
     }
 }

@@ -18,10 +18,10 @@ namespace TaskManager.WEB.ViewModels
 
         public string Name { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime BeginDate { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
         public int Work { get; set; }
@@ -42,38 +42,48 @@ namespace TaskManager.WEB.ViewModels
     {
         public int? Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Resources.IssueResource), ErrorMessageResourceName = "NameRequired")]
+        [Display(Name = "Name", ResourceType = typeof(Resources.IssueResource))]
+        [StringLength(255, ErrorMessageResourceType = typeof(Resources.IssueResource),
+            ErrorMessageResourceName = "NameLong")]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Begin Date")]
-        [MinDate(1900, 1, 1, ErrorMessage = "Begin date cannot be earlier then 01-01-1900")]
-        [MaxDate(9999, 12, 31, ErrorMessage = "Date cannot be later then 31-12-9999")]
-        [EarlierDate("EndDate", ErrorMessage = "Begin date cannot be later then end date")]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessageResourceType = typeof(Resources.IssueResource), ErrorMessageResourceName = "BeginDateRequired")]
+        [Display(Name = "BeginDate", ResourceType = typeof(Resources.IssueResource))]
+        [MinDate(1900, 1, 1, ErrorMessageResourceType = typeof(Resources.IssueResource), 
+            ErrorMessageResourceName = "MinDate")]
+        [MaxDate(9999, 12, 31, ErrorMessageResourceType = typeof(Resources.IssueResource), 
+            ErrorMessageResourceName = "MaxDate")]
+        [EarlierDate("EndDate", ErrorMessageResourceType = typeof(Resources.IssueResource),
+            ErrorMessageResourceName = "EarlierDate")]
+        [DataType(DataType.Date)]
         public DateTime? BeginDate { get; set; }
 
-        [Required]
-        [Display(Name = "End Date")]
-        [MinDate(1900, 1, 1, ErrorMessage = "End date cannot be earlier then 01-01-1900")]
-        [MaxDate(9999, 12, 31, ErrorMessage = "Date cannot be later then 31-12-9999")]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessageResourceType = typeof(Resources.IssueResource), ErrorMessageResourceName = "EndDateRequired")]
+        [Display(Name = "EndDate", ResourceType = typeof(Resources.IssueResource))]
+        [MinDate(1900, 1, 1, ErrorMessageResourceType = typeof(Resources.IssueResource),
+            ErrorMessageResourceName = "MinDate")]
+        [MaxDate(9999, 12, 31, ErrorMessageResourceType = typeof(Resources.IssueResource),
+            ErrorMessageResourceName = "MaxDate")]
+        [DataType(DataType.Date)]
         public DateTime? EndDate { get; set; }
 
-        [Required]
-        [Range(1, 1000000, ErrorMessage = "Work hours should be between 1 and 1000000")]
+        [Required(ErrorMessageResourceType = typeof(Resources.IssueResource), ErrorMessageResourceName = "WorkRequired")]
+        [Display(Name = "Work", ResourceType = typeof(Resources.IssueResource))]
+        [Range(1, 1000000, ErrorMessageResourceType = typeof(Resources.IssueResource), 
+            ErrorMessageResourceName = "WorkInvalid")]
         public int? Work { get; set; }
 
-        [Required]
-        [Display(Name = "Project")]
+        [Required(ErrorMessageResourceType = typeof(Resources.IssueResource), ErrorMessageResourceName = "IssueProjectRequired")]
+        [Display(Name = "IssueProject", ResourceType = typeof(Resources.IssueResource))]
         public int? ProjectId { get; set; }
 
-        [Required]
-        [Display(Name = "Assignee")]
+        [Required(ErrorMessageResourceType = typeof(Resources.IssueResource), ErrorMessageResourceName = "IssueEmployeeRequired")]
+        [Display(Name = "IssueEmployee", ResourceType = typeof(Resources.IssueResource))]
         public int? EmployeeId { get; set; }
 
-        [Required]
-        [Display(Name = "Status")]
+        [Required(ErrorMessageResourceType = typeof(Resources.IssueResource), ErrorMessageResourceName = "StatusRequired")]
+        [Display(Name = "Status", ResourceType = typeof(Resources.IssueResource))]
         public int? StatusId { get; set; }
 
         public override string ToString()

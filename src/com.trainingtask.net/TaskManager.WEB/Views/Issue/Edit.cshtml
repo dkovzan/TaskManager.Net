@@ -3,7 +3,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    ViewBag.Title = "Edit issue";
+    ViewBag.Title = IssueResource.EditIssue;
 
     var issue = Model;
 
@@ -39,7 +39,7 @@
             @Html.LabelFor(_ => _.ProjectId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <select class="form-control" name="ProjectId">
-                    <option hidden selected disabled>Select project</option>
+                    <option hidden selected disabled>@IssueResource.IssueProjectPlaceholder</option>
                     @foreach (var project in projects)
                     {
                         if (project.Id == issue.ProjectId)
@@ -58,28 +58,28 @@
         <div class="form-group required">
             @Html.LabelFor(_ => _.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(_ => _.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Write name" } })
+                @Html.EditorFor(_ => _.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = IssueResource.NamePlaceholder } })
                 @Html.ValidationMessageFor(_ => _.Name, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group required">
             @Html.LabelFor(_ => _.Work, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(_ => _.Work, new { htmlAttributes = new { @class = "form-control", @placeholder = "Write work (natural number)" } })
+                @Html.EditorFor(_ => _.Work, new { htmlAttributes = new { @class = "form-control", @placeholder = IssueResource.WorkPlaceholder } })
                 @Html.ValidationMessageFor(_ => _.Work, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group required">
             @Html.LabelFor(_ => _.BeginDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(_ => _.BeginDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Write begin date" } })
+                @Html.EditorFor(_ => _.BeginDate, new { htmlAttributes = new { @class = "form-control", @placeholder = IssueResource.BeginDatePlaceholder } })
                 @Html.ValidationMessageFor(_ => _.BeginDate, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group required">
             @Html.LabelFor(_ => _.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(_ => _.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Write end date" } })
+                @Html.EditorFor(_ => _.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = IssueResource.EndDatePlaceholder } })
                 @Html.ValidationMessageFor(_ => _.EndDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -87,7 +87,7 @@
             @Html.LabelFor(_ => _.EmployeeId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <select class="form-control" name="EmployeeId">
-                    <option hidden selected disabled>Select assignee</option>
+                    <option hidden selected disabled>@IssueResource.IssueEmployeePlaceholder</option>
                     @foreach (var employee in employees)
                     {
                         if (employee.Id == issue.EmployeeId)
@@ -107,7 +107,7 @@
             @Html.LabelFor(_ => _.StatusId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <select class="form-control" name="StatusId">
-                    <option hidden selected disabled>Select status</option>
+                    <option hidden selected disabled>@IssueResource.StatusPlaceholder</option>
                     @foreach (var status in statuses)
                     {
                         if (status.Key == issue.StatusId)
@@ -124,8 +124,8 @@
             </div>
         </div>
         <div class="form-group">
-            <input class="btn btn-primary" type="submit" value="Save" />
-            @Html.ActionLink(linkText: "Cancel", actionName: "List", routeValues: null, controllerName: "Issue", htmlAttributes: new { @class = "btn" })
+            <input class="btn btn-primary" type="submit" value=@CommonResource.Save />
+            @Html.ActionLink(linkText: CommonResource.Cancel, actionName: "List", routeValues: null, controllerName: "Issue", htmlAttributes: new { @class = "btn" })
         </div>
     </div>
 

@@ -151,6 +151,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Ninject.Web.Common.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ApiController.cs" />
+    <Compile Include="Helpers\CultureHelper.cs" />
     <Compile Include="Mapping\AutoMapperModule.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
@@ -228,6 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Api\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -246,6 +249,10 @@
     <ProjectReference Include="..\TaskManager.BLL\TaskManager.BLL.csproj">
       <Project>{0A21C17B-929B-4B95-8CAF-2F7EE7F7F976}</Project>
       <Name>TaskManager.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaskManager.Resources\TaskManager.Resources.csproj">
+      <Project>{d8675c6e-191e-4f1b-a82c-60f554383a38}</Project>
+      <Name>TaskManager.Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

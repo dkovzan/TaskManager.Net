@@ -73,6 +73,10 @@
       <Project>{9074498d-b642-4e6b-8d7f-e3b8b6d51ae6}</Project>
       <Name>TaskManager.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TaskManager.Resources\TaskManager.Resources.csproj">
+      <Project>{d8675c6e-191e-4f1b-a82c-60f554383a38}</Project>
+      <Name>TaskManager.Resources</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

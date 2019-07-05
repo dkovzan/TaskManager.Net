@@ -6,6 +6,7 @@ using TaskManager.BLL.Infrastructure;
 using TaskManager.BLL.Models;
 using TaskManager.DAL;
 using TaskManager.DAL.Entities;
+using TaskManager.Resources;
 
 namespace TaskManager.BLL.Services
 {
@@ -99,7 +100,7 @@ namespace TaskManager.BLL.Services
 
             if (employee == null || employee.IsDeleted == 1)
             {
-                throw new EntityNotFoundException("Employee not found by id " + id);
+                throw new EntityNotFoundException( EmployeeResource.EmployeeNotFoundById + id);
             }
 
             return employee;
@@ -119,7 +120,7 @@ namespace TaskManager.BLL.Services
             }
             else
             {
-                throw new DaoException("Employee cannot be deleted while is being assigned to task");
+                throw new DaoException(EmployeeResource.EmployeeCannotBeDeleted);
             }
         }
 
@@ -137,7 +138,7 @@ namespace TaskManager.BLL.Services
 
                     if (employeeFromDb == null || employeeFromDb.IsDeleted == 1)
                     {
-                        throw new EntityNotFoundException("Employee not found by id " + employee.Id);
+                        throw new EntityNotFoundException(EmployeeResource.EmployeeNotFoundById + employee.Id);
                     }
                 }
 

@@ -3,7 +3,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    ViewBag.Title = "Edit project";
+    ViewBag.Title = ProjectResource.EditProject;
 
     var employees = ViewBag.Employees;
 
@@ -30,33 +30,33 @@
         <div class="form-group required">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Write name" } })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = ProjectResource.NamePlaceholder } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group required">
             @Html.LabelFor(model => model.ShortName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ShortName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Write short name" } })
+                @Html.EditorFor(model => model.ShortName, new { htmlAttributes = new { @class = "form-control", @placeholder = ProjectResource.ShortNamePlaceholder } })
                 @Html.ValidationMessageFor(model => model.ShortName, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Write description" } })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = ProjectResource.DescriptionPlaceholder } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" onclick="clearTempProject()" />
-                @Html.ActionLink(linkText: "Cancel", actionName: "List", routeValues: null, controllerName: "Project", htmlAttributes: new { @class = "btn" })
+                <input type="submit" value=@CommonResource.Save class="btn btn-default" onclick="clearTempProject()" />
+                @Html.ActionLink(linkText: CommonResource.Cancel, actionName: "List", routeValues: null, controllerName: "Project", htmlAttributes: new { @class = "btn" })
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @Html.ActionLink(linkText: "Add new task", actionName: "EditRuntime", routeValues: new { id = 0 }, controllerName: "Issue", htmlAttributes: new { @class = "btn btn-primary", @onclick = "saveTempProject()" })
+                @Html.ActionLink(linkText: IssueResource.CreateIssue, actionName: "EditRuntime", routeValues: new { id = 0 }, controllerName: "Issue", htmlAttributes: new { @class = "btn btn-primary", @onclick = "saveTempProject()" })
             </div>
         </div>
     </div>
@@ -65,10 +65,10 @@
         <div class="project-tasks">
             <table class="table">
                 <tr>
-                    <th>Name</th>
-                    <th>Begin Date</th>
-                    <th>End Date</th>
-                    <th>Assignee</th>
+                    <th>@IssueResource.Name</th>
+                    <th>@IssueResource.BeginDate</th>
+                    <th>@IssueResource.EndDate</th>
+                    <th>@IssueResource.IssueEmployee</th>
                     <th colspan="2"></th>
                 </tr>
 
@@ -98,7 +98,7 @@
     else
     {
         <div class="alert alert-warning" role="alert">
-            There are no issues yet!
+            @IssueResource.IssuesNotFound
         </div>
     }
 

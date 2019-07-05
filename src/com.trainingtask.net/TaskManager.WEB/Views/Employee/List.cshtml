@@ -1,9 +1,10 @@
 ﻿@model TaskManager.WEB.ViewModels.EmployeesListView
 
 @using TaskManager.WEB.Helpers
+@using TaskManager.Resources
 
 @{
-    ViewBag.Title = "Employees list";
+    ViewBag.Title = EmployeeResource.EmployeesList;
 
     var error = ViewBag.Error;
 }
@@ -11,7 +12,7 @@
 <h3>@ViewBag.Title</h3>
 
 <h2>
-    @Html.ActionLink(linkText: "Create new employee", actionName: "Edit", routeValues: new { id = 0 }, controllerName: "Employee", htmlAttributes: new { @class = "btn btn-primary" })
+    @Html.ActionLink(linkText: EmployeeResource.CreateEmployee, actionName: "Edit", routeValues: new { id = 0 }, controllerName: "Employee", htmlAttributes: new { @class = "btn btn-primary" })
 </h2>
 
 @if (error != null)
@@ -24,7 +25,7 @@
 @using (Html.BeginForm())
 {
     <p>
-        @Html.TextBox("SearchTerm", ViewBag.CurrentFilter as string, htmlAttributes: new { @placeholder = "Search", @maxlength = 200})
+        @Html.TextBox("SearchTerm", ViewBag.CurrentFilter as string, htmlAttributes: new { @placeholder = CommonResource.Search, @maxlength = 200})
         <button type="submit">
             <i class="glyphicon glyphicon-search"></i>
         </button>
@@ -37,7 +38,7 @@
         <thead>
             <tr>
                 <th>
-                    First Name
+                    @EmployeeResource.FirstName
                     <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "FirstName", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
@@ -46,7 +47,7 @@
                     </a>
                 </th>
                 <th>
-                    Last Name
+                    @EmployeeResource.LastName
                     <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "LastName", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
@@ -55,7 +56,7 @@
                     </a>
                 </th>
                 <th>
-                    Middle Name
+                    @EmployeeResource.MiddleName
                     <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "MiddleName", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
@@ -64,7 +65,7 @@
                     </a>
                 </th>
                 <th>
-                    Position
+                    @EmployeeResource.Position
                     <a href="@Url.Action(actionName: "List", controllerName: "Employee", routeValues: new { sortColumn = "Position", isAscending = true, currentFilter = ViewBag.CurrentFilter })">
                         <i class="glyphicon glyphicon-triangle-top"></i>
                     </a>
@@ -108,6 +109,6 @@
 else
 {
     <div class="alert alert-warning" role="alert">
-        Employees are not found!
+        @EmployeeResource.EmployeesNotFound
     </div>
 }

@@ -14,18 +14,21 @@ namespace TaskManager.WEB.ViewModels
     {
         public int? Id { get; set; }
 
-        [Display(Name = "Name")]
-        [Required]
-        [StringLength(255, ErrorMessage = "Name should contain maximum 255 characters.")]
+        [Display(Name = "Name", ResourceType = typeof(Resources.ProjectResource))]
+        [Required(ErrorMessageResourceType = typeof(Resources.ProjectResource), ErrorMessageResourceName = "NameRequired")]
+        [StringLength(255, ErrorMessageResourceType = typeof(Resources.ProjectResource), 
+            ErrorMessageResourceName = "NameLong")]
         public string Name { get; set; }
 
-        [Display(Name = "Short Name")]
-        [Required]
-        [StringLength(255, ErrorMessage = "Name should contain maximum 255 characters.")]
+        [Display(Name = "ShortName", ResourceType = typeof(Resources.ProjectResource))]
+        [Required(ErrorMessageResourceType = typeof(Resources.ProjectResource), ErrorMessageResourceName = "ShortNameRequired")]
+        [StringLength(255, ErrorMessageResourceType = typeof(Resources.ProjectResource),
+            ErrorMessageResourceName = "ShortNameLong")]
         public string ShortName { get; set; }
 
-        [Display(Name = "Description")]
-        [StringLength(4000, ErrorMessage = "Description should contain maximum 4000 characters.")]
+        [Display(Name = "Description", ResourceType = typeof(Resources.ProjectResource))]
+        [StringLength(4000, ErrorMessageResourceType = typeof(Resources.ProjectResource),
+            ErrorMessageResourceName = "DescriptionLong")]
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 

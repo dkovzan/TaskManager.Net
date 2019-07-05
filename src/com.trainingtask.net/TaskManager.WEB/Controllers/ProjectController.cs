@@ -22,7 +22,7 @@ namespace TaskManager.WEB.Controllers
             _projectService = projectService;
         }
 
-        public override ActionResult List(string searchTerm, string currentFilter, string sortColumn, bool? isAscending, int? page, int? pageSize)
+        public ActionResult List(string searchTerm, string currentFilter, string sortColumn, bool? isAscending, int? page, int? pageSize)
         {
             _logger.Info($"GET Project/List?page={page}&pageSize={pageSize}");
 
@@ -91,7 +91,7 @@ namespace TaskManager.WEB.Controllers
             return View(project);
         }
 
-        public override ActionResult Delete(int id)
+        public ActionResult Delete(int id)
         {
             _logger.Info($"GET Project/Delete/{id}");
 

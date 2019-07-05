@@ -1,9 +1,25 @@
-﻿<!DOCTYPE html>
-<html>
+﻿@using TaskManager.WEB.Helpers;
+@using System.Threading;
+@{
+    ViewBag.Title = CommonResource.AppName;
+}
+<!DOCTYPE html>
+<html lang="@CultureHelper.GetCurrentNeutralCulture()">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Task manager</title>
+    <title>@ViewBag.Title</title>
+    @{
+        var culture = Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+    }
+
+    @helper selected(string c, string culture)
+    {
+        if (c == culture)
+        {
+            @:selected
+        }
+    }
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -16,14 +32,24 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Task manager", "List", "Project", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink(CommonResource.AppName, "List", "Project", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Projects", "List", "Project")</li>
-                    <li>@Html.ActionLink("Issues", "List", "Issue")</li>
-                    <li>@Html.ActionLink("Employees", "List", "Employee")</li>
+                    <li>@Html.ActionLink(ProjectResource.Projects, "List", "Project")</li>
+                    <li>@Html.ActionLink(IssueResource.Issues, "List", "Issue")</li>
+                    <li>@Html.ActionLink(EmployeeResource.Employees, "List", "Employee")</li>
                 </ul>
+            </div>
+            <div class="navbar-collapse collapse language-picker">
+                @using (Html.BeginForm("SetCulture", "Api"))
+                {
+                    @Html.AntiForgeryToken()
+                    <select class="selectpicker" name="culture" data-width="fit" onchange="this.form.submit()">
+                        <option @selected("en", culture) value="en" data-content='<span class="flag-icon flag-icon-us"></span> English'>English</option>
+                        <option @selected("ru", culture) value="ru" data-content='<span class="flag-icon flag-icon-ru"></span> Russian'>Русский</option>
+                    </select>
+                }
             </div>
         </div>
     </div>
@@ -31,7 +57,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Task manager. Powered by ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - @CommonResource.AppName. Powered by ASP.NET</p>
         </footer>
     </div>
 

@@ -2,7 +2,6 @@
 using log4net;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Web.Caching;
 using System.Web.Mvc;
 using TaskManager.BLL.Exceptions;
 using TaskManager.BLL.Models;
@@ -23,7 +22,7 @@ namespace TaskManager.WEB.Controllers
             _employeeService = employeeService;
         }
 
-        public override ActionResult List(string searchTerm, string currentFilter, string sortColumn, bool? isAscending, int? page, int? pageSize)
+        public ActionResult List(string searchTerm, string currentFilter, string sortColumn, bool? isAscending, int? page, int? pageSize)
         {
             _logger.Info($"GET Employee/List?page={page}&pageSize={pageSize}");
 
@@ -73,7 +72,7 @@ namespace TaskManager.WEB.Controllers
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.Warn($"Employee is not found by id {id}");
+                _logger.Warn(ex.Message);
 
                 TempData["Error"] = ex.Message;
 
@@ -85,7 +84,7 @@ namespace TaskManager.WEB.Controllers
             return View(employee);
         }
 
-        public override ActionResult Delete(int id)
+        public ActionResult Delete(int id)
         {
             _logger.InfoFormat($"GET Employee/Delete/{id}");
 

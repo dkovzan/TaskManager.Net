@@ -14,25 +14,36 @@ namespace TaskManager.WEB.ViewModels
     {
         public int? Id { get; set; }
 
-        [Required]
-        [Display(Name = "First Name")]
-        [RegularExpression(@"\b[\p{L}\s-']+\b", ErrorMessage = "First name should include only letters, space, hyphen and single quote.")]
-        [StringLength(255, ErrorMessage = "First name should contain maximum 255 characters.")]
+        [Required(ErrorMessageResourceType = typeof(Resources.EmployeeResource),
+            ErrorMessageResourceName = "FirstNameRequired")]
+        [Display(Name = "FirstName", ResourceType = typeof(Resources.EmployeeResource))]
+        [RegularExpression(@"\b[\p{L}\s-']+\b", ErrorMessageResourceType = typeof(Resources.EmployeeResource),
+            ErrorMessageResourceName = "FirstNameInvalid")]
+        [StringLength(255, ErrorMessageResourceType = typeof(Resources.EmployeeResource), 
+            ErrorMessageResourceName = "FirstNameLong")]
         public string FirstName { get; set; }
 
-        [Required]
-        [Display(Name = "Last Name")]
-        [RegularExpression(@"\b[\p{L}\s-']+\b", ErrorMessage = "Last name should include only letters, space, hyphen and single quote.")]
-        [StringLength(255, ErrorMessage = "Last name should contain maximum 255 characters.")]
+        [Required(ErrorMessageResourceType = typeof(Resources.EmployeeResource),
+            ErrorMessageResourceName = "LastNameRequired")]
+        [Display(Name = "LastName", ResourceType = typeof(Resources.EmployeeResource))]
+        [RegularExpression(@"\b[\p{L}\s-']+\b", ErrorMessageResourceType = typeof(Resources.EmployeeResource),
+            ErrorMessageResourceName = "LastNameInvalid")]
+        [StringLength(255, ErrorMessageResourceType = typeof(Resources.EmployeeResource),
+            ErrorMessageResourceName = "LastNameLong")]
         public string LastName { get; set; }
 
-        [Display(Name = "Middle Name")]
-        [RegularExpression(@"\b[\p{L}\s-']+\b", ErrorMessage = "Middle name should include only letters, space, hyphen and single quote.")]
-        [StringLength(255, ErrorMessage = "Middle name should contain maximum 255 characters.")]
+        [Display(Name = "MiddleName", ResourceType = typeof(Resources.EmployeeResource))]
+        [RegularExpression(@"\b[\p{L}\s-']+\b", ErrorMessageResourceType = typeof(Resources.EmployeeResource),
+            ErrorMessageResourceName = "EmployeeMiddleNameInvalid")]
+        [StringLength(255, ErrorMessageResourceType = typeof(Resources.EmployeeResource),
+            ErrorMessageResourceName = "MiddleNameLong")]
         public string MiddleName { get; set; }
 
-        [Required]
-        [StringLength(255, ErrorMessage = "Position should contain maximum 255 characters.")]
+        [Required(ErrorMessageResourceType = typeof(Resources.EmployeeResource),
+            ErrorMessageResourceName = "EmployeePositionRequired")]
+        [Display(Name = "Position", ResourceType = typeof(Resources.EmployeeResource))]
+        [StringLength(255, ErrorMessageResourceType = typeof(Resources.EmployeeResource),
+            ErrorMessageResourceName = "PositionLong")]
         public string Position { get; set; }
 
         public override string ToString()

@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
+using TaskManager.WEB.Helpers;
 using TaskManager.WEB.ViewModels;
 
 namespace TaskManager.WEB.Controllers
 {
-    public abstract class BaseController : Controller
+    public class BaseController : Controller
     {
         protected IMapper Mapper;
 
@@ -15,9 +18,25 @@ namespace TaskManager.WEB.Controllers
             Mapper = mapper;
         }
 
-        public abstract ActionResult List(string searchTerm, string currentFilter, string sortColumn, bool? isAscending, int? page, int? pageSize);
+        protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
+        {
+            string cultureName;
 
-        public abstract ActionResult Delete(int id);
+            var cultureCookie = Request.Cookies["_culture"];
+            if (cultureCookie != null)
+                cultureName = cultureCookie.Value;
+            else
+                cultureName = Request.UserLanguages != null && Request.UserLanguages.Length > 0 ?
+                    Request.UserLanguages[0] : 
+                    null;
+
+            cultureName = CultureHelper.GetImplementedCulture(cultureName);
+
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+            return base.BeginExecuteCore(callback, state);
+        }
 
         protected ListView<T> GetListViewPerPageWithPageInfo<T>(List<T> fullEntitiesList, int? page, int? pageSize) where T : class
         {

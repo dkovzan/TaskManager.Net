@@ -7,6 +7,7 @@ using TaskManager.BLL.Infrastructure;
 using TaskManager.BLL.Models;
 using TaskManager.DAL;
 using TaskManager.DAL.Entities;
+using TaskManager.Resources;
 
 namespace TaskManager.BLL.Services
 {
@@ -117,7 +118,7 @@ namespace TaskManager.BLL.Services
 
             if (issue == null || issue.IsDeleted == 1)
             {
-                throw new EntityNotFoundException("Issue not found by id " + id);
+                throw new EntityNotFoundException(IssueResource.IssueNotFoundById + id);
             }
 
             return issue;
@@ -153,7 +154,7 @@ namespace TaskManager.BLL.Services
 
                     if (issueFromDb == null || issueFromDb.IsDeleted == 1)
                     {
-                        throw new EntityNotFoundException("Issue not found by id " + issue.Id);
+                        throw new EntityNotFoundException(IssueResource.IssueNotFoundById + issue.Id);
                     }
                 }
 
@@ -186,7 +187,7 @@ namespace TaskManager.BLL.Services
 
             if (issue == null)
             {
-                throw new EntityNotFoundException($"Runtime issue is not found by id: {id}");
+                throw new EntityNotFoundException(IssueResource.IssueNotFoundById + id);
             }
 
             return issue;

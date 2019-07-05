@@ -27,7 +27,7 @@ namespace TaskManager.WEB.Controllers
             _projectService = projectService;
             _employeeService = employeeService;
         }
-        public override ActionResult List(string searchTerm, string currentFilter, string sortColumn, bool? isAscending, int? page, int? pageSize)
+        public ActionResult List(string searchTerm, string currentFilter, string sortColumn, bool? isAscending, int? page, int? pageSize)
         {
             _logger.Info($"GET Issue/List?page={page}&pageSize={pageSize}");
 
@@ -91,7 +91,7 @@ namespace TaskManager.WEB.Controllers
             return View(issue);
         }
 
-        public override ActionResult Delete(int id)
+        public ActionResult Delete(int id)
         {
             _logger.Info($"GET Issue/Delete/{id}");
 
