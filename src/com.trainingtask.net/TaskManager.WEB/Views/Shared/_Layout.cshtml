@@ -10,14 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
     @{
-        var culture = Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+        var currentCulture = Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+        var supportedCultures = CultureHelper.GetSupportedCultures();
     }
 
-    @helper selected(string c, string culture)
+    @helper active(string c, string culture)
     {
         if (c == culture)
         {
-            @:selected
+            @:active
         }
     }
     @Styles.Render("~/Content/css")
@@ -39,17 +40,26 @@
                     <li>@Html.ActionLink(ProjectResource.Projects, "List", "Project")</li>
                     <li>@Html.ActionLink(IssueResource.Issues, "List", "Issue")</li>
                     <li>@Html.ActionLink(EmployeeResource.Employees, "List", "Employee")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @CommonResource.Language <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            @{
+                            <text>
+                                <li class="@active("en", currentCulture)">
+                                    @Html.ActionLink(linkText: "English", controllerName: "Api", actionName: "SetCulture", routeValues: new { returnUrl = Context.Request.Path, culture = "en" }, htmlAttributes: null)
+                                </li>
+                            </text>
+                            <text>
+                                <li class="@active("ru", currentCulture)">
+                                    @Html.ActionLink(linkText: "Русский", controllerName: "Api", actionName: "SetCulture", routeValues: new { returnUrl = Context.Request.Path, culture = "ru" }, htmlAttributes: null)
+                                </li>
+                            </text>
+                            }
+                        </ul>
+                    </li>
                 </ul>
-            </div>
-            <div class="navbar-collapse collapse language-picker">
-                @using (Html.BeginForm("SetCulture", "Api"))
-                {
-                    @Html.AntiForgeryToken()
-                    <select class="selectpicker" name="culture" data-width="fit" onchange="this.form.submit()">
-                        <option @selected("en", culture) value="en" data-content='<span class="flag-icon flag-icon-us"></span> English'>English</option>
-                        <option @selected("ru", culture) value="ru" data-content='<span class="flag-icon flag-icon-ru"></span> Russian'>Русский</option>
-                    </select>
-                }
             </div>
         </div>
     </div>

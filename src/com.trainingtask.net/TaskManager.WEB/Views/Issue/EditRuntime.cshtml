@@ -44,14 +44,14 @@
     <div class="form-group required">
         @Html.LabelFor(_ => _.BeginDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(_ => _.BeginDate, new { htmlAttributes = new { @class = "form-control" }, @placeholder = IssueResource.BeginDatePlaceholder })
+            @Html.EditorFor(_ => _.BeginDate, new { htmlAttributes = new { @class = "form-control", @placeholder = IssueResource.BeginDatePlaceholder, @type = "text" } })
             @Html.ValidationMessageFor(_ => _.BeginDate, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group required">
         @Html.LabelFor(_ => _.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(_ => _.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = IssueResource.EndDatePlaceholder } })
+            @Html.EditorFor(_ => _.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = IssueResource.EndDatePlaceholder, @type = "text" } })
             @Html.ValidationMessageFor(_ => _.EndDate, "", new { @class = "text-danger" })
         </div>
     </div>

@@ -22,14 +22,6 @@ namespace TaskManager.WEB
         {
             _logger.Error(Server.GetLastError());
         }
-
-        //protected void Application_BeginRequest(object sender, EventArgs e)
-        //{
-        //    var newCulture = (CultureInfo) Thread.CurrentThread.CurrentCulture.Clone();
-        //    newCulture.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
-        //    newCulture.DateTimeFormat.DateSeparator = "-";
-        //    Thread.CurrentThread.CurrentCulture = newCulture;
-        //}
-
+        
     }
 }

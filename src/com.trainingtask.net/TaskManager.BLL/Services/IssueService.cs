@@ -13,7 +13,7 @@ namespace TaskManager.BLL.Services
 {
     public interface IIssueService
     {
-        List<IssueDto> GetIssues(string searchTerm, string sortColumn, bool isAscending);
+        List<IssueDto> GetIssues(string searchTerm, string sortColumn, bool isAscending, string culture);
         List<IssueDto> GetIssues();
         IssueDto FindIssueById(int id);
         void DeleteIssueById(int id);
@@ -33,7 +33,7 @@ namespace TaskManager.BLL.Services
             _mapper = mapper;
         }
 
-        public List<IssueDto> GetIssues(string searchTerm, string sortColumn, bool isAscending)
+        public List<IssueDto> GetIssues(string searchTerm, string sortColumn, bool isAscending, string culture)
         {
             IEnumerable<Issue> issues;
 
@@ -41,15 +41,32 @@ namespace TaskManager.BLL.Services
             {
                 var searchTerms = searchTerm.ToTermsArray();
 
-                issues = _unitOfWork.IssueRepository.Get(
-                    includeProperties: "Project,Employee", 
-                    filter: _ => _.IsDeleted == 0).Where(_ => searchTerms.All(x => _.BeginDate.ToString("dd-MM-yyyy").Contains(x) || 
-                                                                                   _.EndDate.ToString("dd-MM-yyyy").Contains(x) || 
-                                                                                   _.Work.ToString().Contains(x) || 
-                                                                                   _.Employee.FirstName.ToLower().Contains(x.ToLower()) || 
-                                                                                   _.Employee.LastName.ToLower().Contains(x.ToLower()) || 
-                                                                                   _.Project.ShortName.ToLower().Contains(x.ToLower()) || 
-                                                                                   _.Name.ToLower().Contains(x.ToLower())));
+                if (culture.Equals("ru"))
+                {
+                    issues = _unitOfWork.IssueRepository.Get(
+                        includeProperties: "Project,Employee",
+                        filter: _ => _.IsDeleted == 0).Where(_ => searchTerms.All(x => _.BeginDate.Date.ToShortDateString().Contains(x) ||
+                                                                                       _.EndDate.Date.ToShortDateString().Contains(x) ||
+                                                                                       _.Work.ToString().Contains(x) ||
+                                                                                       _.Employee.FirstName.ToLower().Contains(x.ToLower()) ||
+                                                                                       _.Employee.LastName.ToLower().Contains(x.ToLower()) ||
+                                                                                       _.Project.ShortName.ToLower().Contains(x.ToLower()) ||
+                                                                                       _.Name.ToLower().Contains(x.ToLower())));
+                }
+                else
+                {
+                    issues = _unitOfWork.IssueRepository.Get(
+                        includeProperties: "Project,Employee",
+                        filter: _ => _.IsDeleted == 0).Where(_ => searchTerms.All(x => _.BeginDate.Date.ToShortDateString().Contains(x) ||
+                                                                                       _.EndDate.Date.ToShortDateString().Contains(x) ||
+                                                                                       _.Work.ToString().Contains(x) ||
+                                                                                       _.Employee.FirstName.ToLower().Contains(x.ToLower()) ||
+                                                                                       _.Employee.LastName.ToLower().Contains(x.ToLower()) ||
+                                                                                       _.Project.ShortName.ToLower().Contains(x.ToLower()) ||
+                                                                                       _.Name.ToLower().Contains(x.ToLower())));
+                }
+
+
             }
             else
             {

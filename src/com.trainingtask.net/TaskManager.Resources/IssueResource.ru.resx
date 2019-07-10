@@ -126,6 +126,9 @@
   <data name="BeginDateRequired" xml:space="preserve">
     <value>Поле "Дата начала" обязательно для заполнения</value>
   </data>
+  <data name="BeginDateWrongFormat" xml:space="preserve">
+    <value>Дата начала невалидна. Укажите дату в корректном формате, например "дд.мм.гггг"</value>
+  </data>
   <data name="CreateIssue" xml:space="preserve">
     <value>Создать задачу</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="EndDateRequired" xml:space="preserve">
     <value>Поле "Дата окончания" обязательно для заполнения</value>
+  </data>
+  <data name="EndDateWrongFormat" xml:space="preserve">
+    <value>Дата окончания невалидна. Укажите дату в корректном формате, например "дд.мм.гггг"</value>
   </data>
   <data name="IssueEmployee" xml:space="preserve">
     <value>Исполнитель</value>

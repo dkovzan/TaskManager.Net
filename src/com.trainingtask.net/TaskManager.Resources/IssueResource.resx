@@ -126,6 +126,9 @@
   <data name="BeginDateRequired" xml:space="preserve">
     <value>Field "BeginDate" is required</value>
   </data>
+  <data name="BeginDateWrongFormat" xml:space="preserve">
+    <value>Begin date is not valid. Specify date in valid format, e.g. "dd/mm/yyyy"</value>
+  </data>
   <data name="CreateIssue" xml:space="preserve">
     <value>Create issue</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="EndDateRequired" xml:space="preserve">
     <value>Field "EndDate" is required</value>
+  </data>
+  <data name="EndDateWrongFormat" xml:space="preserve">
+    <value>End date is not valid. Specify date in valid format, e.g. "dd/mm/yyyy"</value>
   </data>
   <data name="IssueEmployee" xml:space="preserve">
     <value>Assignee</value>

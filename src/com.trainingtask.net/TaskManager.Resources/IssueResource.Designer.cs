@@ -88,6 +88,15 @@ namespace TaskManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Begin date is not valid. Specify date in valid format, e.g. &quot;dd/mm/yyyy&quot;.
+        /// </summary>
+        public static string BeginDateWrongFormat {
+            get {
+                return ResourceManager.GetString("BeginDateWrongFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create issue.
         /// </summary>
         public static string CreateIssue {
@@ -147,6 +156,15 @@ namespace TaskManager.Resources {
         public static string EndDateRequired {
             get {
                 return ResourceManager.GetString("EndDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End date is not valid. Specify date in valid format, e.g. &quot;dd/mm/yyyy&quot;.
+        /// </summary>
+        public static string EndDateWrongFormat {
+            get {
+                return ResourceManager.GetString("EndDateWrongFormat", resourceCulture);
             }
         }
         

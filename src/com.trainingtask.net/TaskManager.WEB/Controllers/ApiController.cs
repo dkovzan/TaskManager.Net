@@ -12,8 +12,7 @@ namespace TaskManager.WEB.Controllers
         {
         }
 
-        [ValidateAntiForgeryToken]
-        public ActionResult SetCulture(string culture)
+        public ActionResult SetCulture(string culture, string returnUrl)
         {
             culture = CultureHelper.GetImplementedCulture(culture);
 
@@ -25,7 +24,7 @@ namespace TaskManager.WEB.Controllers
                 cookie = new HttpCookie("_culture") {Value = culture, Expires = DateTime.Now.AddYears(1)};
             }
             Response.Cookies.Add(cookie);
-            return RedirectToAction("List", "Employee");
+            return Redirect(returnUrl);
         }
 
         

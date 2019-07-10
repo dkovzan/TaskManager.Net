@@ -49,6 +49,11 @@ namespace TaskManager.WEB.Helpers
             "ru"
         };
 
+        public static List<string> GetSupportedCultures()
+        {
+            return _cultures;
+        }
+
         public static string GetImplementedCulture(string name)
         {
             if (string.IsNullOrEmpty(name))

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using TaskManager.BLL.Exceptions;
 using TaskManager.BLL.Models;
 using TaskManager.BLL.Services;
+using TaskManager.WEB.Helpers;
 using TaskManager.WEB.ViewModels;
 
 namespace TaskManager.WEB.Controllers
@@ -42,7 +43,9 @@ namespace TaskManager.WEB.Controllers
 
             ViewBag.CurrentFilter = searchTerm;
 
-            var issuesFullList = Mapper.Map<List<IssueInListView>>(_issueService.GetIssues(searchTerm, sortColumn, isAscending ?? true));
+            var currCulture = CultureHelper.GetCurrentCulture();
+
+            var issuesFullList = Mapper.Map<List<IssueInListView>>(_issueService.GetIssues(searchTerm, sortColumn, isAscending ?? true, currCulture));
 
             var entitiesListViewPerPage = GetListViewPerPageWithPageInfo(issuesFullList, page, pageSize);
 
@@ -84,7 +87,7 @@ namespace TaskManager.WEB.Controllers
 
             ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
             ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
-            ViewBag.Statuses = StatusDict.GetStatusDict();
+            ViewBag.Statuses = CultureHelper.GetCurrentCulture().Equals("ru") ? StatusDict.GetStatusDictRu() : StatusDict.GetStatusDictEn();
 
             _logger.InfoFormat($"Issue sent into view: {issue}");
 
@@ -113,7 +116,7 @@ namespace TaskManager.WEB.Controllers
             {
                 ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
                 ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
-                ViewBag.Statuses = StatusDict.GetStatusDict();
+                ViewBag.Statuses = CultureHelper.GetCurrentCulture().Equals("ru") ? StatusDict.GetStatusDictRu() : StatusDict.GetStatusDictEn();
 
                 return View("Edit", issue);
             }
@@ -128,7 +131,7 @@ namespace TaskManager.WEB.Controllers
 
                 ViewBag.Projects = Mapper.Map<List<ProjectInDropdownView>>(_projectService.GetProjects());
                 ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
-                ViewBag.Statuses = StatusDict.GetStatusDict();
+                ViewBag.Statuses = CultureHelper.GetCurrentCulture().Equals("ru") ? StatusDict.GetStatusDictRu() : StatusDict.GetStatusDictEn();
 
                 ViewBag.Error = ex.Message;
 
@@ -171,7 +174,7 @@ namespace TaskManager.WEB.Controllers
             issue.ProjectId = projectId;
 
             ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
-            ViewBag.Statuses = StatusDict.GetStatusDict();
+            ViewBag.Statuses = CultureHelper.GetCurrentCulture().Equals("ru") ? StatusDict.GetStatusDictRu() : StatusDict.GetStatusDictEn();
 
             _logger.Info($"Issue sent into view: {issue}");
 
@@ -188,7 +191,7 @@ namespace TaskManager.WEB.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Employees = Mapper.Map<List<EmployeeInDropdownView>>(_employeeService.GetEmployees());
-                ViewBag.Statuses = StatusDict.GetStatusDict();
+                ViewBag.Statuses = CultureHelper.GetCurrentCulture().Equals("ru") ? StatusDict.GetStatusDictRu() : StatusDict.GetStatusDictEn();
 
                 return View("EditRuntime", issue);
             }

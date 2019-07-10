@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TaskManager.BLL.Models
 {
@@ -35,7 +36,7 @@ namespace TaskManager.BLL.Models
 
     public static class StatusDict
     {
-        private static readonly Dictionary<int, string> Dict = new Dictionary<int, string>
+        private static readonly Dictionary<int, string> DictEn = new Dictionary<int, string>
         {
             {0, "New"},
             {1, "In progress"},
@@ -44,9 +45,23 @@ namespace TaskManager.BLL.Models
             {4, "Reopened"}
         };
 
-        public static Dictionary<int, string> GetStatusDict()
+        private static readonly Dictionary<int, string> DictRu = new Dictionary<int, string>
         {
-            return Dict;
+            {0, "Новая"},
+            {1, "В работе"},
+            {2, "Решена"},
+            {3, "Закрыта"},
+            {4, "Переоткрыта"}
+        };
+
+        public static Dictionary<int, string> GetStatusDictEn()
+        {
+            return DictEn;
+        }
+
+        public static Dictionary<int, string> GetStatusDictRu()
+        {
+            return DictRu;
         }
 
     }
