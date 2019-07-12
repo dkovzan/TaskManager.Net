@@ -365,5 +365,14 @@ namespace TaskManager.Resources {
                 return ResourceManager.GetString("WorkPlaceholder", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field &quot;Work&quot; is required.
+        /// </summary>
+        public static string WorkRequired {
+            get {
+                return ResourceManager.GetString("WorkRequired", resourceCulture);
+            }
+        }
     }
 }

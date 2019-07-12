@@ -219,4 +219,7 @@
   <data name="WorkPlaceholder" xml:space="preserve">
     <value>Enter work (natural numbers)</value>
   </data>
+  <data name="WorkRequired" xml:space="preserve">
+    <value>Field "Work" is required</value>
+  </data>
 </root>

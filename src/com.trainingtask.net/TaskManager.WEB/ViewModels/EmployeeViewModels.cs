@@ -34,13 +34,13 @@ namespace TaskManager.WEB.ViewModels
 
         [Display(Name = "MiddleName", ResourceType = typeof(Resources.EmployeeResource))]
         [RegularExpression(@"\b[\p{L}\s-']+\b", ErrorMessageResourceType = typeof(Resources.EmployeeResource),
-            ErrorMessageResourceName = "EmployeeMiddleNameInvalid")]
+            ErrorMessageResourceName = "MiddleNameInvalid")]
         [StringLength(255, ErrorMessageResourceType = typeof(Resources.EmployeeResource),
             ErrorMessageResourceName = "MiddleNameLong")]
         public string MiddleName { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Resources.EmployeeResource),
-            ErrorMessageResourceName = "EmployeePositionRequired")]
+            ErrorMessageResourceName = "PositionRequired")]
         [Display(Name = "Position", ResourceType = typeof(Resources.EmployeeResource))]
         [StringLength(255, ErrorMessageResourceType = typeof(Resources.EmployeeResource),
             ErrorMessageResourceName = "PositionLong")]
