@@ -12,6 +12,7 @@
 
 <h2>
     @Html.ActionLink(linkText: IssueResource.CreateIssue, actionName: "Edit", controllerName: "Issue", routeValues: new { id = 0 }, htmlAttributes: new { @class = "btn btn-primary" })
+    @Html.ActionLink(linkText: CommonResource.ExportList, controllerName: "Export", actionName: "Issue", htmlAttributes: new { @class = "btn btn-primary" }, routeValues: null)
 </h2>
 
 @if (error != null)

@@ -14,6 +14,7 @@
 
 <h2>
     @Html.ActionLink(linkText: ProjectResource.CreateProject, actionName: "Edit", controllerName: "Project", routeValues: new { id = 0, isCleanSessionNeeded = true }, htmlAttributes: new { @class = "btn btn-primary", @onclick = "clearTempProject()" })
+    @Html.ActionLink(linkText: CommonResource.ExportList, controllerName: "Export", actionName: "Project", htmlAttributes: new { @class = "btn btn-primary" }, routeValues: null)
 </h2>
 
 @if (error != null)

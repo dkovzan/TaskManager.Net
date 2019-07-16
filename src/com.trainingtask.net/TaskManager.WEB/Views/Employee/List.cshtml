@@ -13,6 +13,7 @@
 
 <h2>
     @Html.ActionLink(linkText: EmployeeResource.CreateEmployee, actionName: "Edit", routeValues: new { id = 0 }, controllerName: "Employee", htmlAttributes: new { @class = "btn btn-primary" })
+    @Html.ActionLink(linkText: CommonResource.ExportList, controllerName: "Export", actionName: "Employee", htmlAttributes: new { @class = "btn btn-primary" }, routeValues: null)
 </h2>
 
 @if (error != null)

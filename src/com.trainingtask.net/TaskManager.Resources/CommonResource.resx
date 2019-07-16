@@ -138,4 +138,7 @@
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="ExportList" xml:space="preserve">
+    <value>Export full list</value>
+  </data>
 </root>

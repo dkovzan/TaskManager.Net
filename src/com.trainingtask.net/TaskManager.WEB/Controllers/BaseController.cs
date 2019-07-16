@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
@@ -26,25 +29,27 @@ namespace TaskManager.WEB.Controllers
             if (cultureCookie != null)
                 cultureName = cultureCookie.Value;
             else
-                cultureName = Request.UserLanguages != null && Request.UserLanguages.Length > 0 ?
-                    Request.UserLanguages[0] : 
-                    null;
+                cultureName = Request.UserLanguages != null && Request.UserLanguages.Length > 0
+                    ? Request.UserLanguages[0]
+                    : null;
 
             cultureName = CultureHelper.GetImplementedCulture(cultureName);
 
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
             return base.BeginExecuteCore(callback, state);
         }
 
-        protected ListView<T> GetListViewPerPageWithPageInfo<T>(List<T> fullEntitiesList, int? page, int? pageSize) where T : class
+        protected ListView<T> GetListViewPerPageWithPageInfo<T>(List<T> fullEntitiesList, int? page, int? pageSize)
+            where T : class
         {
             var pageNumber = page ?? 1;
 
             var pageAmount = pageSize ?? 5;
 
-            var pageInfo = new PageInfo { PageNumber = pageNumber, PageSize = pageAmount, TotalItems = fullEntitiesList.Count };
+            var pageInfo = new PageInfo
+                {PageNumber = pageNumber, PageSize = pageAmount, TotalItems = fullEntitiesList.Count};
 
             if (page > pageInfo.TotalPages)
             {
@@ -53,8 +58,20 @@ namespace TaskManager.WEB.Controllers
 
             var entitiesPerPage = fullEntitiesList.Skip((pageNumber - 1) * pageAmount).Take(pageAmount).ToList();
 
-            return new ListView<T> { EntitiesPerPageList = entitiesPerPage, PageInfo = pageInfo };
+            return new ListView<T> {EntitiesPerPageList = entitiesPerPage, PageInfo = pageInfo};
         }
 
+        protected void WriteReportToResponse(ExcelPackage excel)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;  filename=ExportFile.xlsx");
+                excel.SaveAs(memoryStream);
+                memoryStream.WriteTo(Response.OutputStream);
+                Response.Flush();
+                Response.End();
+            }
+        }
     }
 }

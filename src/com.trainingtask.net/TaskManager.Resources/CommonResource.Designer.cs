@@ -88,6 +88,15 @@ namespace TaskManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export full list.
+        /// </summary>
+        public static string ExportList {
+            get {
+                return ResourceManager.GetString("ExportList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {
