@@ -124,7 +124,7 @@
     <value>Enter begin date</value>
   </data>
   <data name="BeginDateRequired" xml:space="preserve">
-    <value>Field "BeginDate" is required</value>
+    <value>Field "Begin Date" is required</value>
   </data>
   <data name="BeginDateWrongFormat" xml:space="preserve">
     <value>Begin date is not valid. Specify date in valid format, e.g. "dd/mm/yyyy"</value>
@@ -142,13 +142,13 @@
     <value>Edit issue</value>
   </data>
   <data name="EndDate" xml:space="preserve">
-    <value>EndDate</value>
+    <value>End Date</value>
   </data>
   <data name="EndDatePlaceholder" xml:space="preserve">
     <value>Enter end date</value>
   </data>
   <data name="EndDateRequired" xml:space="preserve">
-    <value>Field "EndDate" is required</value>
+    <value>Field "End Date" is required</value>
   </data>
   <data name="EndDateWrongFormat" xml:space="preserve">
     <value>End date is not valid. Specify date in valid format, e.g. "dd/mm/yyyy"</value>

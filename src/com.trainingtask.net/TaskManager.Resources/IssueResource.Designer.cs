@@ -79,7 +79,7 @@ namespace TaskManager.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field &quot;BeginDate&quot; is required.
+        ///   Looks up a localized string similar to Field &quot;Begin Date&quot; is required.
         /// </summary>
         public static string BeginDateRequired {
             get {
@@ -133,7 +133,7 @@ namespace TaskManager.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EndDate.
+        ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string EndDate {
             get {
@@ -151,7 +151,7 @@ namespace TaskManager.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field &quot;EndDate&quot; is required.
+        ///   Looks up a localized string similar to Field &quot;End Date&quot; is required.
         /// </summary>
         public static string EndDateRequired {
             get {
