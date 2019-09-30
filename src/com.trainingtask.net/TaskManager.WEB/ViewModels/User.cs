@@ -13,6 +13,11 @@ namespace TaskManager.WEB.ViewModels
         [Required(ErrorMessageResourceType = typeof(Resources.CommonResource), ErrorMessageResourceName = "PasswordRequired")]
         [MaxLength(200, ErrorMessageResourceType = typeof(Resources.CommonResource), ErrorMessageResourceName = "PasswordLong")]
         public string Password { get; set; }
+
+        public override string ToString()
+        {
+            return $"Existing User Login {Login}";
+        }
     }
 
     public class NewUser
@@ -32,5 +37,10 @@ namespace TaskManager.WEB.ViewModels
         [Required(ErrorMessageResourceType = typeof(Resources.CommonResource), ErrorMessageResourceName = "ConfirmPasswordRequired")]
         [Compare("Password", ErrorMessageResourceType = typeof(Resources.CommonResource), ErrorMessageResourceName = "PasswordsDontMatch")]
         public string ConfirmPassword { get; set; }
+
+        public override string ToString()
+        {
+            return $"New User Login {Login}";
+        }
     }
 }
