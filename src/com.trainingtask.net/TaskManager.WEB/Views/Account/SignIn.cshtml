@@ -1,0 +1,61 @@
+﻿@model TaskManager.WEB.ViewModels.ExistingUser
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var error = ViewBag.ErrorMessage;
+    var message = ViewBag.Message;
+    ViewBag.Title = CommonResource.SignIn;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
+
+@if (message != null)
+{
+    <div class="alert alert-success" role="alert">
+        @message
+    </div>
+}
+
+@using (Html.BeginForm(actionName: "SignIn", controllerName: "Account"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+
+        <div class="form-group required">
+            @Html.LabelFor(_ => _.Login, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(_ => _.Login, new { htmlAttributes = new { @class = "form-control", @placeholder = CommonResource.LoginPlaceholder } })
+                @Html.ValidationMessageFor(_ => _.Login, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group required">
+            @Html.LabelFor(_ => _.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(_ => _.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = CommonResource.PasswordPlaceholder, @type = "password" } })
+                @Html.ValidationMessageFor(_ => _.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <p>@CommonResource.SignUpMessage @Html.ActionLink(CommonResource.SignUp, controllerName: "Account", actionName: "SignUp")</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@CommonResource.SignIn" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

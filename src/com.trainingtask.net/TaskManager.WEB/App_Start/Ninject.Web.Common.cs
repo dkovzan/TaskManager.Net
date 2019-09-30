@@ -48,7 +48,7 @@ namespace TaskManager.WEB.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
-                kernel.Load(new ServiceModule("EntitiesContext"), new AutoMapperModule());
+                kernel.Load(new ServiceModule("DefaultConnection"), new AutoMapperModule());
 
                 RegisterServices(kernel);
 

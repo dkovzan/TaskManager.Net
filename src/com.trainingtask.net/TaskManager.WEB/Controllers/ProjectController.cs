@@ -10,6 +10,7 @@ using TaskManager.WEB.ViewModels;
 
 namespace TaskManager.WEB.Controllers
 {
+    [Authorize]
     public class ProjectController : BaseController
     {
         private readonly ILog _logger;

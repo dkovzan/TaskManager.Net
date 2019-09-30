@@ -141,4 +141,58 @@
   <data name="ExportList" xml:space="preserve">
     <value>Export full list</value>
   </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="ConfirmPasswordPlaceholder" xml:space="preserve">
+    <value>Write your password to confirm</value>
+  </data>
+  <data name="ConfirmPasswordRequired" xml:space="preserve">
+    <value>Field "Confirm password" is required</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="LoginLong" xml:space="preserve">
+    <value>Login should contain maximum 200 characters</value>
+  </data>
+  <data name="LoginPlaceholder" xml:space="preserve">
+    <value>Write login</value>
+  </data>
+  <data name="LoginRequired" xml:space="preserve">
+    <value>Field "Login" is required</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordLong" xml:space="preserve">
+    <value>Password should contain maximum 200 characters</value>
+  </data>
+  <data name="PasswordPlaceholder" xml:space="preserve">
+    <value>Write password</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Field "Password" is required</value>
+  </data>
+  <data name="PasswordsDontMatch" xml:space="preserve">
+    <value>Passwords do not match</value>
+  </data>
+  <data name="PasswordShort" xml:space="preserve">
+    <value>Password should contain minimum 6 characters</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="SignUp" xml:space="preserve">
+    <value>Sign Up</value>
+  </data>
+  <data name="SignUpMessage" xml:space="preserve">
+    <value>Don't have an account?</value>
+  </data>
+  <data name="WrongLoginOrPassword" xml:space="preserve">
+    <value>Invalid login or password</value>
+  </data>
 </root>

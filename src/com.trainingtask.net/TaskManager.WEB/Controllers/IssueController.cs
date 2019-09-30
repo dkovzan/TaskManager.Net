@@ -11,6 +11,7 @@ using TaskManager.WEB.ViewModels;
 
 namespace TaskManager.WEB.Controllers
 {
+    [Authorize]
     public class IssueController : BaseController
     {
         private readonly ILog _logger;

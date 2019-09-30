@@ -17,8 +17,14 @@ namespace TaskManager.WEB
 
             routes.MapRoute(
                 name: "Default",
+                url: "{controller}/{action}",
+                defaults: new { controller = "Account", action = "SignIn"},
+                namespaces: new[] { "TaskManager.WEB.Controllers" }
+            );
+
+            routes.MapRoute(
+                name: "Entities",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Project", action = "List", id = UrlParameter.Optional },
                 namespaces: new[] { "TaskManager.WEB.Controllers" }
             );
         }

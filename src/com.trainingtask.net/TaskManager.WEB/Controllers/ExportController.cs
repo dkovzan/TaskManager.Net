@@ -6,6 +6,7 @@ using TaskManager.BLL.Services;
 
 namespace TaskManager.WEB.Controllers
 {
+    [Authorize]
     public class ExportController : BaseController
     {
         private readonly ILog _logger;

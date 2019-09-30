@@ -1,0 +1,57 @@
+﻿@model TaskManager.WEB.ViewModels.NewUser
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var error = ViewBag.ErrorMessage;
+    ViewBag.Title = CommonResource.SignUp;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
+
+@using (Html.BeginForm(actionName: "SignUp", controllerName: "Account"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+
+        <div class="form-group required">
+            @Html.LabelFor(_ => _.Login, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(_ => _.Login, new { htmlAttributes = new { @class = "form-control", @placeholder = CommonResource.LoginPlaceholder } })
+                @Html.ValidationMessageFor(_ => _.Login, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group required">
+            @Html.LabelFor(_ => _.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(_ => _.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = CommonResource.PasswordPlaceholder, @type = "password" } })
+                @Html.ValidationMessageFor(_ => _.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group required">
+            @Html.LabelFor(_ => _.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(_ => _.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @placeholder = CommonResource.ConfirmPasswordPlaceholder, @type = "password" } })
+                @Html.ValidationMessageFor(_ => _.ConfirmPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value=@CommonResource.SignUp class="btn btn-default" />
+                @Html.ActionLink(linkText: CommonResource.Cancel, actionName: "SignIn", routeValues: null, controllerName: "Account", htmlAttributes: new { @class = "btn" })
+            </div>
+        </div>
+    </div>
+}
