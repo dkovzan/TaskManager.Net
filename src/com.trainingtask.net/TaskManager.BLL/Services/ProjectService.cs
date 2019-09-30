@@ -72,7 +72,7 @@ namespace TaskManager.BLL.Services
                     break;
 
                 case "Description" when !isAscending:
-                    projects = projects.OrderBy(_ => _.Description);
+                    projects = projects.OrderByDescending(_ => _.Description);
                     break;
 
                 default:
